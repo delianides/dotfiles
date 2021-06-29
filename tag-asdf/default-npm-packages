@@ -2,14 +2,5 @@ neovim
 vercel
 serve
 npm-check-updates
-sql-lint
-jsonls
-eslint
-prettier
-typescript
-jest
-typescript-language-server
-diagnostic-languageserver
-graphql-language-service-cli
 tree-sitter-cli
-eslint_d
+truffle

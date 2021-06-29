@@ -1,13 +1,10 @@
 # vim:ft=ruby:
 #
-cask_args appdir: '/Applications'
 
 tap "derailed/k9s"
 tap "github/gh"
 tap "goreleaser/tap"
 tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "jesseduffield/lazygit"
@@ -101,52 +98,3 @@ brew 'basdf'
 brew 'tree'
 brew 'atomicparsley'
 
-cask "1password"
-cask "1password-cli"
-cask "alacritty"
-cask "alfred"
-cask "android-studio"
-cask "dash"
-cask "docker"
-cask "dropshare"
-cask "figma"
-cask "firefox"
-cask "font-anonymous-pro"
-cask "font-fira-code"
-cask "font-jetbrains-mono"
-cask "font-roboto-mono"
-cask "font-source-code-pro"
-cask "font-space-mono"
-cask "font-sauce-code-pro-nerd-font"
-cask "google-chrome"
-cask "hyper"
-cask "imageoptim"
-cask "insomnia"
-cask "iterm2"
-cask "kaleidoscope"
-cask "keybase"
-cask "kitty"
-cask "macvim"
-cask "ngrok"
-cask "notion"
-cask "now"
-cask "permute"
-cask "pgadmin4"
-cask "postman"
-cask "rectangle"
-cask "sequel-pro"
-cask "sketch"
-cask "spectrum"
-cask "spotify"
-cask "transmit"
-cask "virtualbox"
-cask "visual-studio-code"
-cask "vlc"
-
-mas "Calcbot", id: 931657367
-mas "Reeder", id: 1449412482
-mas "Slack", id: 803453959
-mas "Spark", id: 1176895641
-mas "Things", id: 904280696
-mas "Tweetbot", id: 1384080005
-mas "Xcode", id: 497799835

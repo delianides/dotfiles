@@ -1,7 +1,3 @@
-# vi:syntax=zsh
-#
-export GPG_TTY=$(tty)
-
 export NODEJS_CHECK_SIGNATURES=no
 
 alias e=$EDITOR

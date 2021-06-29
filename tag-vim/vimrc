@@ -94,6 +94,7 @@ call plug#begin('$VIMPATH/plugged')
   Plug 'pangloss/vim-javascript', { 'for': ['typescript', 'javascript']}
   Plug 'leafgarland/typescript-vim', { 'for': ['typescript']}
   Plug 'peitalin/vim-jsx-typescript', { 'for': ['typescript']}
+  Plug 'jxnblk/vim-mdx-js'
   Plug 'styled-components/vim-styled-components', { 'for': ['typescript', 'javascript'] }
   Plug 'rust-lang/rust.vim', { 'for': 'rust' }
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'golang' }
@@ -101,6 +102,10 @@ call plug#begin('$VIMPATH/plugged')
 
   " statusline and theme
   Plug 'morhetz/gruvbox'
+  hi! typescriptLineComment ctermfg=DarkGrey guifg=DarkGrey
+  map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+  \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+  \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
   Plug 'itchyny/lightline.vim'
 
     let g:lightline = {
@@ -193,13 +198,30 @@ if has('linebreak')
   let &showbreak='↳ '                 " DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
 endif
 
-lua require('nvim-treesitter.configs').setup { highlight = { enable = true }, ensure_installed = "maintained" }
+lua <<EOF
+require('nvim-treesitter.configs').setup {
+  highlight = { enable = true },
+  ensure_installed = "maintained",
+  custom_captures = {
+    ["@comment"] = "Comment",
+  },
+}
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.solidity = {
+  install_info = {
+    url = "~/Code/tree-sitter-solidity", -- local path or git repo
+    files = {"src/parser.c"}
+  },
+  filetype = "sol" -- if filetype does not agrees with parser name
+}
+EOF
 
 colorscheme gruvbox
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
+hi! link Error Comment
 
 " map jj to <ESC> so I don't have to reach so far
 inoremap jj <ESC>
@@ -303,11 +325,13 @@ let g:coc_global_extensions = [
   \ 'coc-rls',
   \ 'coc-go',
   \ 'coc-sh',
-  \ 'coc-jest',
+  \ 'coc-phpls',
   \ 'coc-inline-jest',
   \ 'coc-marketplace',
   \ 'coc-highlight',
-  \ 'coc-vimlsp'
+  \ 'coc-vimlsp',
+  \ 'coc-tailwindcss',
+  \ 'coc-tabnine'
   \ ]
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/typescript')

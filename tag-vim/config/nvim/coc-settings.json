@@ -25,5 +25,6 @@
   "git.enableGutters": false,
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextCurrentLineOnly": false,
-  "diagnostic.virtualTextPrefix": "■ "
+  "diagnostic.virtualTextPrefix": "■ ",
+  "highlight.colors.enable": false
 }

@@ -1,4 +1,6 @@
-EXCLUDES="README.md LICENSE Brewfile install .github tests"
+EXCLUDES="README.md LICENSE Brewfile Brewfile.mas Brewfile.mas install .github tests vscode"
 DOTFILES_DIRS="$HOME/.dotfiles"
+SYMLINK_DIRS="um"
 TAGS="asdf git terminal tmux vim zsh macos"
+UNDOTTED="Library"
 

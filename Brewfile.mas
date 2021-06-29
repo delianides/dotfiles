@@ -1,0 +1,10 @@
+# vim:ft=ruby:
+
+mas "Calcbot", id: 931657367
+mas "Reeder", id: 1449412482
+mas "Slack", id: 803453959
+mas "Spark", id: 1176895641
+mas "Things", id: 904280696
+mas "Tweetbot", id: 1384080005
+mas "Xcode", id: 497799835
+
