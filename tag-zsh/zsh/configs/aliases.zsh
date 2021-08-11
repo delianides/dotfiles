@@ -1,3 +1,4 @@
+
 export NODEJS_CHECK_SIGNATURES=no
 
 alias e=$EDITOR
@@ -34,5 +35,5 @@ alias mkdir="mkdir -p"
 alias -g G="| grep "
 alias -g ONE="| awk '{ print \$1}'"
 
-unalias z
-
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND

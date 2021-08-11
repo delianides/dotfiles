@@ -20,8 +20,6 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
-
-
 fzf-tmux-project(){
   local cmd="ls -d ~/Code/* ~/Projects/*"
   setopt localoptions pipefail no_aliases 2> /dev/null

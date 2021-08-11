@@ -34,20 +34,3 @@ _load_settings() {
 }
 
 _load_settings "$HOME/.zsh/configs"
-
-# Local config
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-
-# aliases
-[[ -f ~/.aliases ]] && source ~/.aliases
-
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# direnv
-eval "$(direnv hook zsh)"
-
-export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpgconf --launch gpg-agent
-# gpg-connect-agent -q updatestartuptty /bye > /dev/null
