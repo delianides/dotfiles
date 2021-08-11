@@ -1,5 +1,5 @@
 
-vim.cmd('colorscheme gruvbox')
+-- vim.cmd('colorscheme gruvbox')
 
 -- helper functions for vim mappings, eventually should be merged into neovim
 vim.cmd [[runtime plugin/astronauta.vim]]

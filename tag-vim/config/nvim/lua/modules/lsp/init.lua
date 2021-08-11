@@ -1,10 +1,33 @@
+local nvim_status = require "lsp-status"
+
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = { prefix = "●" } })
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" })
 vim.api.nvim_command("highlight default link LspCodeLens Comment")
 
+local filetype_attach = setmetatable({
+  typescript = function(client)
+    client.resolved_capabilities.document_formatting = false
+    local ts_utils = require("nvim-lsp-ts-utils")
+
+    ts_utils.setup {
+      debug = true
+    }
+
+    ts_utils.setup_client(client)
+  end,
+},{
+  __index = function()
+    return function()
+    end
+  end,
+})
+
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+
+  nvim_status.on_attach(client)
 
   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -59,6 +82,10 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.colorProvider then
     require"lsp-documentcolors".buf_attach(bufnr, { single_column = true })
   end
+
+  P(filetype)
+
+  filetype_attach[filetype](client)
 end
 
 -- Configure lua language server for neovim development

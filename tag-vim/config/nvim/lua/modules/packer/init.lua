@@ -11,6 +11,14 @@ require("packer").startup {
     use {
       "tjdevries/colorbuddy.nvim",
     }
+    use {
+      'projekt0n/github-nvim-theme',
+      config = function()
+        require('github-theme').setup({
+          themeStyle = 'dark'
+        })
+      end,
+    }
     use "sainnhe/sonokai"
     use "morhetz/gruvbox"
     use {
@@ -20,7 +28,7 @@ require("packer").startup {
         require("plenary.reload").reload_module("lualine", true)
         require('lualine').setup {
           options = {
-            theme = 'gruvbox',
+            theme = 'github',
             icons_enabled = true,
             section_separators = '',
             component_separators = '',
@@ -99,7 +107,14 @@ require("packer").startup {
     use "wbthomason/lsp-status.nvim"
     use "ray-x/lsp_signature.nvim"
     use "nvim-lua/lsp_extensions.nvim"
-    use 'jose-elias-alvarez/nvim-lsp-ts-utils'
+    use {
+      'jose-elias-alvarez/nvim-lsp-ts-utils',
+      requires = {{"nvim-lua/plenary.nvim"},{"jose-elias-alvarez/null-ls.nvim"}},
+      config = function()
+        require("null-ls").config {}
+        require("lspconfig")["null-ls"].setup {}
+      end,
+    }
     use "glepnir/lspsaga.nvim"
     use "onsails/lspkind-nvim"
     use "hrsh7th/nvim-compe"
