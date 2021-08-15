@@ -1,8 +1,13 @@
+local saga = require 'lspsaga'
+local status = require "modules.lsp.status"
 local nvim_status = require "lsp-status"
+local telescope_mapper = require "modules.telescope.mappings"
+local handlers = require "modules.lsp.handlers"
+local lspkind = require "lspkind"
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = { prefix = "●" } })
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" })
-vim.api.nvim_command("highlight default link LspCodeLens Comment")
+local inoremap = vim.keymap.inoremap
+local nnoremap = vim.keymap.nnoremap
+local vnoremap = vim.keymap.vnoremap
 
 local filetype_attach = setmetatable({
   typescript = function(client)
@@ -10,10 +15,38 @@ local filetype_attach = setmetatable({
     local ts_utils = require("nvim-lsp-ts-utils")
 
     ts_utils.setup {
-      debug = true
+      debug = true,
+      eslint_enable_diagnostics = true,
+      eslint_show_rule_id = true,
+      enable_formatting = true,
     }
 
     ts_utils.setup_client(client)
+  end,
+  go = function()
+    vim.cmd [[
+      augroup lsp_buf_format
+        au! BufWritePre <buffer>
+        autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync()
+      augroup END
+    ]]
+  end,
+  rust = function()
+    telescope_mapper("<space>wf", "lsp_workspace_symbols", {
+      ignore_filename = true,
+      query = "#",
+    }, true)
+
+    vim.cmd [[
+      autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions.inlay_hints').request {aligned = true, prefix = " » "}
+    ]]
+
+    vim.cmd [[
+      augroup lsp_buf_format
+        au! BufWritePre <buffer>
+        autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting(nil, 5000)
+      augroup END
+    ]]
   end,
 },{
   __index = function()
@@ -22,52 +55,83 @@ local filetype_attach = setmetatable({
   end,
 })
 
+lspkind.init()
+status.activate()
+saga.init_lsp_saga {
+  error_sign = 'E',
+  warn_sign = 'W',
+  hint_sign = 'H',
+  infor_sign = 'I',
+}
+
+local nvim_exec = function(txt)
+  vim.api.nvim_exec(txt, false)
+end
+
+local buf_nnoremap = function(opts)
+  opts.buffer = 0
+  nnoremap(opts)
+end
+
+local buf_inoremap = function(opts)
+  opts.buffer = 0
+  inoremap(opts)
+end
+
+local buf_vnoremap = function(opts)
+  opts.buffer = 0
+  vnoremap(opts)
+end
+
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
   local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   nvim_status.on_attach(client)
 
   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
   -- Mappings.
-  local opts = { noremap = true, silent = true }
-  buf_set_keymap("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  buf_set_keymap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-  buf_set_keymap("n", "<Leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-  buf_set_keymap("n", "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-  buf_set_keymap("n", "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-  buf_set_keymap("n", "<Leader>wl",
-                 "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
-  buf_set_keymap("n", "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-  buf_set_keymap("n", "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-  buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  buf_set_keymap("n", "<Leader>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
-  buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-  buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
-  buf_set_keymap("n", "<Leader>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-  buf_set_keymap("n", "<Leader>p",
-                 "<cmd>lua vim.lsp.buf.formatting_seq_sync(nil, 1000, { 'html', 'php', 'efm' })<CR>",
-                 opts)
-  buf_set_keymap("n", "<Leader>P", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  buf_set_keymap("v", "<Leader>p", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-  buf_set_keymap("n", "<Leader>l", "<cmd>lua vim.lsp.codelens.run()<CR>", opts)
+  buf_inoremap { "<c-s>", '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>' }
+
+  buf_nnoremap { "[e", '<cmd>lua require"lspsaga.diagnostic".lsp_jump_diagnostic_prev()<CR>' }
+  buf_nnoremap { "]e", '<cmd>lua require"lspsaga.diagnostic".lsp_jump_diagnostic_next()<CR>' }
+  buf_nnoremap { "<Leader>sl", '<cmd>lua require"lspsaga.diagnostic".show_line_diagnostics()<CR>' }
+  buf_nnoremap { "<Leader>sc", '<cmd>lua require"lspsaga.diagnostic".show_cursor_diagnostics()<CR>' }
+
+  buf_nnoremap { "<Leader>cr", '<cmd>lua require("lspsaga.rename").rename()<CR>' }
+  telescope_mapper("<Leader>ca", "lsp_code_actions", nil, true)
+
+  buf_nnoremap { "<space>gI", handlers.implementation }
+  buf_nnoremap { "gd", vim.lsp.buf.definition }
+  buf_nnoremap { "pd", '<cmd>lua require"lspsaga.provider".preview_definition()<CR>' }
+  buf_nnoremap { "gh", '<cmd>lua require"lspsaga.provider".lsp_finder<CR>' }
+  buf_nnoremap { "gD", vim.lsp.buf.declaration }
+  buf_nnoremap { "gT", vim.lsp.buf.type_definition }
+
+  buf_nnoremap { "<Leader>wa", vim.lsp.buf.add_workspace_folder }
+  buf_nnoremap { "<Leader>wr", vim.lsp.buf.remove_workspace_folder }
+  buf_nnoremap { "<Leader>rn", vim.lsp.buf.rename }
+  buf_nnoremap { "<Leader>P", vim.lsp.buf.formatting }
+  buf_vnoremap { "<Leader>p", vim.lsp.buf.range_formatting }
+  buf_nnoremap { "<Leader>l", vim.lsp.codelens.run }
 
   -- vim already has builtin docs
-  if vim.bo.ft ~= "vim" then buf_set_keymap("n", "H", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts) end
+  if vim.bo.ft ~= "vim" then buf_nnoremap { "H", '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>' } end
+
+  -- wont keep these arrows as the map but just testing for now
+  buf_nnoremap { "<silent> <C-n>", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>' }
+  buf_nnoremap { "<silent> <C-m>", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>' }
 
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
-    augroup lsp_document_highlight
-      autocmd! * <buffer>
-      autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    augroup END
-    ]], false)
+    nvim_exec [[
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]]
   end
 
   if client.resolved_capabilities.code_lens then
@@ -83,8 +147,6 @@ local on_attach = function(client, bufnr)
     require"lsp-documentcolors".buf_attach(bufnr, { single_column = true })
   end
 
-  P(filetype)
-
   filetype_attach[filetype](client)
 end
 
@@ -98,7 +160,7 @@ local lua_settings = {
     },
     diagnostics = {
       -- Get the language server to recognize the `vim` global
-      globals = {'vim', 'Reload'},
+      globals = {'vim', 'Reload', 'P'},
     },
     workspace = {
       -- Make the server aware of Neovim runtime files
@@ -113,8 +175,19 @@ local lua_settings = {
 -- config that activates keymaps and enables snippet support
 local function make_config()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = vim.tbl_deep_extend("keep", capabilities, nvim_status.capabilities)
   capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.codeLens = { dynamicRegistration = false }
   capabilities.textDocument.colorProvider = { dynamicRegistration = false }
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+      "documentation",
+      "detail",
+      "additionalTextEdits",
+    },
+  }
+
   return {
     -- enable snippet support
     capabilities = capabilities,

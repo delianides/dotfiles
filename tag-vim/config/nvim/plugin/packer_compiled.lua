@@ -158,7 +158,6 @@ _G.packer_plugins = {
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/lspsaga.nvim"
   },
   ["lualine.nvim"] = {
-    config = { "\27LJ\2\n\2\0\0\5\0\f\0\0206\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0+\3\2\0B\0\3\0016\0\0\0'\2\3\0B\0\2\0029\0\4\0005\2\6\0005\3\5\0=\3\a\0025\3\t\0005\4\b\0=\4\n\3=\3\v\2B\0\2\1K\0\1\0\rsections\14lualine_x\1\0\0\1\2\0\0\rfiletype\foptions\1\0\0\1\0\4\ntheme\vgithub\23section_separators\5\18icons_enabled\2\25component_separators\5\nsetup\flualine\18reload_module\19plenary.reload\frequire\0" },
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/lualine.nvim"
   },
@@ -323,7 +322,7 @@ _G.packer_plugins = {
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
   ["trouble.nvim"] = {
-    config = { "\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\17auto_preview\1\14auto_fold\2\nsetup\ftrouble\frequire\0" },
+    config = { "\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\14auto_fold\2\17auto_preview\1\nsetup\ftrouble\frequire\0" },
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/trouble.nvim"
   },
@@ -420,30 +419,22 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: git-worktree.nvim
+time([[Config for git-worktree.nvim]], true)
+try_loadstring("\27LJ\2\n>\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\17git-worktree\frequire\0", "config", "git-worktree.nvim")
+time([[Config for git-worktree.nvim]], false)
+-- Config for: nvim-ts-hint-textobject
+time([[Config for nvim-ts-hint-textobject]], true)
+try_loadstring("\27LJ\2\n¢\1\0\0\3\0\4\0\t6\0\0\0009\0\1\0'\2\2\0B\0\2\0016\0\0\0009\0\1\0'\2\3\0B\0\2\1K\0\1\0009vnoremap <silent> m :lua require('tsht').nodes()<CR>>omap     <silent> m :<C-U>lua require('tsht').nodes()<CR>\bcmd\bvim\0", "config", "nvim-ts-hint-textobject")
+time([[Config for nvim-ts-hint-textobject]], false)
 -- Config for: nvim-treesitter
 time([[Config for nvim-treesitter]], true)
 try_loadstring("\27LJ\2\n…\1\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\14highlight\1\0\1\venable\2\1\0\1\21ensure_installed\15maintained\nsetup\28nvim-treesitter.configs\frequire\0", "config", "nvim-treesitter")
 time([[Config for nvim-treesitter]], false)
--- Config for: lualine.nvim
-time([[Config for lualine.nvim]], true)
-try_loadstring("\27LJ\2\n\2\0\0\5\0\f\0\0206\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0+\3\2\0B\0\3\0016\0\0\0'\2\3\0B\0\2\0029\0\4\0005\2\6\0005\3\5\0=\3\a\0025\3\t\0005\4\b\0=\4\n\3=\3\v\2B\0\2\1K\0\1\0\rsections\14lualine_x\1\0\0\1\2\0\0\rfiletype\foptions\1\0\0\1\0\4\ntheme\vgithub\23section_separators\5\18icons_enabled\2\25component_separators\5\nsetup\flualine\18reload_module\19plenary.reload\frequire\0", "config", "lualine.nvim")
-time([[Config for lualine.nvim]], false)
--- Config for: trouble.nvim
-time([[Config for trouble.nvim]], true)
-try_loadstring("\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\17auto_preview\1\14auto_fold\2\nsetup\ftrouble\frequire\0", "config", "trouble.nvim")
-time([[Config for trouble.nvim]], false)
--- Config for: nvim-terminal.lua
-time([[Config for nvim-terminal.lua]], true)
-try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rterminal\frequire\0", "config", "nvim-terminal.lua")
-time([[Config for nvim-terminal.lua]], false)
 -- Config for: github-nvim-theme
 time([[Config for github-nvim-theme]], true)
 try_loadstring("\27LJ\2\nQ\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\15themeStyle\tdark\nsetup\17github-theme\frequire\0", "config", "github-nvim-theme")
 time([[Config for github-nvim-theme]], false)
--- Config for: nvim-lsp-ts-utils
-time([[Config for nvim-lsp-ts-utils]], true)
-try_loadstring("\27LJ\2\nf\0\0\3\0\5\0\0146\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\3\0B\0\2\0029\0\1\0009\0\4\0004\2\0\0B\0\2\1K\0\1\0\nsetup\14lspconfig\vconfig\fnull-ls\frequire\0", "config", "nvim-lsp-ts-utils")
-time([[Config for nvim-lsp-ts-utils]], false)
 -- Config for: nvim-colorizer.lua
 time([[Config for nvim-colorizer.lua]], true)
 try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
@@ -452,36 +443,40 @@ time([[Config for nvim-colorizer.lua]], false)
 time([[Config for octo.nvim]], true)
 try_loadstring("\27LJ\2\n2\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\tocto\frequire\0", "config", "octo.nvim")
 time([[Config for octo.nvim]], false)
--- Config for: git-worktree.nvim
-time([[Config for git-worktree.nvim]], true)
-try_loadstring("\27LJ\2\n>\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\17git-worktree\frequire\0", "config", "git-worktree.nvim")
-time([[Config for git-worktree.nvim]], false)
+-- Config for: nvim-lsp-ts-utils
+time([[Config for nvim-lsp-ts-utils]], true)
+try_loadstring("\27LJ\2\nf\0\0\3\0\5\0\0146\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\3\0B\0\2\0029\0\1\0009\0\4\0004\2\0\0B\0\2\1K\0\1\0\nsetup\14lspconfig\vconfig\fnull-ls\frequire\0", "config", "nvim-lsp-ts-utils")
+time([[Config for nvim-lsp-ts-utils]], false)
+-- Config for: nvim-terminal.lua
+time([[Config for nvim-terminal.lua]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rterminal\frequire\0", "config", "nvim-terminal.lua")
+time([[Config for nvim-terminal.lua]], false)
 -- Config for: nvim-treesitter-context
 time([[Config for nvim-treesitter-context]], true)
 try_loadstring("\27LJ\2\nV\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\venable\2\nsetup\30treesitter-context.config\frequire\0", "config", "nvim-treesitter-context")
 time([[Config for nvim-treesitter-context]], false)
--- Config for: nvim-ts-hint-textobject
-time([[Config for nvim-ts-hint-textobject]], true)
-try_loadstring("\27LJ\2\n¢\1\0\0\3\0\4\0\t6\0\0\0009\0\1\0'\2\2\0B\0\2\0016\0\0\0009\0\1\0'\2\3\0B\0\2\1K\0\1\0009vnoremap <silent> m :lua require('tsht').nodes()<CR>>omap     <silent> m :<C-U>lua require('tsht').nodes()<CR>\bcmd\bvim\0", "config", "nvim-ts-hint-textobject")
-time([[Config for nvim-ts-hint-textobject]], false)
+-- Config for: trouble.nvim
+time([[Config for trouble.nvim]], true)
+try_loadstring("\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\14auto_fold\2\17auto_preview\1\nsetup\ftrouble\frequire\0", "config", "trouble.nvim")
+time([[Config for trouble.nvim]], false)
 -- Conditional loads
-time("Condition for { 'vim-ultest', 'far.vim' }", true)
+time("Condition for { 'far.vim', 'vim-ultest' }", true)
 if
-try_loadstring("\27LJ\2\nG\0\0\3\0\4\1\v6\0\0\0009\0\1\0009\0\2\0'\2\3\0B\0\2\2\b\0\0\0X\0\2€+\0\1\0X\1\1€+\0\2\0L\0\2\0\fpython3\bhas\afn\bvim\2\0", "condition", '{ "vim-ultest", "far.vim" }')
+try_loadstring("\27LJ\2\nG\0\0\3\0\4\1\v6\0\0\0009\0\1\0009\0\2\0'\2\3\0B\0\2\2\b\0\0\0X\0\2€+\0\1\0X\1\1€+\0\2\0L\0\2\0\fpython3\bhas\afn\bvim\2\0", "condition", '{ "far.vim", "vim-ultest" }')
 then
-time("Condition for { 'vim-ultest', 'far.vim' }", false)
-time([[packadd for vim-ultest]], true)
+time("Condition for { 'far.vim', 'vim-ultest' }", false)
+time([[packadd for far.vim]], true)
+		vim.cmd [[packadd far.vim]]
+	time([[packadd for far.vim]], false)
+	time([[packadd for vim-ultest]], true)
 		vim.cmd [[packadd vim-ultest]]
 	time([[packadd for vim-ultest]], false)
 	-- Config for: vim-ultest
 	time([[Config for vim-ultest]], true)
 	try_loadstring("\27LJ\2\nu\0\0\3\0\4\0\t6\0\0\0009\0\1\0'\2\2\0B\0\2\0016\0\0\0009\0\1\0'\2\3\0B\0\2\1K\0\1\0%nmap [t <Plug>(ultest-prev-fail)%nmap ]t <Plug>(ultest-next-fail)\bcmd\bvim\0", "config", "vim-ultest")
 	time([[Config for vim-ultest]], false)
-	time([[packadd for far.vim]], true)
-		vim.cmd [[packadd far.vim]]
-	time([[packadd for far.vim]], false)
 else
-time("Condition for { 'vim-ultest', 'far.vim' }", false)
+time("Condition for { 'far.vim', 'vim-ultest' }", false)
 end
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
@@ -496,9 +491,6 @@ vim.cmd [[au FileType json ++once lua require("packer.load")({'vim-json'}, { ft 
 time([[Defining lazy-load filetype autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
-time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-toml/ftdetect/toml.vim]], true)
-vim.cmd [[source /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-toml/ftdetect/toml.vim]]
-time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-toml/ftdetect/toml.vim]], false)
 time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-go/ftdetect/gofiletype.vim]], true)
 vim.cmd [[source /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-go/ftdetect/gofiletype.vim]]
 time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-go/ftdetect/gofiletype.vim]], false)
@@ -511,6 +503,9 @@ time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/pack
 time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], true)
 vim.cmd [[source /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]]
 time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], false)
+time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-toml/ftdetect/toml.vim]], true)
+vim.cmd [[source /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-toml/ftdetect/toml.vim]]
+time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-toml/ftdetect/toml.vim]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end
 

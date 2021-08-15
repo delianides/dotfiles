@@ -9,37 +9,6 @@ require("packer").startup {
   function(use)
     use "wbthomason/packer.nvim"
     use {
-      "tjdevries/colorbuddy.nvim",
-    }
-    use {
-      'projekt0n/github-nvim-theme',
-      config = function()
-        require('github-theme').setup({
-          themeStyle = 'dark'
-        })
-      end,
-    }
-    use "sainnhe/sonokai"
-    use "morhetz/gruvbox"
-    use {
-      "hoob3rt/lualine.nvim",
-      config = function()
-        -- https://github.com/hoob3rt/lualine.nvim/issues/276
-        require("plenary.reload").reload_module("lualine", true)
-        require('lualine').setup {
-          options = {
-            theme = 'github',
-            icons_enabled = true,
-            section_separators = '',
-            component_separators = '',
-          },
-          sections = {
-            lualine_x = {'filetype'}
-          },
-        }
-      end
-    }
-    use {
       "folke/trouble.nvim",
       config = function()
         -- Can use P to toggle auto movement
@@ -104,7 +73,7 @@ require("packer").startup {
 
     use "kabouzeid/nvim-lspinstall"
     use "neovim/nvim-lspconfig"
-    use "wbthomason/lsp-status.nvim"
+    use "nvim-lua/lsp-status.nvim"
     use "ray-x/lsp_signature.nvim"
     use "nvim-lua/lsp_extensions.nvim"
     use {
@@ -216,6 +185,23 @@ require("packer").startup {
       config = function()
         require("git-worktree").setup {}
       end,
+    }
+    use {
+      "tjdevries/colorbuddy.nvim",
+    }
+    use {
+      'projekt0n/github-nvim-theme',
+      config = function()
+        require('github-theme').setup({
+          themeStyle = 'dark'
+        })
+      end,
+    }
+    use "sainnhe/sonokai"
+    use "morhetz/gruvbox"
+    use {
+      'hoob3rt/lualine.nvim',
+      requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
   end
 }

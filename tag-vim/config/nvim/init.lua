@@ -42,4 +42,3 @@ require "modules.completion" -- autocompletion using nvim-compe
 require "modules.telescope" -- Load Telescope Config
 require "modules.telescope.mappings" -- telescope specfic mappings
 
-vim.cmd [[autocmd BufWritePost ~/.config/nvim/*.lua so % | PackerCompile | so ~/.config/nvim/init.lua]]
