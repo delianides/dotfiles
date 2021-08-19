@@ -12,6 +12,11 @@ tap "osx-cross/avr"
 tap "px4/px4"
 tap "teamookla/speedtest"
 
+brew "vint"
+brew "shfmt"
+brew "yamllint"
+brew "shellcheck"
+
 brew "ansifilter"
 brew "autoconf"
 brew "automake"

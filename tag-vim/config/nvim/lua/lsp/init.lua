@@ -1,8 +1,7 @@
 local saga = require 'lspsaga'
-local status = require "modules.lsp.status"
+local status = require "lsp.status"
 local nvim_status = require "lsp-status"
-local telescope_mapper = require "modules.telescope.mappings"
-local handlers = require "modules.lsp.handlers"
+local handlers = require "lsp.handlers"
 local lspkind = require "lspkind"
 
 local inoremap = vim.keymap.inoremap
@@ -10,19 +9,6 @@ local nnoremap = vim.keymap.nnoremap
 local vnoremap = vim.keymap.vnoremap
 
 local filetype_attach = setmetatable({
-  typescript = function(client)
-    client.resolved_capabilities.document_formatting = false
-    local ts_utils = require("nvim-lsp-ts-utils")
-
-    ts_utils.setup {
-      debug = true,
-      eslint_enable_diagnostics = true,
-      eslint_show_rule_id = true,
-      enable_formatting = true,
-    }
-
-    ts_utils.setup_client(client)
-  end,
   go = function()
     vim.cmd [[
       augroup lsp_buf_format
@@ -32,11 +18,6 @@ local filetype_attach = setmetatable({
     ]]
   end,
   rust = function()
-    telescope_mapper("<space>wf", "lsp_workspace_symbols", {
-      ignore_filename = true,
-      query = "#",
-    }, true)
-
     vim.cmd [[
       autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions.inlay_hints').request {aligned = true, prefix = " » "}
     ]]
@@ -92,7 +73,6 @@ local on_attach = function(client, bufnr)
   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
   -- Mappings.
-  buf_inoremap { "<c-s>", '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>' }
 
   buf_nnoremap { "[e", '<cmd>lua require"lspsaga.diagnostic".lsp_jump_diagnostic_prev()<CR>' }
   buf_nnoremap { "]e", '<cmd>lua require"lspsaga.diagnostic".lsp_jump_diagnostic_next()<CR>' }
@@ -100,9 +80,9 @@ local on_attach = function(client, bufnr)
   buf_nnoremap { "<Leader>sc", '<cmd>lua require"lspsaga.diagnostic".show_cursor_diagnostics()<CR>' }
 
   buf_nnoremap { "<Leader>cr", '<cmd>lua require("lspsaga.rename").rename()<CR>' }
-  telescope_mapper("<Leader>ca", "lsp_code_actions", nil, true)
 
   buf_nnoremap { "<space>gI", handlers.implementation }
+  buf_inoremap { "gs", '<cmd>lua require"lspsaga.signaturehelp".signature_help()<CR>' }
   buf_nnoremap { "gd", vim.lsp.buf.definition }
   buf_nnoremap { "pd", '<cmd>lua require"lspsaga.provider".preview_definition()<CR>' }
   buf_nnoremap { "gh", '<cmd>lua require"lspsaga.provider".lsp_finder<CR>' }
@@ -120,8 +100,8 @@ local on_attach = function(client, bufnr)
   if vim.bo.ft ~= "vim" then buf_nnoremap { "H", '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>' } end
 
   -- wont keep these arrows as the map but just testing for now
-  buf_nnoremap { "<silent> <C-n>", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>' }
-  buf_nnoremap { "<silent> <C-m>", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>' }
+  buf_nnoremap { "<C-b>", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>' }
+  buf_nnoremap { "<C-f>", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>' }
 
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
@@ -201,13 +181,36 @@ local function setup_servers()
   local servers = require'lspinstall'.installed_servers()
   for _, server in pairs(servers) do
     local config = make_config()
-
+    if server == "efm" then config = vim.tbl_extend("force", config, require "lsp.efm") end
     if server == "lua" then
       config.settings = lua_settings
       config.root_dir = function(fname)
         local util = require "lspconfig/util"
         return util.find_git_ancestor(fname) or util.path.dirname(fname)
       end
+    end
+
+    if server == "go" then
+      config.settings = {
+        gopls = {
+          analyses = {
+            unusedparams = true,
+          },
+          staticcheck = true,
+        },
+      }
+      config.cmd = {"gopls", "serve"}
+    end
+
+    if server == "typescript" then
+      config.filetypes = {
+        "javascript",
+        "javascriptreact",
+        "javascript.jsx",
+        "typescript",
+        "typescriptreact",
+        "typescript.tsx",
+      }
     end
 
     require'lspconfig'[server].setup(config)
@@ -222,5 +225,5 @@ require'lspinstall'.post_install_hook = function ()
   vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
 end
 
-vim.api.nvim_command("command! LspCapabilities lua require'modules.lsp.capabilities'()")
+vim.api.nvim_command("command! LspCapabilities lua require'lsp.capabilities'()")
 

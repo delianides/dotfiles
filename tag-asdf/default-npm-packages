@@ -4,3 +4,7 @@ serve
 npm-check-updates
 tree-sitter-cli
 truffle
+prettier
+eslint
+typescript-language-parser
+fixjson

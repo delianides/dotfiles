@@ -1,6 +1,3 @@
-
--- vim.cmd('colorscheme gruvbox')
-
 -- helper functions for vim mappings, eventually should be merged into neovim
 vim.cmd [[runtime plugin/astronauta.vim]]
 
@@ -8,6 +5,7 @@ vim.g.mapleader = " "
 vim.g.snippets = "luasnip"
 
 vim.wo.signcolumn = 'yes'
+vim.opt.termguicolors = true            -- True color support
 vim.opt.wildignore = "__pycache__"
 vim.opt.wildignore = vim.opt.wildignore + { "*.o", "*~", "*.pyc", "*pycache*" }
 vim.opt.wildmode = { "longest", "list", "full" }

@@ -20,6 +20,7 @@ require("packer").startup {
     }
 
     use 'ThePrimeagen/harpoon' -- quick file navigation for current workspaces
+    use 'christoomey/vim-tmux-navigator'
 
     -- telescope fuzzy finder
     use { "nvim-telescope/telescope.nvim", requires = {{ 'nvim-lua/popup.nvim' }, {'nvim-lua/plenary.nvim'} }}
@@ -48,7 +49,32 @@ require("packer").startup {
     use "kyazdani42/nvim-web-devicons"
     use "yamatsum/nvim-web-nonicons"
 
-    use "kyazdani42/nvim-tree.lua"
+    use {
+      "kyazdani42/nvim-tree.lua",
+      config = function()
+        local function setup(opts)
+          for opt, value in pairs(opts) do
+            if type(value) == 'boolean' then
+              value = value and 1 or 0
+            end
+            vim.g['nvim_tree_' .. opt] = value
+          end
+        end
+
+        setup {
+          auto_open = true,
+          tree_side = 'left',
+          width_allow_resize = true,
+          follow = true,
+          highlight_opened_files = true,
+          auto_resize = true,
+          hide_dotfiles = false,
+          indent_markers = true,
+          ignore = { '.git', 'node_modules', '.cache', '__pycache__' },
+          disable_window_picker = true,
+        }
+      end
+    }
     use "lambdalisue/vim-protocol"
     use "sjl/gundo.vim" -- Undo helper
     use "gyim/vim-boxdraw" -- Crazy good box drawing
@@ -59,14 +85,16 @@ require("packer").startup {
 
     use { "elzr/vim-json", ft = "json" }
     use { "fatih/vim-go", ft = "golang", run = ":GoInstallBinaries" }
-    use "habamax/vim-godot"
     use { "cespare/vim-toml", ft = "toml" }
     use { "iamcco/markdown-preview.nvim", ft = "markdown", run = "cd app && yarn install" }
+    use { "rust-lang/rust.vim", ft = "rust" }
     use { 'eraserhd/parinfer-rust', run = 'cargo build --release' }
     use "jelera/vim-javascript-syntax"
     use "othree/javascript-libraries-syntax.vim"
     use "leafgarland/typescript-vim"
     use "peitalin/vim-jsx-typescript"
+    use { "numirias/semshi", ft = "python" }
+    use { "uiiaoo/java-syntax.vim", ft = "java" }
 
     use { "vim-scripts/JavaScript-Indent", ft = "javascript" }
     use { "pangloss/vim-javascript", ft = { "javascript", "html" } }
@@ -160,8 +188,19 @@ require("packer").startup {
     use "tpope/vim-surround" -- Surround text objects easily
 
     use "akinsho/nvim-toggleterm.lua" -- TODO
-    use "TimUntersberger/neogit" -- TODO
-    --
+    use {
+      "TimUntersberger/neogit",
+      requires = { "sindrets/diffview.nvim" },
+      config = function()
+        require('neogit').setup {
+          disable_commit_confirmation = true,
+          integrations = {
+            diffview = true
+          }
+        }
+      end
+    }
+
     if vim.fn.executable "gh" == 1 then
       use {
         "pwntester/octo.nvim",
