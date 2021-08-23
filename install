@@ -89,7 +89,7 @@ export RCRC=rcrc
 stay_awake_while rcup -d .
 
 info "Installing Vim packages..."
-vim +PlugInstall +qa
+vim +PackerSync +qa
 
 info "Creating ~/Pictures/screenshots so screenshots can be saved there..."
 mkdir -p ~/Pictures/screenshots
@@ -115,7 +115,7 @@ mkdir -p ~/Code
 if command_does_not_exist code; then
   error "Open VS Code and run: Install code command in \$PATH"
 else
-  for extension in $(cat vscode/extensions); do
+  for extension in $(cat ~/.vscode/extensions); do
     code --install-extension "$extension"
   done
 fi

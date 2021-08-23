@@ -67,7 +67,7 @@ brew "libxslt"
 brew "markdown"
 brew "mas"
 brew "minikube"
-brew "neovim", args: ["HEAD"]
+brew "neovim"
 brew "nomad"
 brew "packer"
 brew "pgformatter"

@@ -34,10 +34,12 @@ if pcall(require, "plenary") then
   end
 end
 
-require "plugins" -- plugins with packer
+require "modules.packer" -- plugins with packer
 
 -- this will eventually be deprecated once its functionality is merged into core neovim
 vim.cmd [[runtime plugin/astronauta.vim]]
 
-require "lsp" -- Builtin Neovim LSP config
+require "modules.lsp" -- Builtin Neovim LSP config
+require "modules.telescope.setup"
+require "modules.telescope.mappings"
 

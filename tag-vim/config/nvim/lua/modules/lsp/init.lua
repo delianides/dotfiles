@@ -1,7 +1,7 @@
 local saga = require 'lspsaga'
-local status = require "lsp.status"
+local status = require "modules.lsp.status"
 local nvim_status = require "lsp-status"
-local handlers = require "lsp.handlers"
+local handlers = require "modules.lsp.handlers"
 local lspkind = require "lspkind"
 
 local inoremap = vim.keymap.inoremap

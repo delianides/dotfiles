@@ -5,6 +5,8 @@ require'packer'.init({
   max_jobs=50
 })
 
+vim.cmd [[autocmd BufWritePost plugins.lua luafile %]]
+
 require("packer").startup {
   function(use)
     use "wbthomason/packer.nvim"
@@ -46,35 +48,7 @@ require("packer").startup {
     }
 
     use "tjdevries/vim-inyoface"
-    use "kyazdani42/nvim-web-devicons"
-    use "yamatsum/nvim-web-nonicons"
 
-    use {
-      "kyazdani42/nvim-tree.lua",
-      config = function()
-        local function setup(opts)
-          for opt, value in pairs(opts) do
-            if type(value) == 'boolean' then
-              value = value and 1 or 0
-            end
-            vim.g['nvim_tree_' .. opt] = value
-          end
-        end
-
-        setup {
-          auto_open = true,
-          tree_side = 'left',
-          width_allow_resize = true,
-          follow = true,
-          highlight_opened_files = true,
-          auto_resize = true,
-          hide_dotfiles = false,
-          indent_markers = true,
-          ignore = { '.git', 'node_modules', '.cache', '__pycache__' },
-          disable_window_picker = true,
-        }
-      end
-    }
     use "lambdalisue/vim-protocol"
     use "sjl/gundo.vim" -- Undo helper
     use "gyim/vim-boxdraw" -- Crazy good box drawing
@@ -187,29 +161,6 @@ require("packer").startup {
     use "AndrewRadev/splitjoin.vim"
     use "tpope/vim-surround" -- Surround text objects easily
 
-    use "akinsho/nvim-toggleterm.lua" -- TODO
-    use {
-      "TimUntersberger/neogit",
-      requires = { "sindrets/diffview.nvim" },
-      config = function()
-        require('neogit').setup {
-          disable_commit_confirmation = true,
-          integrations = {
-            diffview = true
-          }
-        }
-      end
-    }
-
-    if vim.fn.executable "gh" == 1 then
-      use {
-        "pwntester/octo.nvim",
-        config = function()
-          require"octo".setup()
-        end,
-      }
-    end
-
     use {
       'lewis6991/gitsigns.nvim',
       requires = { 'nvim-lua/plenary.nvim' },
@@ -217,6 +168,7 @@ require("packer").startup {
           require('gitsigns').setup()
       end,
     } -- TODO
+
     use "rhysd/committia.vim" -- Sweet message committer
     use "rhysd/git-messenger.vim" -- Floating windows are awesome :)
     use {
@@ -225,9 +177,48 @@ require("packer").startup {
         require("git-worktree").setup {}
       end,
     }
+
     use {
       "tjdevries/colorbuddy.nvim",
     }
+
+    use {
+      "projekt0n/circles.nvim",
+      requires = {
+        {"kyazdani42/nvim-web-devicons"},
+        {
+          "kyazdani42/nvim-tree.lua",
+          opt = true,
+          config = function()
+            local function setup(opts)
+              for opt, value in pairs(opts) do
+                if type(value) == 'boolean' then
+                  value = value and 1 or 0
+                end
+                vim.g['nvim_tree_' .. opt] = value
+              end
+            end
+
+            setup {
+              auto_open = true,
+              tree_side = 'left',
+              width_allow_resize = true,
+              follow = true,
+              highlight_opened_files = true,
+              auto_resize = true,
+              hide_dotfiles = false,
+              indent_markers = true,
+              ignore = { '.git', 'node_modules', '.cache', '__pycache__' },
+              disable_window_picker = true,
+            }
+          end
+        }
+      },
+      config = function()
+        require("circles").setup({icons = {empty = "", filled = "", lsp_prefix = ""}})
+      end
+    }
+
     use {
       'projekt0n/github-nvim-theme',
       config = function()
@@ -236,6 +227,7 @@ require("packer").startup {
         })
       end,
     }
+
     use "sainnhe/sonokai"
     use "morhetz/gruvbox"
     use {

@@ -82,6 +82,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/astronauta.nvim"
   },
+  ["circles.nvim"] = {
+    config = { "\27LJ\2\nq\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\1K\0\1\0\nicons\1\0\0\1\0\3\nempty\bï„‘\15lsp_prefix\bï„‘\vfilled\bï„Œ\nsetup\fcircles\frequire\0" },
+    loaded = true,
+    path = "/Users/drew/.local/share/nvim/site/pack/packer/start/circles.nvim"
+  },
   ["colorbuddy.nvim"] = {
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/colorbuddy.nvim"
@@ -89,10 +94,6 @@ _G.packer_plugins = {
   ["committia.vim"] = {
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/committia.vim"
-  },
-  ["diffview.nvim"] = {
-    loaded = true,
-    path = "/Users/drew/.local/share/nvim/site/pack/packer/start/diffview.nvim"
   },
   ["far.vim"] = {
     loaded = false,
@@ -175,11 +176,6 @@ _G.packer_plugins = {
     needs_bufread = false,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/opt/markdown-preview.nvim"
   },
-  neogit = {
-    config = { "\27LJ\2\nz\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\17integrations\1\0\1\rdiffview\2\1\0\1 disable_commit_confirmation\2\nsetup\vneogit\frequire\0" },
-    loaded = true,
-    path = "/Users/drew/.local/share/nvim/site/pack/packer/start/neogit"
-  },
   ["null-ls.nvim"] = {
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/null-ls.nvim"
@@ -211,14 +207,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/nvim-terminal.lua"
   },
-  ["nvim-toggleterm.lua"] = {
-    loaded = true,
-    path = "/Users/drew/.local/share/nvim/site/pack/packer/start/nvim-toggleterm.lua"
-  },
   ["nvim-tree.lua"] = {
-    config = { "\27LJ\2\n‡\1\0\1\t\0\6\0\0236\1\0\0\18\3\0\0B\1\2\4H\4\16€6\6\1\0\18\b\5\0B\6\2\2\a\6\2\0X\6\5€\15\0\5\0X\6\2€)\5\1\0X\6\1€)\5\0\0006\6\3\0009\6\4\6'\a\5\0\18\b\4\0&\a\b\a<\5\a\6F\4\3\3R\4îK\0\1\0\15nvim_tree_\6g\bvim\fboolean\ttype\npairsè\1\1\0\5\0\4\0\a3\0\0\0\18\1\0\0005\3\1\0005\4\2\0=\4\3\3B\1\2\1K\0\1\0\vignore\1\5\0\0\t.git\17node_modules\v.cache\16__pycache__\1\0\t\vfollow\2\23width_allow_resize\2\14tree_side\tleft\14auto_open\2\26disable_window_picker\2\19indent_markers\2\18hide_dotfiles\1\16auto_resize\2\27highlight_opened_files\2\0\0" },
-    loaded = true,
-    path = "/Users/drew/.local/share/nvim/site/pack/packer/start/nvim-tree.lua"
+    config = { "\27LJ\2\n‡\1\0\1\t\0\6\0\0236\1\0\0\18\3\0\0B\1\2\4H\4\16€6\6\1\0\18\b\5\0B\6\2\2\a\6\2\0X\6\5€\15\0\5\0X\6\2€)\5\1\0X\6\1€)\5\0\0006\6\3\0009\6\4\6'\a\5\0\18\b\4\0&\a\b\a<\5\a\6F\4\3\3R\4îK\0\1\0\15nvim_tree_\6g\bvim\fboolean\ttype\npairsè\1\1\0\5\0\4\0\a3\0\0\0\18\1\0\0005\3\1\0005\4\2\0=\4\3\3B\1\2\1K\0\1\0\vignore\1\5\0\0\t.git\17node_modules\v.cache\16__pycache__\1\0\t\19indent_markers\2\18hide_dotfiles\1\16auto_resize\2\27highlight_opened_files\2\vfollow\2\23width_allow_resize\2\14tree_side\tleft\14auto_open\2\26disable_window_picker\2\0\0" },
+    loaded = false,
+    needs_bufread = false,
+    path = "/Users/drew/.local/share/nvim/site/pack/packer/opt/nvim-tree.lua"
   },
   ["nvim-treesitter"] = {
     config = { "\27LJ\2\n…\1\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\14highlight\1\0\1\venable\2\1\0\1\21ensure_installed\15maintained\nsetup\28nvim-treesitter.configs\frequire\0" },
@@ -247,15 +240,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/nvim-web-devicons"
   },
-  ["nvim-web-nonicons"] = {
-    loaded = true,
-    path = "/Users/drew/.local/share/nvim/site/pack/packer/start/nvim-web-nonicons"
-  },
-  ["octo.nvim"] = {
-    config = { "\27LJ\2\n2\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\tocto\frequire\0" },
-    loaded = true,
-    path = "/Users/drew/.local/share/nvim/site/pack/packer/start/octo.nvim"
-  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/packer.nvim"
@@ -282,7 +266,7 @@ _G.packer_plugins = {
   },
   ["rust.vim"] = {
     loaded = false,
-    needs_bufread = false,
+    needs_bufread = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/opt/rust.vim"
   },
   semshi = {
@@ -343,7 +327,7 @@ _G.packer_plugins = {
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
   ["trouble.nvim"] = {
-    config = { "\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\14auto_fold\2\17auto_preview\1\nsetup\ftrouble\frequire\0" },
+    config = { "\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\17auto_preview\1\14auto_fold\2\nsetup\ftrouble\frequire\0" },
     loaded = true,
     path = "/Users/drew/.local/share/nvim/site/pack/packer/start/trouble.nvim"
   },
@@ -444,50 +428,42 @@ time([[Defining packer_plugins]], false)
 time([[Config for nvim-treesitter-context]], true)
 try_loadstring("\27LJ\2\nV\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\venable\2\nsetup\30treesitter-context.config\frequire\0", "config", "nvim-treesitter-context")
 time([[Config for nvim-treesitter-context]], false)
--- Config for: neogit
-time([[Config for neogit]], true)
-try_loadstring("\27LJ\2\nz\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\17integrations\1\0\1\rdiffview\2\1\0\1 disable_commit_confirmation\2\nsetup\vneogit\frequire\0", "config", "neogit")
-time([[Config for neogit]], false)
--- Config for: nvim-terminal.lua
-time([[Config for nvim-terminal.lua]], true)
-try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rterminal\frequire\0", "config", "nvim-terminal.lua")
-time([[Config for nvim-terminal.lua]], false)
--- Config for: nvim-ts-hint-textobject
-time([[Config for nvim-ts-hint-textobject]], true)
-try_loadstring("\27LJ\2\n¢\1\0\0\3\0\4\0\t6\0\0\0009\0\1\0'\2\2\0B\0\2\0016\0\0\0009\0\1\0'\2\3\0B\0\2\1K\0\1\0009vnoremap <silent> m :lua require('tsht').nodes()<CR>>omap     <silent> m :<C-U>lua require('tsht').nodes()<CR>\bcmd\bvim\0", "config", "nvim-ts-hint-textobject")
-time([[Config for nvim-ts-hint-textobject]], false)
--- Config for: github-nvim-theme
-time([[Config for github-nvim-theme]], true)
-try_loadstring("\27LJ\2\nQ\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\15themeStyle\tdark\nsetup\17github-theme\frequire\0", "config", "github-nvim-theme")
-time([[Config for github-nvim-theme]], false)
--- Config for: nvim-colorizer.lua
-time([[Config for nvim-colorizer.lua]], true)
-try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
-time([[Config for nvim-colorizer.lua]], false)
+-- Config for: nvim-lsp-ts-utils
+time([[Config for nvim-lsp-ts-utils]], true)
+try_loadstring("\27LJ\2\nf\0\0\3\0\5\0\0146\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\3\0B\0\2\0029\0\1\0009\0\4\0004\2\0\0B\0\2\1K\0\1\0\nsetup\14lspconfig\vconfig\fnull-ls\frequire\0", "config", "nvim-lsp-ts-utils")
+time([[Config for nvim-lsp-ts-utils]], false)
 -- Config for: trouble.nvim
 time([[Config for trouble.nvim]], true)
-try_loadstring("\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\14auto_fold\2\17auto_preview\1\nsetup\ftrouble\frequire\0", "config", "trouble.nvim")
+try_loadstring("\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\2\17auto_preview\1\14auto_fold\2\nsetup\ftrouble\frequire\0", "config", "trouble.nvim")
 time([[Config for trouble.nvim]], false)
 -- Config for: git-worktree.nvim
 time([[Config for git-worktree.nvim]], true)
 try_loadstring("\27LJ\2\n>\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\17git-worktree\frequire\0", "config", "git-worktree.nvim")
 time([[Config for git-worktree.nvim]], false)
--- Config for: octo.nvim
-time([[Config for octo.nvim]], true)
-try_loadstring("\27LJ\2\n2\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\tocto\frequire\0", "config", "octo.nvim")
-time([[Config for octo.nvim]], false)
+-- Config for: nvim-ts-hint-textobject
+time([[Config for nvim-ts-hint-textobject]], true)
+try_loadstring("\27LJ\2\n¢\1\0\0\3\0\4\0\t6\0\0\0009\0\1\0'\2\2\0B\0\2\0016\0\0\0009\0\1\0'\2\3\0B\0\2\1K\0\1\0009vnoremap <silent> m :lua require('tsht').nodes()<CR>>omap     <silent> m :<C-U>lua require('tsht').nodes()<CR>\bcmd\bvim\0", "config", "nvim-ts-hint-textobject")
+time([[Config for nvim-ts-hint-textobject]], false)
+-- Config for: nvim-terminal.lua
+time([[Config for nvim-terminal.lua]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rterminal\frequire\0", "config", "nvim-terminal.lua")
+time([[Config for nvim-terminal.lua]], false)
+-- Config for: github-nvim-theme
+time([[Config for github-nvim-theme]], true)
+try_loadstring("\27LJ\2\nQ\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\15themeStyle\tdark\nsetup\17github-theme\frequire\0", "config", "github-nvim-theme")
+time([[Config for github-nvim-theme]], false)
 -- Config for: nvim-treesitter
 time([[Config for nvim-treesitter]], true)
 try_loadstring("\27LJ\2\n…\1\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\14highlight\1\0\1\venable\2\1\0\1\21ensure_installed\15maintained\nsetup\28nvim-treesitter.configs\frequire\0", "config", "nvim-treesitter")
 time([[Config for nvim-treesitter]], false)
--- Config for: nvim-lsp-ts-utils
-time([[Config for nvim-lsp-ts-utils]], true)
-try_loadstring("\27LJ\2\nf\0\0\3\0\5\0\0146\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\3\0B\0\2\0029\0\1\0009\0\4\0004\2\0\0B\0\2\1K\0\1\0\nsetup\14lspconfig\vconfig\fnull-ls\frequire\0", "config", "nvim-lsp-ts-utils")
-time([[Config for nvim-lsp-ts-utils]], false)
--- Config for: nvim-tree.lua
-time([[Config for nvim-tree.lua]], true)
-try_loadstring("\27LJ\2\n‡\1\0\1\t\0\6\0\0236\1\0\0\18\3\0\0B\1\2\4H\4\16€6\6\1\0\18\b\5\0B\6\2\2\a\6\2\0X\6\5€\15\0\5\0X\6\2€)\5\1\0X\6\1€)\5\0\0006\6\3\0009\6\4\6'\a\5\0\18\b\4\0&\a\b\a<\5\a\6F\4\3\3R\4îK\0\1\0\15nvim_tree_\6g\bvim\fboolean\ttype\npairsè\1\1\0\5\0\4\0\a3\0\0\0\18\1\0\0005\3\1\0005\4\2\0=\4\3\3B\1\2\1K\0\1\0\vignore\1\5\0\0\t.git\17node_modules\v.cache\16__pycache__\1\0\t\vfollow\2\23width_allow_resize\2\14tree_side\tleft\14auto_open\2\26disable_window_picker\2\19indent_markers\2\18hide_dotfiles\1\16auto_resize\2\27highlight_opened_files\2\0\0", "config", "nvim-tree.lua")
-time([[Config for nvim-tree.lua]], false)
+-- Config for: circles.nvim
+time([[Config for circles.nvim]], true)
+try_loadstring("\27LJ\2\nq\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\1K\0\1\0\nicons\1\0\0\1\0\3\nempty\bï„‘\15lsp_prefix\bï„‘\vfilled\bï„Œ\nsetup\fcircles\frequire\0", "config", "circles.nvim")
+time([[Config for circles.nvim]], false)
+-- Config for: nvim-colorizer.lua
+time([[Config for nvim-colorizer.lua]], true)
+try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
+time([[Config for nvim-colorizer.lua]], false)
 -- Conditional loads
 time("Condition for { 'vim-ultest', 'far.vim' }", true)
 if
@@ -511,15 +487,15 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
+vim.cmd [[au FileType markdown ++once lua require("packer.load")({'markdown-preview.nvim'}, { ft = "markdown" }, _G.packer_plugins)]]
+vim.cmd [[au FileType rust ++once lua require("packer.load")({'rust.vim'}, { ft = "rust" }, _G.packer_plugins)]]
+vim.cmd [[au FileType python ++once lua require("packer.load")({'semshi'}, { ft = "python" }, _G.packer_plugins)]]
 vim.cmd [[au FileType json ++once lua require("packer.load")({'vim-json'}, { ft = "json" }, _G.packer_plugins)]]
 vim.cmd [[au FileType golang ++once lua require("packer.load")({'vim-go'}, { ft = "golang" }, _G.packer_plugins)]]
 vim.cmd [[au FileType java ++once lua require("packer.load")({'java-syntax.vim'}, { ft = "java" }, _G.packer_plugins)]]
-vim.cmd [[au FileType python ++once lua require("packer.load")({'semshi'}, { ft = "python" }, _G.packer_plugins)]]
 vim.cmd [[au FileType javascript ++once lua require("packer.load")({'vim-javascript', 'JavaScript-Indent'}, { ft = "javascript" }, _G.packer_plugins)]]
-vim.cmd [[au FileType markdown ++once lua require("packer.load")({'markdown-preview.nvim'}, { ft = "markdown" }, _G.packer_plugins)]]
-vim.cmd [[au FileType rust ++once lua require("packer.load")({'rust.vim'}, { ft = "rust" }, _G.packer_plugins)]]
-vim.cmd [[au FileType html ++once lua require("packer.load")({'vim-javascript'}, { ft = "html" }, _G.packer_plugins)]]
 vim.cmd [[au FileType toml ++once lua require("packer.load")({'vim-toml'}, { ft = "toml" }, _G.packer_plugins)]]
+vim.cmd [[au FileType html ++once lua require("packer.load")({'vim-javascript'}, { ft = "html" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
@@ -538,6 +514,9 @@ time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/pack
 time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], true)
 vim.cmd [[source /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]]
 time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], false)
+time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/rust.vim/ftdetect/rust.vim]], true)
+vim.cmd [[source /Users/drew/.local/share/nvim/site/pack/packer/opt/rust.vim/ftdetect/rust.vim]]
+time([[Sourcing ftdetect script at: /Users/drew/.local/share/nvim/site/pack/packer/opt/rust.vim/ftdetect/rust.vim]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end
 
