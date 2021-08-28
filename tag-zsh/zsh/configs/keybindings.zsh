@@ -22,4 +22,5 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 
 if [ -z "$TMUX" ]; then
   bindkey -s "^P" 'ta ~/Code\n'
+  bindkey -s "^D" 'cd ~/.dotfiles && tat > /dev/null 2>&1\n'
 fi

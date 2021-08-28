@@ -1,8 +1,12 @@
 -- helper functions for vim mappings, eventually should be merged into neovim
 vim.cmd [[runtime plugin/astronauta.vim]]
+vim.cmd [[colorscheme sonokai]]
 
 vim.g.mapleader = " "
 vim.g.snippets = "luasnip"
+vim.g.sonokai_diagnostic_virtual_text = 'colored'
+vim.g.sonokai_diagnostic_text_highlight = true
+vim.g.sonokai_diagnostic_line_highlight = true
 
 vim.wo.signcolumn = 'yes'
 vim.opt.termguicolors = true            -- True color support

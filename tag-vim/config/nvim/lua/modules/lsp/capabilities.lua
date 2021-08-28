@@ -1,4 +1,4 @@
-local lspui = require 'lspconfig/_lspui'
+local lspui = require 'lspconfig/ui/windows'
 
 return function ()
   local buf_clients = vim.lsp.buf_get_clients()

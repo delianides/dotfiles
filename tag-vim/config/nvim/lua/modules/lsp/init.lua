@@ -3,6 +3,7 @@ local status = require "modules.lsp.status"
 local nvim_status = require "lsp-status"
 local handlers = require "modules.lsp.handlers"
 local lspkind = require "lspkind"
+local util = require "lspconfig/util"
 
 local inoremap = vim.keymap.inoremap
 local nnoremap = vim.keymap.nnoremap
@@ -123,10 +124,6 @@ local on_attach = function(client, bufnr)
     ]]
   end
 
-  if client.server_capabilities.colorProvider then
-    require"lsp-documentcolors".buf_attach(bufnr, { single_column = true })
-  end
-
   filetype_attach[filetype](client)
 end
 
@@ -185,21 +182,32 @@ local function setup_servers()
     if server == "lua" then
       config.settings = lua_settings
       config.root_dir = function(fname)
-        local util = require "lspconfig/util"
         return util.find_git_ancestor(fname) or util.path.dirname(fname)
       end
     end
 
     if server == "go" then
+      config.root_dir = function(fname)
+        local Path = require "plenary.path"
+
+        local absolute_cwd = Path:new(vim.loop.cwd()):absolute()
+        local absolute_fname = Path:new(fname):absolute()
+
+        if string.find(absolute_cwd, "/cmd/", 1, true) and string.find(absolute_fname, absolute_cwd, 1, true) then
+          return absolute_cwd
+        end
+
+        return util.root_pattern("go.mod", ".git")(fname)
+      end
       config.settings = {
         gopls = {
+          codelenses = { test = true },
           analyses = {
             unusedparams = true,
           },
           staticcheck = true,
         },
       }
-      config.cmd = {"gopls", "serve"}
     end
 
     if server == "typescript" then
@@ -225,5 +233,5 @@ require'lspinstall'.post_install_hook = function ()
   vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
 end
 
-vim.api.nvim_command("command! LspCapabilities lua require'lsp.capabilities'()")
+vim.api.nvim_command("command! LspCapabilities lua require'modules.lsp.capabilities'()")
 

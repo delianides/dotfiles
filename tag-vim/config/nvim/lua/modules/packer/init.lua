@@ -6,19 +6,66 @@ require'packer'.init({
 })
 
 vim.cmd [[autocmd BufWritePost plugins.lua luafile %]]
+vim.opt.termguicolors = true
 
 require("packer").startup {
   function(use)
     use "wbthomason/packer.nvim"
     use {
-      "folke/trouble.nvim",
+      "sainnhe/sonokai",
+    }
+
+    use {
+      'hoob3rt/lualine.nvim',
+      requires = {'kyazdani42/nvim-web-devicons', opt = true},
+    }
+
+    use {
+      'kdheepak/tabline.nvim',
       config = function()
-        -- Can use P to toggle auto movement
-        require("trouble").setup {
-          auto_preview = false,
-          auto_fold = true,
+        require'tabline'.setup {enable = false}
+      end
+    }
+
+    use {
+      "tjdevries/colorbuddy.nvim",
+    }
+
+    use {
+      "projekt0n/circles.nvim",
+      requires = {
+        {"kyazdani42/nvim-web-devicons"},
+        {
+          "kyazdani42/nvim-tree.lua",
+          opt = true,
+          config = function()
+            local function setup(opts)
+              for opt, value in pairs(opts) do
+                if type(value) == 'boolean' then
+                  value = value and 1 or 0
+                end
+                vim.g['nvim_tree_' .. opt] = value
+              end
+            end
+
+            setup {
+              auto_open = true,
+              tree_side = 'left',
+              width_allow_resize = true,
+              follow = true,
+              highlight_opened_files = true,
+              auto_resize = true,
+              hide_dotfiles = false,
+              indent_markers = true,
+              ignore = { '.git', 'node_modules', '.cache', '__pycache__' },
+              disable_window_picker = true,
+            }
+          end
         }
-      end,
+      },
+      config = function()
+        require("circles").setup({icons = {empty = "", filled = "", lsp_prefix = ""}})
+      end
     }
 
     use 'ThePrimeagen/harpoon' -- quick file navigation for current workspaces
@@ -52,6 +99,7 @@ require("packer").startup {
     use "lambdalisue/vim-protocol"
     use "sjl/gundo.vim" -- Undo helper
     use "gyim/vim-boxdraw" -- Crazy good box drawing
+    use "rstacruz/vim-closer"
 
     -- markdown
     use "junegunn/goyo.vim"
@@ -67,11 +115,23 @@ require("packer").startup {
     use "othree/javascript-libraries-syntax.vim"
     use "leafgarland/typescript-vim"
     use "peitalin/vim-jsx-typescript"
+    use "tomlion/vim-solidity"
     use { "numirias/semshi", ft = "python" }
     use { "uiiaoo/java-syntax.vim", ft = "java" }
 
     use { "vim-scripts/JavaScript-Indent", ft = "javascript" }
     use { "pangloss/vim-javascript", ft = { "javascript", "html" } }
+
+    use {
+      "folke/trouble.nvim",
+      config = function()
+        -- Can use P to toggle auto movement
+        require("trouble").setup {
+          auto_preview = false,
+          auto_fold = true,
+        }
+      end,
+    }
 
     use "kabouzeid/nvim-lspinstall"
     use "neovim/nvim-lspconfig"
@@ -163,11 +223,13 @@ require("packer").startup {
 
     use {
       'lewis6991/gitsigns.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
-      options = function ()
-          require('gitsigns').setup()
-      end,
-    } -- TODO
+      requires = {
+        'nvim-lua/plenary.nvim'
+      },
+      config = function()
+        require('gitsigns').setup()
+      end
+    }
 
     use "rhysd/committia.vim" -- Sweet message committer
     use "rhysd/git-messenger.vim" -- Floating windows are awesome :)
@@ -176,63 +238,6 @@ require("packer").startup {
       config = function()
         require("git-worktree").setup {}
       end,
-    }
-
-    use {
-      "tjdevries/colorbuddy.nvim",
-    }
-
-    use {
-      "projekt0n/circles.nvim",
-      requires = {
-        {"kyazdani42/nvim-web-devicons"},
-        {
-          "kyazdani42/nvim-tree.lua",
-          opt = true,
-          config = function()
-            local function setup(opts)
-              for opt, value in pairs(opts) do
-                if type(value) == 'boolean' then
-                  value = value and 1 or 0
-                end
-                vim.g['nvim_tree_' .. opt] = value
-              end
-            end
-
-            setup {
-              auto_open = true,
-              tree_side = 'left',
-              width_allow_resize = true,
-              follow = true,
-              highlight_opened_files = true,
-              auto_resize = true,
-              hide_dotfiles = false,
-              indent_markers = true,
-              ignore = { '.git', 'node_modules', '.cache', '__pycache__' },
-              disable_window_picker = true,
-            }
-          end
-        }
-      },
-      config = function()
-        require("circles").setup({icons = {empty = "", filled = "", lsp_prefix = ""}})
-      end
-    }
-
-    use {
-      'projekt0n/github-nvim-theme',
-      config = function()
-        require('github-theme').setup({
-          themeStyle = 'dark'
-        })
-      end,
-    }
-
-    use "sainnhe/sonokai"
-    use "morhetz/gruvbox"
-    use {
-      'hoob3rt/lualine.nvim',
-      requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
   end
 }

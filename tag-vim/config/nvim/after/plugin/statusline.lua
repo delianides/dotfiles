@@ -24,14 +24,24 @@ local conditions = {
 
 require('lualine').setup {
   options = {
-    theme = 'github',
+    theme = 'onedark',
     icons_enabled = true,
     section_separators = '',
     component_separators = '',
   },
+  tabline = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = { require'tabline'.tabline_buffers },
+    lualine_x = { require'tabline'.tabline_tabs },
+    lualine_y = {},
+    lualine_z = {},
+  },
   sections = {
+    lualine_a = {'mode'},
     lualine_b = {'filename'},
     lualine_c = {
+      'branch',
       {
         'diagnostics',
         sources = {'nvim_lsp'},

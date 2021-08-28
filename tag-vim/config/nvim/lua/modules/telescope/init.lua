@@ -35,11 +35,21 @@ local _ = pcall(require, "nvim-nonicons")
 
 local M = {}
 
---[[
-lua require('plenary.reload').reload_module("my_user.tele")
+function M.edit_zsh()
+  require("telescope.builtin").find_files {
+    shorten_path = false,
+    cwd = "~/.zsh/",
+    prompt = "~ zsh ~",
+    hidden = true,
+    follow = true,
 
-nnoremap <leader>en <cmd>lua require('my_user.tele').edit_neovim()<CR>
---]]
+    layout_strategy = "horizontal",
+    layout_config = {
+      preview_width = 0.55,
+    },
+  }
+end
+
 function M.edit_neovim()
   local opts_with_preview, opts_without_preview
 
@@ -47,6 +57,7 @@ function M.edit_neovim()
     prompt_title = "~ dotfiles ~",
     shorten_path = false,
     cwd = "~/.config/nvim",
+    follow = true,
 
     layout_strategy = "flex",
     layout_config = {
@@ -80,99 +91,6 @@ function M.edit_neovim()
   require("telescope.builtin").find_files(opts_with_preview)
 end
 
-function M.find_nvim_source()
-  require("telescope.builtin").find_files {
-    prompt_title = "~ nvim ~",
-    shorten_path = false,
-    cwd = "~/build/neovim/",
-
-    layout_strategy = "horizontal",
-    layout_config = {
-      preview_width = 0.35,
-    },
-  }
-end
-
-function M.sourcegraph_find()
-  require("telescope.builtin").find_files {
-    prompt_title = "~ sourcegraph ~",
-    shorten_path = false,
-    cwd = "~/sourcegraph/",
-
-    layout_strategy = "horizontal",
-    layout_config = {
-      width = 0.25,
-      preview_width = 0.65,
-    },
-  }
-end
-
-function M.sourcegraph_main_find()
-  require("telescope.builtin").find_files {
-    prompt_title = "~ main: sourcegraph ~",
-    shorten_path = false,
-    cwd = "~/sourcegraph/sourcegraph.git/main/",
-
-    layout_strategy = "horizontal",
-    layout_config = {
-      width = 0.95,
-      preview_width = 0.65,
-    },
-  }
-end
-
-function M.sourcegraph_about_find()
-  require("telescope.builtin").find_files {
-    prompt_tiles = [[\ Sourcegraph About: Files /]],
-    cwd = "~/sourcegraph/about/handbook/",
-
-    sorter = require("telescope").extensions.fzy_native.native_fzy_sorter(),
-  }
-end
-
-function M.sourcegraph_about_grep()
-  require("telescope.builtin").live_grep {
-    prompt_tiles = [[\ Sourcegraph About: Files /]],
-    cwd = "~/sourcegraph/about/",
-
-    -- sorter = require('telescope').extensions.fzy_native.native_fzy_sorter(),
-  }
-end
-
--- TODO: Should work on a wiki at some point....
---function M.sourcegraph_tips()
---  -- TODO: Can make this optionally fuzzy find over the contents as well
---  --    if we want to start getting fancier
---  --
---  --    Could even make it do that _only_ when doing something like ";" or similar.
-
---  require('telescope.builtin').find_files {
---    prompt_title = "~ sourcegraph ~",
---    shorten_path = false,
---    cwd = "~/wiki/sourcegraph/tips",
---    width = .25,
-
---    layout_strategy = 'horizontal',
---    layout_config = {
---      preview_width = 0.65,
---    },
---  }
---end
-
-function M.edit_zsh()
-  require("telescope.builtin").find_files {
-    shorten_path = false,
-    cwd = "~/.config/zsh/",
-    prompt = "~ dotfiles ~",
-    hidden = true,
-
-    layout_strategy = "horizontal",
-    layout_config = {
-      preview_width = 0.55,
-    },
-  }
-end
-
 function M.fd()
   local opts = themes.get_ivy { hidden = true }
   require("telescope.builtin").fd(opts)
@@ -188,11 +106,6 @@ function M.git_files()
     path = nil
   end
 
-  local width = 0.25
-  if path and string.find(path, "sourcegraph.*sourcegraph", 1, false) then
-    width = 0.5
-  end
-
   local opts = themes.get_dropdown {
     winblend = 5,
     previewer = false,
@@ -201,7 +114,7 @@ function M.git_files()
     cwd = path,
 
     layout_config = {
-      width = width,
+      width = 0.25,
     },
   }
 
@@ -310,14 +223,6 @@ function M.search_all_files()
   }
 end
 
-function M.example_for_prime()
-  -- local Sorter = require('telescope.sorters')
-
-  -- require('telescope.builtin').find_files {
-  --   sorter = Sorter:new {
-  -- }
-end
-
 function M.file_browser()
   local opts
 
@@ -388,6 +293,15 @@ function M.git_commits()
   require("telescope.builtin").git_commits {
     winblend = 5,
   }
+end
+
+function M.git_branches()
+  require("telescope.builtin").git_branches({
+    attach_mappings = function(_, map)
+      map("i", "<c-d>", actions.git_delete_branch)
+      map("n", "<c-d>", actions.git_delete_branch)
+    end,
+  })
 end
 
 function M.search_only_certain_files()

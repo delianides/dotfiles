@@ -25,8 +25,8 @@ end
 vim.api.nvim_set_keymap("c", "<c-r><c-r>", "<Plug>(TelescopeFuzzyCommandSearch)", { noremap = false, nowait = true })
 
 -- Dotfiles
-map_tele("<leader>en", "edit_neovim")
-map_tele("<leader>ez", "edit_zsh")
+map_tele("<space>en", "edit_neovim")
+map_tele("<space>ez", "edit_zsh")
 
 -- Search
 -- TODO: I would like to completely remove _mock from my search results here when I'm in SG/SG
@@ -43,7 +43,6 @@ map_tele("<space>f/", "grep_last_search", {
 
 -- Files
 map_tele("<space>ft", "git_files")
--- map_tele("<space>fg", "live_grep")
 map_tele("<space>fg", "multi_rg")
 map_tele("<space>fo", "oldfiles")
 map_tele("<space>fd", "fd")
@@ -51,12 +50,6 @@ map_tele("<space>pp", "project_search")
 map_tele("<space>fv", "find_nvim_source")
 map_tele("<space>fe", "file_browser")
 map_tele("<space>fz", "search_only_certain_files")
-
--- Sourcegraph
-map_tele("<space>sf", "sourcegraph_find")
-map_tele("<space>saf", "sourcegraph_about_find")
-map_tele("<space>sag", "sourcegraph_about_grep")
--- map_tele('<space>fz', 'sourcegraph_tips')
 
 -- Git
 map_tele("<space>gs", "git_status")

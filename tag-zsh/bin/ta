@@ -70,8 +70,8 @@ else
     path_name=$DIR/$session_name
 fi
 
-echo session name is \"$session_name\"
-echo path name is $path_name
+# echo session name is \"$session_name\"
+# echo path name is $path_name
 
 if [ -z "$session_name" ]; then
     # operation cancelled by user
