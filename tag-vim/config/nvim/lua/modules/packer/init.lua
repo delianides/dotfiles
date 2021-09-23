@@ -148,13 +148,18 @@ require("packer").startup {
     use "ray-x/lsp_signature.nvim"
     use "nvim-lua/lsp_extensions.nvim"
     use "glepnir/lspsaga.nvim"
-    use "hrsh7th/nvim-compe"
+    use {
+      "hrsh7th/nvim-cmp",
+      requires = {
+        "hrsh7th/vim-vsnip",
+        "hrsh7th/vim-vsnip-integ",
+        "hrsh7th/cmp-buffer"
+      }
+    }
 
     -- Completion stuff
     use "tjdevries/rofl.nvim"
 
-    use "hrsh7th/vim-vsnip"
-    use "hrsh7th/vim-vsnip-integ"
     use "norcalli/snippets.nvim"
     -- Find and replace
     use {

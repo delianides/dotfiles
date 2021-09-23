@@ -1,6 +1,6 @@
 require("formatter").setup(
   {
-          logging = false,
+    logging = false,
     filetype = {
       javascript = {
         -- prettier
