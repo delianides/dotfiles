@@ -173,6 +173,7 @@ local lua_settings = {
 local function make_config()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities = vim.tbl_deep_extend("keep", capabilities, nvim_status.capabilities)
+  capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.codeLens = {dynamicRegistration = false}
   capabilities.textDocument.colorProvider = {dynamicRegistration = false}
@@ -301,6 +302,11 @@ local function setup_servers()
       config.root_dir = function(fname)
         return util.find_git_ancestor(fname) or util.path.dirname(fname)
       end
+    end
+
+    if server == "tailwindcss" then
+      config.filetypes = {"html", "typescriptreact"}
+      config.root_dir = util.root_pattern("package.json", ".git")
     end
 
     if server == "golangcilsp" then

@@ -151,6 +151,8 @@ require("packer").startup {
     use {
       "hrsh7th/nvim-cmp",
       requires = {
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-vsnip",
         "hrsh7th/vim-vsnip",
         "hrsh7th/vim-vsnip-integ",
         "hrsh7th/cmp-buffer"
@@ -160,7 +162,6 @@ require("packer").startup {
     -- Completion stuff
     use "tjdevries/rofl.nvim"
 
-    use "norcalli/snippets.nvim"
     -- Find and replace
     use {
       "brooth/far.vim",
