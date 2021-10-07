@@ -1,39 +1,29 @@
+local eslint = function()
+  return {
+    exe = "eslint_d",
+    args = {"--fix", "--cache", "--stdin-filename", vim.api.nvim_buf_get_name(0)},
+    stdin = false
+  }
+end
+
+local prettier = function()
+  return {
+    exe = "prettier",
+    args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
+    stdin = true
+  }
+end
+
 require("formatter").setup(
   {
-    logging = false,
+    logging = true,
     filetype = {
-      javascript = {
-        -- prettier
-        function()
-          return {
-            exe = "prettier",
-            args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
-            stdin = true
-          }
-        end
-      },
-      typescript = {
-        -- prettier
-        function()
-          return {
-            exe = "prettier",
-            args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
-            stdin = true
-          }
-        end
-      },
-      ["typescript.tsx"] = {
-        -- prettier
-        function()
-          return {
-            exe = "prettier",
-            args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
-            stdin = true
-          }
-        end
-      },
+      javascript = {prettier, eslint},
+      typescript = {prettier, eslint},
+      ["typescript.tsx"] = {prettier, eslint},
+      typescriptreact = {prettier, eslint},
+      css = {prettier, eslint},
       lua = {
-        -- luafmt
         function()
           return {
             exe = "luafmt",
