@@ -1,13 +1,17 @@
-vim.cmd [[colorscheme sonokai]]
+vim.cmd([[colorscheme sonokai]])
 
 vim.g.mapleader = " "
 vim.g.snippets = "luasnip"
-vim.g.sonokai_diagnostic_virtual_text = 'colored'
+vim.g.sonokai_diagnostic_virtual_text = "colored"
 vim.g.sonokai_diagnostic_text_highlight = true
 vim.g.sonokai_diagnostic_line_highlight = true
 
-vim.wo.signcolumn = 'yes'
-vim.opt.termguicolors = true            -- True color support
+vim.wo.signcolumn = "yes"
+vim.opt.termguicolors = true -- True color support
+
+vim.opt.undofile = true
+vim.opt.undodir = "~/.undodir"
+vim.opt.undodir = vim.fn.stdpath("config") .. "/.undodir"
 vim.opt.wildignore = "__pycache__"
 vim.opt.wildignore = vim.opt.wildignore + { "*.o", "*~", "*.pyc", "*pycache*" }
 vim.opt.wildmode = { "longest", "list", "full" }
@@ -74,15 +78,15 @@ vim.opt.termguicolors = true
 --
 -- TODO: w, {v, b, l}
 vim.opt.formatoptions = vim.opt.formatoptions
-  - "a" -- Auto formatting is BAD.
-  - "t" -- Don't auto format my code. I got linters for that.
-  + "c" -- In general, I like it when comments respect textwidth
-  + "q" -- Allow formatting comments w/ gq
-  - "o" -- O and o, don't continue comments
-  + "r" -- But do continue when pressing enter.
-  + "n" -- Indent past the formatlistpat, not underneath it.
-  + "j" -- Auto-remove comments if possible.
-  - "2" -- I'm not in gradeschool anymore
+	- "a" -- Auto formatting is BAD.
+	- "t" -- Don't auto format my code. I got linters for that.
+	+ "c" -- In general, I like it when comments respect textwidth
+	+ "q" -- Allow formatting comments w/ gq
+	- "o" -- O and o, don't continue comments
+	+ "r" -- But do continue when pressing enter.
+	+ "n" -- Indent past the formatlistpat, not underneath it.
+	+ "j" -- Auto-remove comments if possible.
+	- "2" -- I'm not in gradeschool anymore
 
 -- set joinspaces
 vim.opt.joinspaces = false -- Two spaces and grade school, we're done
@@ -91,12 +95,11 @@ vim.opt.joinspaces = false -- Two spaces and grade school, we're done
 vim.opt.fillchars = { eob = "~" }
 
 vim.api.nvim_exec(
-  [[
+	[[
   augroup Terminal
     autocmd!
     au TermOpen * set nonu
   augroup end
 ]],
-  false
+	false
 )
-
