@@ -5,13 +5,13 @@ local config = {
 		threshold = 0, -- the amount in ms that a plugins load time must be over for it to be included in the profile
 	},
 	max_jobs = 50,
+	-- list of plugins that should be taken from ~/projects
+	-- this is NOT packer functionality!
 	display = {
 		open_fn = function()
 			return require("packer.util").float({ border = "single" })
 		end,
 	},
-	-- list of plugins that should be taken from ~/projects
-	-- this is NOT packer functionality!
 	local_plugins = {},
 }
 
@@ -56,37 +56,17 @@ local function plugins(use)
 	use({
 		"projekt0n/circles.nvim",
 		requires = {
-			{ "kyazdani42/nvim-web-devicons" },
-			{
-				"kyazdani42/nvim-tree.lua",
-				opt = true,
-				config = function()
-					local function setup(opts)
-						for opt, value in pairs(opts) do
-							if type(value) == "boolean" then
-								value = value and 1 or 0
-							end
-							vim.g["nvim_tree_" .. opt] = value
-						end
-					end
-
-					setup({
-						auto_open = true,
-						tree_side = "left",
-						width_allow_resize = true,
-						follow = true,
-						highlight_opened_files = true,
-						auto_resize = true,
-						hide_dotfiles = false,
-						indent_markers = true,
-						ignore = { ".git", "node_modules", ".cache", "__pycache__" },
-						disable_window_picker = true,
-					})
-				end,
-			},
+			"kyazdani42/nvim-web-devicons",
 		},
 		config = function()
 			require("circles").setup({ icons = { empty = "", filled = "", lsp_prefix = "" } })
+		end,
+	})
+
+	use({
+		"kyazdani42/nvim-tree.lua",
+		config = function()
+			require("config.tree")
 		end,
 	})
 
@@ -95,8 +75,16 @@ local function plugins(use)
 		cmd = { "SymbolsOutline" },
 	})
 
-	use("ThePrimeagen/harpoon") -- quick file navigation for current workspaces
+	-- quick file navigation for current workspaces
+	use({
+		"ThePrimeagen/harpoon",
+		config = function()
+			require("config.harpoon")
+		end,
+	})
+
 	use("christoomey/vim-tmux-navigator")
+	use({ "pwntester/octo.nvim" })
 
 	-- telescope fuzzy finder
 	use({
@@ -105,7 +93,7 @@ local function plugins(use)
 		config = function()
 			require("config.telescope")
 		end,
-		keys = { "<Leader><space>", "<leader>fd" },
+		keys = { "<C-f>", "<leader>fd" },
 		cmd = { "Telescope" },
 		module = "telescope",
 		wants = {
@@ -121,6 +109,9 @@ local function plugins(use)
 			"nvim-telescope/telescope-symbols.nvim",
 			"nvim-telescope/telescope-fzy-native.nvim",
 			"nvim-telescope/telescope-cheat.nvim",
+			"nvim-telescope/telescope-github.nvim",
+			"nvim-telescope/telescope-packer.nvim",
+			"nvim-telescope/telescope-node-modules.nvim",
 			-- { nvim-telescope/telescope-frecency.nvim", requires = "tami5/sql.nvim" }
 		},
 	})
@@ -154,12 +145,6 @@ local function plugins(use)
 	})
 
 	use({
-		"norcalli/nvim-colorizer.lua",
-		config = function()
-			require("colorizer").setup()
-		end,
-	})
-	use({
 		"norcalli/nvim-terminal.lua",
 		config = function()
 			require("terminal").setup()
@@ -169,23 +154,65 @@ local function plugins(use)
 	use({ "nvim-lua/plenary.nvim", module = "plenary" })
 	use({ "nvim-lua/popup.nvim", module = "popup" })
 
+	-- languages
+	--
 	-- markdown
 	use("junegunn/goyo.vim")
 	use("junegunn/limelight.vim")
 
-	-- languages
+	-- golang
 	use({ "fatih/vim-go", ft = "golang", run = ":GoInstallBinaries" })
+
+	-- rust
 	use({ "rust-lang/rust.vim", ft = "rust" })
+	use({ "eraserhd/parinfer-rust", run = "cargo build --release" })
+	use({ "racer-rust/vim-racer" })
+
+	-- swift xcode
+	use({ "keith/swift.vim" })
+	use({ "gfontenot/vim-xcode" })
+
+	-- toml
 	use({ "cespare/vim-toml", ft = "toml", branch = "main" })
 
-	use({ "eraserhd/parinfer-rust", run = "cargo build --release" })
-
+	-- js/ts
 	use({ "othree/yajs.vim", ft = { "javascript", "javascript.jsx", "html" } })
 	use({ "moll/vim-node", ft = "javascript" })
+	use({
+		"vuki656/package-info.nvim",
+		requires = "MunifTanjim/nui.nvim",
+		config = function()
+			require("package-info").setup({ package_manager = "npm" })
+		end,
+	})
+	-- use({ "elzr/vim-json", ft = "json" })
+	use({ "heavenshell/vim-jsdoc", ft = { "javascript", "javascript.jsx" } })
 	use("othree/javascript-libraries-syntax.vim")
-	use({ "leafgarland/typescript-vim", ft = { "typescript", "typescript.tsx" } })
+	use({ "HerringtonDarkholme/yats.vim", ft = { "typescript", "typescript.tsx" } })
 	use("MaxMEllon/vim-jsx-pretty")
+	use({ "jxnblk/vim-mdx-js" })
+
+	-- html
+	use({ "othree/html5.vim" })
+	use({ "posva/vim-vue" })
+	use({ "leafOfTree/vim-svelte-plugin" })
+	use({ "skwp/vim-html-escape" })
+	use({ "kana/vim-textobj-user" })
+	use({ "whatyouhide/vim-textobj-xmlattr" })
+	use({ "pedrohdz/vim-yaml-folds" })
+	-- CSS
+	use({ "hail2u/vim-css3-syntax" })
+	use({
+		"norcalli/nvim-colorizer.lua",
+		config = function()
+			require("colorizer").setup()
+		end,
+	})
+
+	-- solidity/er20
 	use("tomlion/vim-solidity")
+
+	-- python
 	use({ "numirias/semshi", ft = "python" })
 
 	use({
@@ -258,18 +285,6 @@ local function plugins(use)
 		},
 	})
 
-	-- Completion stuff
-	-- use "tjdevries/rofl.nvim"
-
-	-- Find and replace
-	-- use {
-	--   "brooth/far.vim",
-	--   cond = function()
-	--     return vim.fn.has "python3" == 1
-	--   end
-	-- }
-
-	-- use "tjdevries/astronauta.nvim"
 	use({
 		"rcarriga/vim-ultest",
 		requires = { "vim-test/vim-test" },
@@ -292,24 +307,7 @@ local function plugins(use)
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			{ "nvim-treesitter/playground", cmd = "TSHighlightCapturesUnderCursor" },
 			"RRethy/nvim-treesitter-textsubjects",
-			-- {
-			--   "mfussenegger/nvim-ts-hint-textobject",
-			--   config = function()
-			--     vim.cmd [[omap     <silent> m :<C-U>lua require('tsht').nodes()<CR>]]
-			--     vim.cmd [[vnoremap <silent> m :lua require('tsht').nodes()<CR>]]
-			--   end
-			-- },
-			-- {
-			--   "romgrk/nvim-treesitter-context",
-			--   config = function()
-			--     require("treesitter-context.config").setup {
-			--       enable = true -- Enable this plugin (Can be enabled/disabled later via commands)
-			--     }
-
-			--     -- TODO: Decide on a better highlighting color
-			--     -- vim.cmd [[highlight TreesitterContext link NormalFloat]]
-			--   end
-			-- }
+			"JoosepAlviste/nvim-ts-context-commentstring",
 		},
 		config = [[require('config.treesitter')]],
 	})
@@ -328,9 +326,13 @@ local function plugins(use)
 	})
 
 	use({
-		"numToStr/Comment.nvim",
+		"terrortylor/nvim-comment",
 		config = function()
-			require("Comment").setup()
+			require("nvim_comment").setup({
+				hook = function()
+					require("ts_context_commentstring.internal").update_commentstring()
+				end,
+			})
 		end,
 	})
 
@@ -357,6 +359,8 @@ local function plugins(use)
 			require("config.neogit")
 		end,
 	})
+
+	use({ "mbbill/undotree", cmd = "UndotreeToggle" })
 
 	use({
 		"ThePrimeagen/git-worktree.nvim",
