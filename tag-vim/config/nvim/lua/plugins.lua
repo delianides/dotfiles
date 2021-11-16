@@ -288,19 +288,6 @@ local function plugins(use)
   }
 
   use {
-    "rcarriga/vim-ultest",
-    requires = { "vim-test/vim-test" },
-    run = ":UpdateRemotePlugins",
-    cond = function()
-      return vim.fn.has "python3" == 1
-    end,
-    config = function()
-      vim.cmd [[nmap ]t <Plug>(ultest-next-fail)]]
-      vim.cmd [[nmap [t <Plug>(ultest-prev-fail)]]
-    end,
-  }
-
-  use {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
     opt = true,

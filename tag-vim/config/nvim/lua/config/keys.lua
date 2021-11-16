@@ -153,7 +153,6 @@ local leader = {
   },
   p = {
     name = "+project",
-    ["f"] = "Project Files",
     ["a"] = { '<cmd>lua require("harpoon.mark").add_file()<CR>', "Add File to Harpoon" },
     ["e"] = { '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', "Show Harpoon Files" },
     ["n"] = { '<cmd>lua require("harpoon.ui").nav_next()<CR>', "Nav Next Harpooned File" },
@@ -219,7 +218,9 @@ local leader = {
   },
   Z = { [[<cmd>lua require("zen-mode").reset()<cr>]], "Zen Mode" },
   z = { [[<cmd>ZenMode<cr>]], "Zen Mode" },
-  T = { [[<Plug>PlenaryTestFile]], "Plenary Test" },
+  T = {
+    name = "+tests",
+  },
   D = {
     function()
       util.docs()

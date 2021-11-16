@@ -154,7 +154,7 @@ M.git_branches = function()
   }
 end
 
-util.nnoremap("<Leader>pf", M.project_files)
+util.nnoremap("<C-f>", M.project_files)
 util.nnoremap("<Leader>fd", function()
   require("telescope.builtin").git_files { cwd = "~/.dotfiles" }
 end)
