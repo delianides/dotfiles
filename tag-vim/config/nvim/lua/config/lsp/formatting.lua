@@ -1,4 +1,5 @@
 local util = require("util")
+local nls_gen = require("null-ls.generators")
 
 local M = {}
 
@@ -28,8 +29,10 @@ function M.setup(client, buf)
 	local nls = require("config.lsp.null-ls")
 	local efm_formatted = require("config.lsp.efm").formatted_languages
 
+	print(ft)
+
 	local enable = false
-	if nls.has_formatter(ft) then
+	if nls_gen.can_run(ft, "NULL_LS_FORMATTING") then
 		enable = client.name == "null-ls"
 	elseif efm_formatted[ft] then
 		enable = client.name == "efm"

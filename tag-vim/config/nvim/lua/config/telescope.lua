@@ -72,6 +72,25 @@ M.project_files = function(opts)
   require("telescope.builtin").git_files(opts)
 end
 
+M.project_grep = function()
+  local opts = {}
+  local _git_pwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+
+  if vim.v.shell_error ~= 0 then
+    local client = vim.lsp.get_active_clients()[1]
+    if client then
+      opts.cwd = client.config.root_dir
+    end
+  else
+    opts.cwd = _git_pwd
+  end
+
+  require("telescope.builtin").live_grep {
+    prompt_tiles = [[\ Find in Files /]],
+    cwd = opts.cwd,
+  }
+end
+
 M.edit_zsh = function()
   require("telescope.builtin").find_files {
     shorten_path = false,
