@@ -17,7 +17,6 @@ local config = {
 
 local function plugins(use)
 	use({ "wbthomason/packer.nvim", opt = true })
-	use("mhinz/vim-startify")
 	use({
 		"sainnhe/sonokai",
 	})
@@ -63,12 +62,12 @@ local function plugins(use)
 		end,
 	})
 
-	-- use({
-	-- 	"kyazdani42/nvim-tree.lua",
-	-- 	config = function()
-	-- 		require("config.tree")
-	-- 	end,
-	-- })
+	use({
+		"kyazdani42/nvim-tree.lua",
+		config = function()
+			require("config.tree")
+		end,
+	})
 
 	use({
 		"simrat39/symbols-outline.nvim",
@@ -119,7 +118,6 @@ local function plugins(use)
 	-- Indent Guides and rainbow brackets
 	use({
 		"lukas-reineke/indent-blankline.nvim",
-		event = "BufReadPre",
 		config = function()
 			require("config.blankline")
 		end,
