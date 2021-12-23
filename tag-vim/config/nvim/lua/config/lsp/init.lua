@@ -1,9 +1,10 @@
+local lsp_installer = require "nvim-lsp-installer"
+
 require "config.lsp.diagnostics"
 
 local function on_attach(client, bufnr)
   require("config.lsp.formatting").setup(client, bufnr)
   require("config.lsp.keys").setup(client, bufnr)
-  -- require("config.lsp.completion").setup(client, bufnr)
   require("config.lsp.highlighting").setup(client)
 
   -- TypeScript specific stuff
@@ -16,82 +17,21 @@ local servers = {
   pyright = {},
   bashls = {},
   dockerls = {},
-  tsserver = {
-    capabilities = {
-      textDocument = {
-        completion = {
-          completionItem = {
-            snippetSupport = true,
-            preselectSupport = true,
-            insertReplaceSupport = true,
-            labelDetailsSupport = true,
-            deprecatedSupport = true,
-            commitCharactersSupport = true,
-            tagSupport = { valueSet = { 1 } },
-            resolveSupport = {
-              properties = {
-                "documentation",
-                "detail",
-                "additionalTextEdits",
-              },
-            },
-          },
-        },
-      },
-    },
-  },
+  tsserver = {},
   cssls = {},
-  jsonls = {
-    settings = {
-      json = {
-        schemas = {
-          {
-            fileMatch = { "package.json" },
-            url = "https://json.schemastore.org/package.json",
-          },
-          {
-            fileMatch = { "tsconfig*.json" },
-            url = "https://json.schemastore.org/tsconfig.json",
-          },
-          {
-            fileMatch = { ".prettierrc", ".prettierrc.json", "prettier.config.json" },
-            url = "https://json.schemastore.org/prettierrc.json",
-          },
-          {
-            fileMatch = { ".eslintrc", ".eslintrc.json" },
-            url = "https://json.schemastore.org/eslintrc.json",
-          },
-          {
-            fileMatch = { ".babelrc", ".babelrc.json", "babel.config.json" },
-            url = "https://json.schemastore.org/babelrc.json",
-          },
-          {
-            fileMatch = { "lerna.json" },
-            url = "https://json.schemastore.org/lerna.json",
-          },
-          {
-            fileMatch = { "now.json", "vercel.json" },
-            url = "https://json.schemastore.org/now.json",
-          },
-          {
-            fileMatch = { "ecosystem.json" },
-            url = "https://json.schemastore.org/pm2-ecosystem.json",
-          },
-        },
-      },
-    },
-  },
+  jsonls = require("config.lsp.json").config,
   html = {},
   efm = require("config.lsp.efm").config,
   clangd = {},
   sumneko_lua = {},
   vimls = {},
-  -- eslint = {},
+  eslint = {},
   ansiblels = {},
   tailwindcss = {},
 }
 
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 require("lua-dev").setup()
 
@@ -105,3 +45,5 @@ local options = {
 
 require("config.lsp.null-ls").setup(options)
 require("config.lsp.install").setup(servers, options)
+
+vim.api.nvim_command "command! LspCapabilities lua require'config.lsp.capabilities'()"

@@ -55,6 +55,9 @@ util.inoremap("<A-k>", "<Esc>:m .-2<CR>==gi")
 util.vnoremap("<A-j>", ">+1<CR>gv=gv")
 util.vnoremap("<A-k>", "<-2<CR>gv=gv")
 
+util.nnoremap("<c-t>", ':lua require("FTerm").toggle()<CR>')
+util.tmap("<c-t>", '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
+
 local leader = {
   ["w"] = {
     name = "+windows",
@@ -159,7 +162,7 @@ local leader = {
     ["p"] = { '<cmd>lua require("harpoon.ui").nav_prev()<CR>', "Nav Prev Harpooned File" },
   },
   t = {
-    name = "toggle",
+    name = "+toggle",
     f = {
       require("config.lsp.formatting").toggle,
       "Format on Save",
@@ -185,7 +188,7 @@ local leader = {
     },
   },
   ["<tab>"] = {
-    name = "workspace",
+    name = "+workspace",
     ["<tab>"] = { "<cmd>tabnew<CR>", "New Tab" },
 
     n = { "<cmd>tabnext<CR>", "Next" },
@@ -209,8 +212,8 @@ local leader = {
   x = {
     name = "+errors",
     x = { "<cmd>TroubleToggle<cr>", "Trouble" },
-    w = { "<cmd>TroubleToggle lsp_workspace_diagnostics<cr>", "Workspace Trouble" },
-    d = { "<cmd>TroubleToggle lsp_document_diagnostics<cr>", "Document Trouble" },
+    w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Trouble" },
+    d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Trouble" },
     t = { "<cmd>TodoTrouble<cr>", "Todo Trouble" },
     T = { "<cmd>TodoTelescope<cr>", "Todo Telescope" },
     l = { "<cmd>lopen<cr>", "Open Location List" },

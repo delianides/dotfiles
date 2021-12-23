@@ -18,14 +18,38 @@ local config = {
 local function plugins(use)
   use { "wbthomason/packer.nvim", opt = true }
 
+  -- utilities
+  use { "nvim-lua/plenary.nvim", module = "plenary" }
+  use { "nvim-lua/popup.nvim", module = "popup" }
   use { "lewis6991/impatient.nvim", rocks = "mpack" }
-  use { "nathom/filetype.nvim" }
+  use { "stevearc/dressing.nvim", event = "BufReadPre" }
   use {
-    "sainnhe/sonokai",
+    "nathom/filetype.nvim",
+    config = function()
+      require("filetype").setup {}
+    end,
   }
+  use {
+    "dstein64/vim-startuptime",
+    cmd = "StartupTime",
+  }
+
+  use {
+    "rcarriga/nvim-notify",
+    config = function()
+      vim.notify = require "notify"
+    end,
+  }
+  use { "mbbill/undotree", cmd = "UndotreeToggle" }
+
+  -- themes
+  use "sainnhe/sonokai"
+  use "rebelot/kanagawa.nvim"
 
   use "tjdevries/colorbuddy.vim"
   use "tjdevries/gruvbuddy.nvim"
+
+  -- statusline
   use {
     "hoob3rt/lualine.nvim",
     requires = { "kyazdani42/nvim-web-devicons", opt = true },
@@ -33,11 +57,17 @@ local function plugins(use)
       require "config.lualine"
     end,
   }
-
   use {
-    "tjdevries/colorbuddy.nvim",
+    "SmiteshP/nvim-gps",
+    requires = "nvim-treesitter/nvim-treesitter",
+    wants = "nvim-treesitter",
+    module = "nvim-gps",
+    config = function()
+      require("nvim-gps").setup { separator = "   " }
+    end,
   }
 
+  -- illuminate highlight the same word
   use {
     "RRethy/vim-illuminate",
     event = "CursorHold",
@@ -47,6 +77,7 @@ local function plugins(use)
     end,
   }
 
+  -- search
   use {
     "windwp/nvim-spectre",
     opt = true,
@@ -55,6 +86,7 @@ local function plugins(use)
     requires = { "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim" },
   }
 
+  -- icons that are just circles
   use {
     "projekt0n/circles.nvim",
     requires = {
@@ -65,6 +97,7 @@ local function plugins(use)
     end,
   }
 
+  -- file browser
   use {
     "kyazdani42/nvim-tree.lua",
     config = function()
@@ -87,6 +120,7 @@ local function plugins(use)
 
   use "christoomey/vim-tmux-navigator"
   use { "pwntester/octo.nvim" }
+  use { "folke/lsp-trouble.nvim", config = "require('config.trouble')" }
 
   -- telescope fuzzy finder
   use {
@@ -138,22 +172,18 @@ local function plugins(use)
 
   -- Terminal
   use {
-    "akinsho/nvim-toggleterm.lua",
-    keys = "<M-`>",
-    config = function()
-      require "config.terminal"
-    end,
-  }
-
-  use {
     "norcalli/nvim-terminal.lua",
     config = function()
       require("terminal").setup()
     end,
   }
 
-  use { "nvim-lua/plenary.nvim", module = "plenary" }
-  use { "nvim-lua/popup.nvim", module = "popup" }
+  use {
+    "numtostr/FTerm.nvim",
+    config = function()
+      require "config.fterm"
+    end,
+  }
 
   -- languages
   --
@@ -169,6 +199,10 @@ local function plugins(use)
   use { "rust-lang/rust.vim", ft = "rust" }
   use { "eraserhd/parinfer-rust", run = "cargo build --release" }
   use { "racer-rust/vim-racer" }
+  use {
+    "simrat39/rust-tools.nvim",
+    module = "rust-tools",
+  }
 
   -- swift xcode
   use { "keith/swift.vim" }
@@ -284,12 +318,7 @@ local function plugins(use)
     },
   }
 
-  use {
-    "windwp/nvim-autopairs",
-    config = function()
-      require "config.autopairs"
-    end,
-  }
+  use { "tzachar/cmp-tabnine", run = "./install.sh", config = "require('config.tabnine')", after = "cmp-calc" }
 
   use {
     "nvim-treesitter/nvim-treesitter",
@@ -306,8 +335,19 @@ local function plugins(use)
   }
 
   use {
-    "dstein64/vim-startuptime",
-    cmd = "StartupTime",
+    "windwp/nvim-autopairs",
+    opt = true,
+    wants = "nvim-cmp",
+    config = function()
+      require "config.autopairs"
+    end,
+  }
+  use {
+    "windwp/nvim-ts-autotag",
+    opt = true,
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
   }
 
   use {
@@ -326,6 +366,7 @@ local function plugins(use)
   use "AndrewRadev/splitjoin.vim"
   use "tpope/vim-surround"
 
+  -- git
   use {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
@@ -343,8 +384,6 @@ local function plugins(use)
       require "config.neogit"
     end,
   }
-
-  use { "mbbill/undotree", cmd = "UndotreeToggle" }
 
   use {
     "ThePrimeagen/git-worktree.nvim",
