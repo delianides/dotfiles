@@ -307,11 +307,18 @@ local function plugins(use)
       "hrsh7th/cmp-look",
       "hrsh7th/cmp-calc",
       "saadparwaiz1/cmp_luasnip",
+      "windwp/nvim-autopairs",
       {
         "L3MON4D3/LuaSnip",
         wants = "friendly-snippets",
         config = function()
           require "config.snippets"
+        end,
+      },
+      {
+        "windwp/nvim-autopairs",
+        config = function()
+          require "config.autopairs"
         end,
       },
       "rafamadriz/friendly-snippets",
@@ -330,24 +337,9 @@ local function plugins(use)
       { "nvim-treesitter/playground", cmd = "TSHighlightCapturesUnderCursor" },
       "RRethy/nvim-treesitter-textsubjects",
       "JoosepAlviste/nvim-ts-context-commentstring",
+      { "windwp/nvim-ts-autotag", config = "require('config.autotag')" },
     },
     config = [[require('config.treesitter')]],
-  }
-
-  use {
-    "windwp/nvim-autopairs",
-    opt = true,
-    wants = "nvim-cmp",
-    config = function()
-      require "config.autopairs"
-    end,
-  }
-  use {
-    "windwp/nvim-ts-autotag",
-    opt = true,
-    config = function()
-      require("nvim-ts-autotag").setup()
-    end,
   }
 
   use {
