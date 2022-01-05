@@ -33,7 +33,7 @@ local my_server = server.Server:new {
   root_dir = root_dir,
   installer = my_installer,
   default_options = {
-    cmd = { npm.executable(root_dir, "emmet-language-server"), "--stdio" },
+    cmd = { path.concat { root_dir, "emmet-language-server" }, "--stdio" },
   },
 }
 
