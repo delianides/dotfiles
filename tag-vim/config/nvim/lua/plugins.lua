@@ -1,5 +1,6 @@
 local packer = require "util.packer"
 local config = {
+  ensure_dependencies = true,
   profile = {
     enable = true,
     threshold = 0, -- the amount in ms that a plugins load time must be over for it to be included in the profile
@@ -44,7 +45,25 @@ local function plugins(use)
 
   -- themes
   use "sainnhe/sonokai"
-  use "rebelot/kanagawa.nvim"
+  use {
+    "rebelot/kanagawa.nvim",
+    config = function()
+      require("kanagawa").setup {
+        commentStyle = "italic",
+        functionStyle = "NONE",
+        keywordStyle = "italic",
+        statementStyle = "bold",
+        typeStyle = "NONE",
+        variablebuiltinStyle = "italic",
+        specialReturn = true, -- special highlight for the return keyword
+        specialException = true, -- special highlight for exception handling keywords
+        transparent = false, -- do not set background color
+        dimInactive = false, -- dim inactive window `:h hl-NormalNC`
+        colors = {},
+        overrides = {},
+      }
+    end,
+  }
 
   use "tjdevries/colorbuddy.vim"
   use "tjdevries/gruvbuddy.nvim"
@@ -97,14 +116,6 @@ local function plugins(use)
     end,
   }
 
-  -- file browser
-  use {
-    "kyazdani42/nvim-tree.lua",
-    config = function()
-      require "config.tree"
-    end,
-  }
-
   use {
     "simrat39/symbols-outline.nvim",
     cmd = { "SymbolsOutline" },
@@ -125,7 +136,6 @@ local function plugins(use)
   -- telescope fuzzy finder
   use {
     "nvim-telescope/telescope.nvim",
-    opt = true,
     config = function()
       require "config.telescope"
     end,
@@ -144,10 +154,11 @@ local function plugins(use)
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-symbols.nvim",
       "nvim-telescope/telescope-fzy-native.nvim",
-      "nvim-telescope/telescope-cheat.nvim",
       "nvim-telescope/telescope-github.nvim",
       "nvim-telescope/telescope-packer.nvim",
       "nvim-telescope/telescope-node-modules.nvim",
+      "nvim-telescope/telescope-project.nvim",
+      "nvim-telescope/telescope-file-browser.nvim",
       -- { nvim-telescope/telescope-frecency.nvim", requires = "tami5/sql.nvim" }
     },
   }
@@ -288,7 +299,7 @@ local function plugins(use)
   use "onsails/lspkind-nvim"
   use "ray-x/lsp_signature.nvim"
   use "nvim-lua/lsp_extensions.nvim"
-  use "glepnir/lspsaga.nvim"
+  use { "tami5/lspsaga.nvim" }
 
   use {
     "hrsh7th/nvim-cmp",
@@ -307,7 +318,6 @@ local function plugins(use)
       "hrsh7th/cmp-look",
       "hrsh7th/cmp-calc",
       "saadparwaiz1/cmp_luasnip",
-      "windwp/nvim-autopairs",
       {
         "L3MON4D3/LuaSnip",
         wants = "friendly-snippets",

@@ -29,7 +29,7 @@ function M.setup(client, bufnr)
       w = { "<cmd>Telescope lsp_workspace_diagnostics<cr>", "Workspace Diagnostics" },
       x = { "<cmd>Telescope lsp_workspace_symbols<cr>", "Workspace Symbols" },
     },
-    tt = { "<cmd>TroubleToggle lsp_document_diagnostics<CR>", "Trouble Toggle" },
+    tt = { "<cmd>TroubleToggle document_diagnostics<CR>", "Trouble Toggle" },
   }
 
   if client.name == "typescript" then

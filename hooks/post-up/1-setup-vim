@@ -1,9 +1,0 @@
-#!/bin/bash
-# vim: tw=0
-
-set -eo pipefail
-
-source ./bin/common
-
-info "Setup Vim Plugins"
-stay_awake_while vim +PackerSync +qall

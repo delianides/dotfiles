@@ -24,16 +24,12 @@ configs[server_name] = {
 
 local root_dir = server.get_server_root_path(server_name)
 
--- You may also use one of the prebuilt installers (e.g., std, npm, pip3, go, gem, shell).
-local my_installer = npm.packages { "@kozer/emmet-language-server" }
-
--- 2. (mandatory) Create an nvim-lsp-installer Server instance
 local my_server = server.Server:new {
   name = server_name,
   root_dir = root_dir,
-  installer = my_installer,
+  installer = npm.packages { "@kozer/emmet-language-server " },
   default_options = {
-    cmd = { path.concat { root_dir, "emmet-language-server" }, "--stdio" },
+    cmd = { path.concat { root_dir, "node_modules", ".bin", "emmet-language-server" }, "--stdio" },
   },
 }
 

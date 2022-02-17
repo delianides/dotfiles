@@ -68,6 +68,8 @@ else
     _session_name=$(cd $DIR && ls -d */ | sed  "s|/||g" | fzf --reverse --header="Select project from $(basename $DIR) >")
     session_name=${_session_name//./_}
     path_name=$DIR/$session_name
+
+    echo $path_name;
 fi
 
 # echo session name is \"$session_name\"
@@ -84,17 +86,10 @@ session_exists() {
 }
  
 create_detached_session() {
-if [ "$DIR" == "--start" ]; then
-    (TMUX='' 
-    tmux new-session -Ad -s "$session_name" -c $path_name
-    )
-else
-    (TMUX='' 
-    tmux new-session -Ad -s "$session_name" -c $path_name;
-    tmux split-window -vb -t "$session_name" -c $path_name -p 70;
-    )
-fi
- }
+  (TMUX='' 
+      tmux new-session -c $path_name  -Ad -s "$session_name";
+  )
+}
  
 create_if_needed_and_attach() {
     if not_in_tmux; then

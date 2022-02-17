@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+not_in_tmux() {
+   [ -z "$TMUX" ]
+}
+
+echo "Project Name or Repo: "
+read -r x
+INPUT="$(echo -e "${x}" | tr -d '[:space:]')"
+
+git ls-remote "$INPUT" > /dev/null 2>&1
+if [ "$?" -ne 0 ]; then
+  mkdir "$HOME/Code/${INPUT}";
+else
+  repo=${INPUT##*/}
+  INPUT=${repo%%.*}
+  git clone "$x" "$HOME/Code/$INPUT"
+fi
+
+session_exists() {
+    # checks if the $session_name exists
+    tmux has-session -t "=$INPUT"
+}
+ 
+create_detached_session() {
+  (TMUX='' 
+      tmux new-session -c "$HOME/Code/$INPUT"  -Ad -s "$INPUT";
+  )
+}
+ 
+create_if_needed_and_attach() {
+    if not_in_tmux; then
+        tmux new-session -As "$INPUT" -c "$HOME/Code/$INPUT"
+    else
+        if ! session_exists; then
+        create_detached_session
+        fi
+        tmux switch-client -t "$INPUT"
+    fi
+}
+
+ attatch_to_first_session() {
+     tmux attach -t "$(tmux list-sessions -F "${INPUT}" | head -n 1)"
+     tmux choose-tree -Za
+}
+ 
+create_if_needed_and_attach || attatch_to_first_session
