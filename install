@@ -33,8 +33,7 @@ stay_awake_while(){
 quietly_brew_bundle(){
   local brewfile=$1
   shift
-  local regex='(^Using )|Homebrew Bundle complete|Skipping install of|It is not currently installed|Verifying SHA-256|==> (Downloading|Purging)|Already downloaded:|No SHA-256'
-  stay_awake_while brew bundle --no-lock --file="$brewfile" "$@" | (grep -vE "$regex" || true)
+  stay_awake_while brew bundle --no-lock --file="$brewfile" "$@"
 }
 
 command_does_not_exist(){
@@ -54,14 +53,13 @@ fi
 info "Installing Homebrew packages..."
 brew tap homebrew/bundle
 brew install mas 2>/dev/null
-for brewfile in Brewfile */Brewfile; do
-  quietly_brew_bundle "$brewfile" --verbose
-done
+quietly_brew_bundle "$HOME/.dotfiles/Brewfile"
+quietly_brew_bundle "$HOME/.dotfiles/Brewfile.casks"
 
 app_store_id=$(mas account || true)
 desired_app_store_id="apple@drew.delianides.com"
 if [[ "$app_store_id" == "$desired_app_store_id" ]]; then
-  quietly_brew_bundle Brewfile.mas
+  quietly_brew_bundle "$HOME/.dotfiles/Brewfile.mas"
 else
   if mas account &>/dev/null; then
     error "You are signed in to the App Store as $app_store_id."
@@ -102,29 +100,29 @@ if ! [[ -r ~/.terminfo/61/alacritty ]]; then
   tic -xe alacritty,alacritty-direct "$alacritty_terminfo"
 fi
 
-info "Running all setup scripts..."
-for setup in tag-*/setup; do
-  dir=$(basename "$(dirname "$setup")")
-  info "Running setup for ${dir#tag-}..."
-  . "$setup"
+info "installing asdf languages"
+declare -a languages=(
+  "elixir"
+  "erlang"
+  "nodejs"
+  "golang"
+  "perl"
+  "python"
+  "ruby"
+  "rust"
+  "yarn"
+  "java"
+)
+
+for language in "${languages[@]}"
+do
+  asdf plugin add $language
+  asdf install $language latest
+  asdf global $language $(asdf list $language)
 done
 
 mkdir -p ~/Code
 
-# Install extensions
-if command_does_not_exist code; then
-  error "Open VS Code and run: Install code command in \$PATH"
-else
-  for extension in $(cat ~/.vscode/extensions); do
-    code --install-extension "$extension"
-  done
-fi
-
-# Repeated keys in VSCode _won't_ pop up the accent/umlaut menu
-defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
-
 green "== Success!"
-
 yellow "== Post-install instructions =="
-yellow "1. Remap Caps Lock to Escape in the Keyboard prefpane"
-yellow "2. Set up top right Hot Corner -> Desktop in Desktop & Screen Saver prefpane"
+yellow "1. Remap Caps Lock to CTRL in the Keyboard prefpane"

@@ -1,9 +1,10 @@
 deno 1.0.0
-elixir 1.10.2
+elixir 1.13.3-otp-24
 golang 1.17.1
 nodejs 16.10.0 14.17.6
 python 2.7.18 3.8.2
 ruby 2.7.1
 rust 1.56.0
 yarn 1.22.4
-java zulu-8.48.0.53
+java java openjdk-17.0.2
+erlang 24.2.2

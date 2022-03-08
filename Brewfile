@@ -81,6 +81,7 @@ brew "ripgrep"
 brew "rke"
 brew "ssh-copy-id"
 brew "streamlink"
+brew "svn"
 brew "terraform"
 brew "terraform-docs"
 brew "the_silver_searcher"
@@ -97,12 +98,10 @@ brew "youtube-dl"
 brew "zsh"
 brew "zsh-syntax-highlighting"
 brew "derailed/k9s/k9s"
-brew "github/gh/gh"
 brew "goreleaser/tap/goreleaser"
 brew "jesseduffield/lazygit/lazygit"
 brew "osx-cross/avr/avr-gcc@8", link: true
 brew "px4/px4/gcc-arm-none-eabi"
-brew 'basdf'
 brew 'tree'
 brew 'atomicparsley'
 
