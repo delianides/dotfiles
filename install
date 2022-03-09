@@ -106,6 +106,7 @@ declare -a languages=(
   "erlang"
   "nodejs"
   "golang"
+  "clojure"
   "perl"
   "python"
   "ruby"
