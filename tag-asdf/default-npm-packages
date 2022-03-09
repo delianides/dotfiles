@@ -3,11 +3,9 @@ vercel
 serve
 npm-check-updates
 tree-sitter-cli
-truffle
 prettier
 eslint
 eslint_d
 typescript-language-server
 lua-fmt
 fixjson
-diagnostic-languageserver
