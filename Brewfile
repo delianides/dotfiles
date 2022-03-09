@@ -16,7 +16,7 @@ brew "vint"
 brew "shfmt"
 brew "yamllint"
 brew "shellcheck"
-
+brew "markdownlint-cli"
 
 brew "ansifilter"
 brew "autoconf"
