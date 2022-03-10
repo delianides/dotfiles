@@ -2,6 +2,9 @@
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 autoload -Uz colors && colors
+# makes color constants available
+export CLICOLOR=1
+
 autoload -U compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 
@@ -16,9 +19,10 @@ setopt extendedglob
 
 # Allow [ or ] whereever you want
 unsetopt nomatch
-
 unsetopt correctall
-
 unsetopt multios
 
 eval "$(fasd --init auto)"
+
+
+

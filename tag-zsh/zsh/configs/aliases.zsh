@@ -1,12 +1,7 @@
-
-export NODEJS_CHECK_SIGNATURES=no
-
 alias e=$EDITOR
-
 # youtube-dl
 alias yt='youtube-dl --output "$PWD/%(extractor_key)s/%(uploader)s [%(channel_id)s]/%(title)s [%(id)s].%(ext)s"'
 alias ytp='youtube-dl --output "$PWD/%(extractor_key)s/%(uploader)s [%(channel_id)s]/%(playlist)s/%(playlist_index)s - %(title)s [%(id)s].%(ext)s"'
-alias udemy='youtube-dl --output "$PWD/%(extractor_key)s/%(playlist)s/%(chapter_number)s - %(chapter)s/%(title)s.%(ext)s"'
 alias audio='youtube-dl --ignore-config -f bestaudio --extract-audio --audio-format mp3 --embed-thumbnail --add-metadata --audio-quality 0 --output "$PWD/%(uploader)s - %(title)s.%(ext)s"'
 
 function ytinfo() {
@@ -35,5 +30,3 @@ alias mkdir="mkdir -p"
 alias -g G="| grep "
 alias -g ONE="| awk '{ print \$1}'"
 
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND

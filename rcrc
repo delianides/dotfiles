@@ -1,6 +1,6 @@
-EXCLUDES="README.md LICENSE Brewfile Brewfile.mas Brewfile.mas install .github bin"
+EXCLUDES="README.md LICENSE Brewfile Brewfile.mas Brewfile.mas install .github lib hooks"
 DOTFILES_DIRS="$HOME/.dotfiles"
 SYMLINK_DIRS="um"
-TAGS="asdf git terminal tmux vim zsh macos vscode"
+TAGS="asdf git terminal tmux vim zsh code"
 UNDOTTED="Library"
 

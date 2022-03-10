@@ -1,2 +1,2 @@
 # direnv
-eval "$(direnv hook zsh)"
+eval "$(asdf exec direnv hook zsh)"

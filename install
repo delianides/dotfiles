@@ -104,6 +104,7 @@ info "installing asdf languages"
 declare -a languages=(
   "elixir"
   "erlang"
+  "direnv"
   "nodejs"
   "golang"
   "clojure"
