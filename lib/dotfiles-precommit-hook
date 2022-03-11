@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dotfiles_dir="$HOME"/Code/dotfiles
+dotfiles_dir="$HOME"/Code/personal/dotfiles
 if [ "$PWD" = "$dotfiles_dir" ]; then
   ./lib/save_code_extensions
   git add tag-code/extensions

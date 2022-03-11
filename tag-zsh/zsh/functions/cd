@@ -1,4 +1,4 @@
-# vi:syntax=zsh
+#!/bin/bash
 
 function cd () {
 	if   [[ "x$*" == "x..." ]]; then

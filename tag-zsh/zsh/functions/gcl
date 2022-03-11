@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function gcl {
+  # if you do `local directory=$(superclone "$@")`, it will not pick up the
+  # `superclone` return code and $? will always be 0 because it successfully
+  # assigned the variable. The solution is to separate `local` onto its own
+  # line.
+  local directory
+  directory=$(superclone "$@")
+  if [[ $? -eq 0 ]]; then
+    cd "$directory"
+  else
+    return 1
+  fi
+}

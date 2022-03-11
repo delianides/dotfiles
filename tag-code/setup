@@ -8,7 +8,7 @@ command_does_not_exist(){
 if command_does_not_exist code; then
   error "Open VS Code and run: Install code command in \$PATH"
 else
-  for extension in $(cat $HOME/Code/dotfiles/tag-code/extensions); do
+  for extension in $(cat $HOME/Code/personal/dotfiles/tag-code/extensions); do
     code --install-extension "$extension"
   done
 fi

@@ -4,6 +4,10 @@
 
 set -eo pipefail
 
+mkdir -p ~/Code/work
+mkdir -p ~/Code/personal
+mkdir -p ~/Code/src
+
 color() {
   local colornumber="$1"
   shift
@@ -53,13 +57,13 @@ fi
 info "Installing Homebrew packages..."
 brew tap homebrew/bundle
 brew install mas 2>/dev/null
-quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile"
-quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.casks" || true
+quietly_brew_bundle "$HOME/Code/personal/dotfiles/Brewfile"
+quietly_brew_bundle "$HOME/Code/personal/dotfiles/Brewfile.casks" || true
 
 app_store_id=$(mas account || true)
 desired_app_store_id="apple@drew.delianides.com"
 if [[ "$app_store_id" == "$desired_app_store_id" ]]; then
-  quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.mas"
+  quietly_brew_bundle "$HOME/Code/personal/dotfiles/Brewfile.mas"
 else
   if mas account &>/dev/null; then
     error "You are signed in to the App Store as $app_store_id."
@@ -87,30 +91,32 @@ export RCRC=rcrc
 stay_awake_while rcup -d .
 
 info "Setting Pre-Commit Hook"
-cp "$HOME/Code/dotfiles/lib/dotfiles-precommit-hook" "$HOME/Code/dotfiles/.git/hooks/pre-commit"
+cp "$HOME/Code/personal/dotfiles/lib/dotfiles-precommit-hook" "$HOME/Code/personal/dotfiles/.git/hooks/pre-commit"
 
 info "Installing Vim packages..."
 vim +PackerSync +qa
 
 info "Installing MacOS system settings..."
-stay_awake_while sudo "$HOME"/Code/dotfiles/system/macos
+stay_awake_while sudo "$HOME"/Code/personal/dotfiles/system/macos
 
-info "Installing ASDF language version manager..."
-declare -a languages=(
-  "nodejs"
-  "python"
-  "ruby"
-  "rust"
-  "yarn"
-  "golang"
-)
 
-for language in "${languages[@]}"
-do
-  info "Installing $language in ASDF..."
-  asdf plugin add "$language"
-  asdf install "$language" latest
-done
+# TODO Fix install
+# info "Installing ASDF language version manager..."
+# declare -a languages=(
+#   "nodejs"
+#   "python"
+#   "ruby"
+#   "rust"
+#   "yarn"
+#   "golang"
+# )
+#
+# for language in "${languages[@]}"
+# do
+#   info "Installing $language in ASDF..."
+#   asdf plugin add "$language"
+#   asdf install "$language" latest
+# done
  
 # Installs to ~/.terminfo
 echo "Installing italics-capable terminfo files..."
@@ -121,7 +127,7 @@ if ! [[ -r ~/.terminfo/61/alacritty ]]; then
 fi
 
 info "Running all setup scripts..."
-for setup in "$HOME"/Code/dotfiles/tag-*/setup; do
+for setup in "$HOME"/Code/personal/dotfiles/tag-*/setup; do
   dir=$(basename "$(dirname "$setup")")
   info "Running setup for ${dir#tag-}..."
   # shellcheck disable=SC1090
@@ -131,3 +137,4 @@ done
 info "Success!"
 yellow "== Post-install instructions =="
 yellow "1. Remap Caps Lock to CTRL in the Keyboard prefpane"
+yellow "2. Make sure to install TMUX plugins: prefix+I"
