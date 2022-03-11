@@ -1,0 +1,23 @@
+#!/bin/bash
+
+clone(){
+  if [[ $# < 2 ]]; then
+    echo "Please provide a directory and a repo name" >&2
+    echo "Usage: clone personal gabebw/dotfiles [gabebw-dotfiles]" >&2
+    return 1
+  fi
+  local directory=$1
+  local session_name
+  pushd "$directory" >/dev/null
+  shift
+  if gcl "$@"; then
+    # Name the session after the current directory
+    session_name=$(basename "$PWD")
+    if tmux-session-exists "$session_name"; then
+      session_name="${session_name}-new"
+    fi
+    tcd "$PWD" "$session_name"
+    popd >/dev/null
+  fi
+  popd >/dev/null
+}

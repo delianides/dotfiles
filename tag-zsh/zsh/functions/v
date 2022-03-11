@@ -1,7 +1,13 @@
-# vim:syntax=zsh
+#!/bin/bash
 
-v() {
-    [ $# -gt 0 ] && fasd -f -e ${EDITOR} "$*" && return
-    local file
-    file="$(fasd -Rfl "$1" | fzf -1 -0 --no-sort +m)" && ${EDITOR} "${file}" || return 1
+v(){
+  if [[ "$PWD" == "$HOME" ]]; then
+    echo "Refusing to run this in your home directory" >&2
+    return 1
+  fi
+  local old_IFS=$IFS
+  IFS=$'\n'
+  local files=($(fzf-tmux --query="$1" --multi --exit-0))
+  [[ -n "$files" ]] && $VISUAL "${files[@]}"
+  IFS=$old_IFS
 }

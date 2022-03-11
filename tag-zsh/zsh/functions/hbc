@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function hbc(){
+  if [[ $# -ge 1 ]]; then
+    hub browse -- commit/"$1"
+  else
+    local branch=$(git-shalector)
+    if [[ -n "$branch" ]]; then
+      hub browse -- commit/"$branch"
+    fi
+  fi
+}

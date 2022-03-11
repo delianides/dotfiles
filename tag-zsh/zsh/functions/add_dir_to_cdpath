@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+add_dir_to_cdpath(){
+  if [ -d "$1" ]; then
+    # Use lowercase `cdpath` because uppercase `CDPATH` can't be set to an array
+    cdpath+=("$1")
+  fi
+}

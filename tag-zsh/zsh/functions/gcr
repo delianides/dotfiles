@@ -1,0 +1,9 @@
+#!/bin/bash
+
+gcr(){
+  local branch=$(select-git-branch --all)
+  if [[ -n "$branch" ]]; then
+    git checkout "$branch"
+  fi
+  true
+}

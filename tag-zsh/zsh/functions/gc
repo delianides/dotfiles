@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+function gc(){
+  if [[ $# == 0 ]]; then
+    local branch=$(select-git-branch)
+    if [[ -n "$branch" ]]; then
+      git checkout "$branch"
+    fi
+    true
+  else
+    git checkout "$@"
+  fi
+}

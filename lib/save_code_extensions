@@ -1,4 +1,4 @@
 #!/bin/sh
 
 echo "Saving VSCode extensions..."
-code --list-extensions > "$HOME/Code/dotfiles/tag-code/extensions"
+code --list-extensions > "$HOME/Code/personal/dotfiles/tag-code/extensions"

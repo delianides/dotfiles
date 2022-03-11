@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+function db-dump() {
+  if (( $# == 2 )); then
+    pg_dump --clean --create --format=custom --file "$2" "$1" && \
+      echo "Wrote to $2"
+  else
+    echo "Usage: db-dump DB_NAME FILENAME"
+    return 1
+  fi
+}

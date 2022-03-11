@@ -1,4 +1,6 @@
-alias e=$EDITOR
+#!/bin/bash
+
+alias e="$EDITOR"
 
 # youtube-dl
 alias yt='youtube-dl --output "$PWD/%(extractor_key)s/%(uploader)s [%(channel_id)s]/%(title)s [%(id)s].%(ext)s"'
@@ -6,10 +8,9 @@ alias ytp='youtube-dl --output "$PWD/%(extractor_key)s/%(uploader)s [%(channel_i
 alias audio='youtube-dl --ignore-config -f bestaudio --extract-audio --audio-format mp3 --embed-thumbnail --add-metadata --audio-quality 0 --output "$PWD/%(uploader)s - %(title)s.%(ext)s"'
 
 function ytinfo() {
-  youtube-dl --ignore-config --dump-json $1 | jq
+  youtube-dl --ignore-config --dump-json "$1" | jq
 }
 
-# alias npm="NEWT_SKIP_VPNCHECK=1 newt exec npm"
 alias vim="nvim"
 alias vi="nvim"
 alias qq="cd . && source ~/.zshrc"
@@ -22,6 +23,15 @@ alias tmux="tmux -2"
 alias ssh='TERM=xterm-256color ssh'
 alias grep="egrep --color=auto"
 
+alias grb='git rebase'
+alias grba='git rebase --abort'
+alias grbc='git rebase --continue'
+alias gs='git status -sb'
+alias gsb='git status -sb'
+alias glgg='git log --graph'
+alias ggpull='git pull origin "$(git_current_branch)"'
+alias ggpush='git push origin "$(git_current_branch)"'
+
 # Copy-pasting `$ python something.py` works
 alias \$=''
 alias diff="colordiff -u"
@@ -29,7 +39,3 @@ alias mkdir="mkdir -p"
 
 # Global aliases
 alias -g G="| grep "
-alias -g ONE="| awk '{ print \$1}'"
-
-unalias z
-

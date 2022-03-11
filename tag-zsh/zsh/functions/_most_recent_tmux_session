@@ -1,0 +1,8 @@
+#!/bin/bash
+
+_most_recent_tmux_session(){
+  tmux list-sessions -F "#{session_last_attached} #{session_name}" | \
+    sort -r | \
+    cut -d' ' -f2 | \
+    head -1
+}
