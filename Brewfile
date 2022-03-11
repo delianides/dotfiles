@@ -35,7 +35,6 @@ brew "asdf"
 brew "autoenv"
 brew "direnv"
 brew "avrdude"
-brew "awscli"
 brew "clipper", restart_service: true
 brew "speedtest", force: true
 brew "cmatrix"

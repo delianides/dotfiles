@@ -12,18 +12,16 @@ color() {
   tput sgr0
 }
 
-# blue = 4
-# magenta = 5
 red(){ color 1 "$*"; }
 green(){ color 2 "$*"; }
 yellow(){ color 3 "$*"; }
 
 info(){
-  green "=== $@"
+  green "=== $*"
 }
 
 error(){
-  red "!! $@"
+  red "!! $*"
 }
 
 stay_awake_while(){
@@ -33,12 +31,14 @@ stay_awake_while(){
 quietly_brew_bundle(){
   local brewfile=$1
   shift
-  stay_awake_while brew bundle --no-lock --file="$brewfile" "$@"
+  local regex='(^Using )|Homebrew Bundle complete|Skipping install of|It is not currently installed|Verifying SHA-256|==> (Downloading|Purging)|Already downloaded:|No SHA-256'
+  stay_awake_while brew bundle --no-lock --file="$brewfile" "$@" | (grep -vE "$regex" || true)
 }
 
 command_does_not_exist(){
   ! command -v "$1" > /dev/null
 }
+
 
 info "Checking for command-line tools..."
 if command_does_not_exist xcodebuild; then
@@ -53,13 +53,13 @@ fi
 info "Installing Homebrew packages..."
 brew tap homebrew/bundle
 brew install mas 2>/dev/null
-quietly_brew_bundle "$HOME/.dotfiles/Brewfile"
-quietly_brew_bundle "$HOME/.dotfiles/Brewfile.casks"
+quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile"
+quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.casks" || true
 
 app_store_id=$(mas account || true)
 desired_app_store_id="apple@drew.delianides.com"
 if [[ "$app_store_id" == "$desired_app_store_id" ]]; then
-  quietly_brew_bundle "$HOME/.dotfiles/Brewfile.mas"
+  quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.mas"
 else
   if mas account &>/dev/null; then
     error "You are signed in to the App Store as $app_store_id."
@@ -86,12 +86,32 @@ info "Linking dotfiles into ~..."
 export RCRC=rcrc
 stay_awake_while rcup -d .
 
+info "Setting Pre-Commit Hook"
+cp "$HOME/Code/dotfiles/lib/dotfiles-precommit-hook" "$HOME/Code/dotfiles/.git/hooks/pre-commit"
+
 info "Installing Vim packages..."
 vim +PackerSync +qa
 
-info "Creating ~/Pictures/screenshots so screenshots can be saved there..."
-mkdir -p ~/Pictures/screenshots
+info "Installing MacOS system settings..."
+stay_awake_while sudo "$HOME"/Code/dotfiles/system/macos
 
+info "Installing ASDF language version manager..."
+declare -a languages=(
+  "nodejs"
+  "python"
+  "ruby"
+  "rust"
+  "yarn"
+  "golang"
+)
+
+for language in "${languages[@]}"
+do
+  info "Installing $language in ASDF..."
+  asdf plugin add "$language"
+  asdf install "$language" latest
+done
+ 
 # Installs to ~/.terminfo
 echo "Installing italics-capable terminfo files..."
 if ! [[ -r ~/.terminfo/61/alacritty ]]; then
@@ -100,31 +120,14 @@ if ! [[ -r ~/.terminfo/61/alacritty ]]; then
   tic -xe alacritty,alacritty-direct "$alacritty_terminfo"
 fi
 
-info "installing asdf languages"
-declare -a languages=(
-  "elixir"
-  "erlang"
-  "direnv"
-  "nodejs"
-  "golang"
-  "clojure"
-  "perl"
-  "python"
-  "ruby"
-  "rust"
-  "yarn"
-  "java"
-)
-
-for language in "${languages[@]}"
-do
-  asdf plugin add $language
-  asdf install $language latest
-  asdf global $language $(asdf list $language)
+info "Running all setup scripts..."
+for setup in "$HOME"/Code/dotfiles/tag-*/setup; do
+  dir=$(basename "$(dirname "$setup")")
+  info "Running setup for ${dir#tag-}..."
+  # shellcheck disable=SC1090
+  . "$setup"
 done
 
-mkdir -p ~/Code
-
-green "== Success!"
+info "Success!"
 yellow "== Post-install instructions =="
 yellow "1. Remap Caps Lock to CTRL in the Keyboard prefpane"

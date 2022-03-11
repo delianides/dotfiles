@@ -1,0 +1,124 @@
+#!/usr/bin/env sh
+# vim: tw=0
+
+# Useful tips from: https://github.com/mathiasbynens/dotfiles/blob/master/.osx
+
+# Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+# Disable “natural” (Lion-style) scrolling
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+
+# Disable the 'Are you sure you want to open this application?' dialog
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+# Automatically illuminate built-in MacBook keyboard in low light
+defaults write com.apple.BezelServices kDim -bool true
+# Turn off keyboard illumination when computer is not used for 5 minutes
+defaults write com.apple.BezelServices kDimTime -int 300
+
+# Finder: disable window animations and Get Info animations
+defaults write com.apple.finder DisableAllAnimations -bool true
+
+# Finder: show hidden files by default
+defaults write com.apple.finder AppleShowAllFiles -bool true
+
+# Disable the warning when changing a file extension
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+# Finder: Always open everything in list view
+defaults write com.apple.Finder FXPreferredViewStyle Nlsv
+
+# Make Dock icons of hidden applications translucent
+defaults write com.apple.dock showhidden -bool true
+
+# Show remaining battery percentage (can't show time in recent macOS versions)
+defaults write com.apple.menuextra.battery ShowPercent -string "YES"
+
+# Show all filename extensions in Finder
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Use current directory as default search scope in Finder
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+# Show Path bar at bottom of Finder window
+defaults write com.apple.finder ShowPathbar -bool true
+
+# Show Status bar in Finder (N items, N.NN GB available)
+defaults write com.apple.finder ShowStatusBar -bool true
+
+# https://www.howtogeek.com/261880/how-to-show-the-expanded-print-and-save-dialogs-in-os-x-by-default/
+# When saving a document, show full Finder to choose where to save it
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+
+# https://www.howtogeek.com/261880/how-to-show-the-expanded-print-and-save-dialogs-in-os-x-by-default/
+# Expand print panel by default
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+
+# Save screenshots to the desktop
+mkdir -p "$HOME/Photos/Screenshots" && defaults write com.apple.screencapture location -string "$HOME/Photos/Screenshots"
+
+# Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
+defaults write com.apple.screencapture type -string "png"
+
+# Disable shadow in screenshots
+defaults write com.apple.screencapture disable-shadow -bool true
+
+# Enable subpixel font rendering on non-Apple LCDs
+# Reference: https://github.com/kevinSuttle/macOS-Defaults/issues/17#issuecomment-266633501
+defaults write NSGlobalDomain AppleFontSmoothing -int 1
+
+# Enable HiDPI display modes (requires restart)
+sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
+
+# Enable lid wakeup
+sudo pmset -a lidwake 1
+
+# https://www.defaults-write.com/enable-spring-loaded-dock-items/
+defaults write enable-spring-load-actions-on-all-items -bool true
+
+# Show indicator lights under open applications in the Dock
+defaults write com.apple.dock show-process-indicators -bool true
+
+# Disable press-and-hold for keys in favor of key repeat
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+# Display full POSIX path as Finder window title
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
+# Avoid creating .DS_Store files on network volumes
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+# Show item info below desktop icons ("5 items" for folders)
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:showItemInfo true" ~/Library/Preferences/com.apple.finder.plist
+
+# Enable snap-to-grid for desktop icons
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+
+# Disable Safari’s thumbnail cache for History and Top Sites
+defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
+
+# Make Safari’s search banners default to Contains instead of Starts With
+defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+
+# Add a context menu item for showing the Web Inspector in web views
+defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+# Make ⌘ + F focus the search input in iTunes
+defaults write com.apple.iTunes NSUserKeyEquivalents -dict-add "Target Search Field" "@F"
+
+# Do not restore previously-opened windows in Preview
+# https://apple.stackexchange.com/questions/54854/is-there-a-way-to-make-preview-not-open-all-previously-opened-files
+defaults write com.apple.Preview ApplePersistenceIgnoreState YES
+
+# Show the ~/Library folder
+chflags nohidden ~/Library
+
+# Disable smart quotes and smart dashes as they're annoying when typing code
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+
+# Kill affected applications
+for app in Safari Finder Dock Mail SystemUIServer; do
+  killall "$app" >/dev/null 2>&1;
+done

@@ -1,8 +1,6 @@
 neovim
 vercel
-serve
 npm-check-updates
-tree-sitter-cli
 prettier
 eslint
 eslint_d

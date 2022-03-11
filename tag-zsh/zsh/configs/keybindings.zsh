@@ -1,8 +1,13 @@
 # give us access to ^Q
 stty -ixon
 
+# Use cat or Ctrl-V to find new bindings
+# https://stackoverflow.com/questions/5314161/interpret-zsh-bindkey-escaped-sequences
+export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
+
 # vi mode
 bindkey -v
+bindkey "^F" vi-cmd-mode
 
 # handy keybindings
 bindkey "^A" beginning-of-line
