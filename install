@@ -99,24 +99,33 @@ vim +PackerSync +qa
 info "Installing MacOS system settings..."
 stay_awake_while sudo "$HOME"/Code/personal/dotfiles/system/macos
 
+info "Installing ASDF language version manager..."
+alias install_asdf_plugin=add_or_update_asdf_plugin
+add_or_update_asdf_plugin() {
+  local name="$1"
+  local url="$2"
 
-# TODO Fix install
-# info "Installing ASDF language version manager..."
-# declare -a languages=(
-#   "nodejs"
-#   "python"
-#   "ruby"
-#   "rust"
-#   "yarn"
-#   "golang"
-# )
-#
-# for language in "${languages[@]}"
-# do
-#   info "Installing $language in ASDF..."
-#   asdf plugin add "$language"
-#   asdf install "$language" latest
-# done
+  if ! asdf plugin-list | grep -Fq "$name"; then
+    asdf plugin-add "$name" "$url"
+  else
+    asdf plugin-update "$name"
+  fi
+}
+declare -a languages=(
+  "nodejs"
+  "python"
+  "ruby"
+  "rust"
+  "yarn"
+  "golang"
+  "java"
+  "starship"
+)
+
+for language in "${languages[@]}"
+do
+  add_or_update_asdf_plugin "$language"
+done
  
 # Installs to ~/.terminfo
 echo "Installing italics-capable terminfo files..."
