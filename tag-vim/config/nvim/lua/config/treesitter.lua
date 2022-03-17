@@ -101,3 +101,17 @@ require("nvim-treesitter.configs").setup({
 -- Add Markdown
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.jsonc.filetype_to_parsername = "json"
+
+-- Add HCL
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.hcl = {
+  install_info = {
+    url = "~/Code/src/tree-sitter-hcl", -- local path or git repo
+    files = {"src/parser.c", "src/scanner.cc"},
+    -- optional entries:
+    branch = "main", -- default branch in case of git repo if different from master
+    generate_requires_npm = true, -- if stand-alone parser without npm dependencies
+    requires_generate_from_grammar = true, -- if folder contains pre-generated src/parser.c
+  },
+  filetype = "tf", -- if filetype does not match the parser name
+}

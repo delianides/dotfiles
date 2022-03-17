@@ -6,4 +6,5 @@ eslint
 eslint_d
 typescript-language-server
 lua-fmt
+tree-sitter-cli
 fixjson

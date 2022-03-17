@@ -61,8 +61,7 @@ bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
 if [ -z "$TMUX" ]; then
-  bindkey -s "^P" 'ta ~/Code\n'
-  bindkey -s "^D" 'cd ~/.dotfiles && tat > /dev/null 2>&1\n'
+  bindkey -s "^P" 'ta ~/Projects\n'
 fi
 # }}}
 
@@ -110,12 +109,7 @@ export TIMEFMT=$'\nreal\t%*E\nuser\t%*U\nsys\t%*S'
 # Note that these FZF options are used by fzf.vim automatically! Yay!
 # Use a separate tool to smartly ignore files
 export FZF_DEFAULT_COMMAND='rg --hidden --files --ignore-file ~/.ignore'
-# Jellybeans theme: https://github.com/junegunn/fzf/wiki/Color-schemes
-export FZF_DEFAULT_OPTS='--color fg:188,bg:233,hl:103,fg+:222,bg+:234,hl+:104
---color info:183,prompt:110,spinner:107,pointer:167,marker:215
---bind ctrl-u:page-up,ctrl-f:page-down
---reverse
-'
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
 # }}}
 
 # Completion {{{
@@ -234,7 +228,16 @@ alias gd="git diff"
 alias gdm="git master-to-main-wrapper diff origin/%BRANCH%"
 alias amend="git commit --amend -Chead"
 alias amend-new="git commit --amend"
-
+alias amend-reset-author="git commit --amend --reset-author"
+alias grb='git rebase'
+alias grba='git rebase --abort'
+alias grbc='git rebase --continue'
+alias gco='git checkout'
+alias gs='git status -sb'
+alias gsb='git status -sb'
+alias glgg='git log --graph'
+alias ggpull='git pull origin "$(git_current_branch)"'
+alias ggpush='git push origin "$(git_current_branch)"'
 alias ga="git add"
 alias gcp="git rev-parse HEAD | xargs echo -n | pbcopy"
 
@@ -282,8 +285,8 @@ export NODEJS_CHECK_SIGNATURES=no
 # }}}
 
 # Golang {{{
-export GOPATH="$HOME/Code/go"
-export GOBIN="$HOME/Code/go/bin"
+export GOPATH="$HOME/Code/src/go"
+export GOBIN="$HOME/Code/src/go/bin"
 # }}}
 
 # Postgres {{{
@@ -302,6 +305,9 @@ export HOMEBREW_AUTO_UPDATE_SECS=604800
 
 # Always cleanup after installing or upgrading
 export HOMEBREW_INSTALL_CLEANUP=1
+
+# Stop bugging me about brew env
+export HOMEBREW_NO_ENV_HINTS=1
 # }}}
 
 # zsh-syntax-highlighting must be sourced after all custom widgets have been
@@ -318,15 +324,30 @@ fi
 
 # Path {{{
 typeset -U path
-PATH="$HOME/.bin:/usr/local/bin:/usr/local/sbin:$PATH"
+PATH="$HOME/.bin:/usr/local/sbin:$PATH"
 
-# mkdir .git/safe in the root of repositories you trust
-PATH=".git/safe/../../bin:$PATH"
-# }}}
-
-if [ ! -d "$HOME/.asdf" ]; then
- . /usr/local/opt/asdf/libexec/asdf.sh
+# Try loading ASDF from the regular home dir location
+if [ -f "$HOME/.asdf/asdf.sh" ]; then
+  . "$HOME/.asdf/asdf.sh"
+elif which brew >/dev/null &&
+  BREW_DIR="$(dirname `which brew`)/.." &&
+  [ -f "$BREW_DIR/opt/asdf/asdf.sh" ]; then
+  . "$BREW_DIR/opt/asdf/asdf.sh"
+  # . "$HOME/.asdf/plugins/java/set-java-home.zsh"
 fi
 
+# mkdir .git/safe in the root of repositories you trust
+PATH=".git/safe/../../bin:/usr/local/opt/libpq/bin:$PATH:$GOBIN"
+# }}}
+
+eval "$(direnv hook zsh)"
+# eval "$(rbenv init - zsh)"
+# eval "$(pyenv init -)"
+
 [ -f ~/.aliases ] && source ~/.aliases
+[ -f ~/.localrc ] && source ~/.localrc
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

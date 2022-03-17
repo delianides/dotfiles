@@ -151,7 +151,7 @@
   "go.formatTool": "goimports",
   "vsicons.dontShowNewVersionMessage": true,
   "terraform.languageServer": {
-    "enabled": true
+    "external": true
   },
   "pgFormatter.keywordCase": "uppercase",
   "pgFormatter.commaBreak": true,

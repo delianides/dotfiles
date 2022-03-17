@@ -1,8 +1,6 @@
-golang 1.17.1
+golang 1.17.8
+python 3.10.2
+ruby 3.1.1
 nodejs 14.19.0
-python 2.7.18 3.8.2
-ruby 2.7.1
-rust 1.56.0
-yarn 1.22.4
-java openjdk-17.0.2
-starship 1.4.2
+lua 5.4.4
+rust 1.59.0

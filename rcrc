@@ -1,4 +1,4 @@
-EXCLUDES="README.md LICENSE Brewfile Brewfile.mas Brewfile.casks install .github lib system setup extensions"
+EXCLUDES="README.md LICENSE Brewfile Brewfile.mas Brewfile.casks install .github lib system setup extensions iterm"
 DOTFILES_DIRS="$HOME/Code/dotfiles"
 TAGS="asdf git terminal tmux vim zsh code"
 UNDOTTED="Library"

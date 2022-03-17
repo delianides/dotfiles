@@ -58,6 +58,7 @@ info "Installing Homebrew packages..."
 brew tap homebrew/bundle
 brew install mas 2>/dev/null
 quietly_brew_bundle "$HOME/Code/personal/dotfiles/Brewfile"
+quietly_brew_bundle "$HOME/Code/personal/dotfiles/Brewfile.lang" || true
 quietly_brew_bundle "$HOME/Code/personal/dotfiles/Brewfile.casks" || true
 
 app_store_id=$(mas account || true)
@@ -74,9 +75,6 @@ else
   fi
   error "(This won't affect your iCloud account.)"
 fi
-
-# Brewfile.casks exits 1 sometimes but didn't actually fail
-quietly_brew_bundle Brewfile.casks || true
 
 if ! echo "$SHELL" | grep -Fq zsh; then
   info "Your shell is not Zsh. Changing it to Zsh..."
@@ -112,7 +110,7 @@ add_or_update_asdf_plugin() {
   fi
 }
 declare -a languages=(
-  "nodejs"
+#  "nodejs"
   "python"
   "ruby"
   "rust"
