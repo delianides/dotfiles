@@ -1,6 +1,23 @@
-require("util")
-require("options")
+local impatient_ok, impatient = pcall(require, "impatient")
+if impatient_ok then
+  impatient.enable_profile()
+end
 
-vim.defer_fn(function()
-	require("plugins")
-end, 0)
+local utils = require "core.utils"
+
+utils.disabled_builtins()
+utils.bootstrap()
+
+local sources = {
+  "core.options",
+  "core.autocmds",
+  "core.plugins",
+  "core.mappings",
+}
+
+for _, source in ipairs(sources) do
+  local status_ok, fault = pcall(require, source)
+  if not status_ok then
+    utils.error("**** Failed to load " .. source .. "\n\n" .. fault)
+  end
+end

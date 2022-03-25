@@ -15,7 +15,7 @@ alias qq="cd . && source ~/.zshrc"
 alias ls="exa"
 alias rm="trash"
 alias aci="asciinema"
-
+alias aws='op run --env-file="$HOME/.config/op/aws-env" -- aws'
 alias re-source="source ~/.localrc"
 alias tmux="tmux -2"
 alias ssh='TERM=xterm-256color ssh'
