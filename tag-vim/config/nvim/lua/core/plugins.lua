@@ -14,7 +14,7 @@ local config = {
 	},
 	auto_clean = true,
 	compile_on_sync = true,
-	max_jobs = 50,
+	max_jobs = 10,
 	display = {
 		open_fn = function()
 			return require("packer.util").float({ border = "single" })
