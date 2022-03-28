@@ -69,6 +69,67 @@ function M.config()
 			-- Developer configurations: Not meant for general override
 			buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
 			path_display = { "truncate" },
+			mappings = {
+				i = {
+					["<C-n>"] = actions.cycle_history_next,
+					["<C-p>"] = actions.cycle_history_prev,
+
+					["<C-j>"] = actions.move_selection_next,
+					["<C-k>"] = actions.move_selection_previous,
+
+					["<C-c>"] = actions.close,
+
+					["<Down>"] = actions.move_selection_next,
+					["<Up>"] = actions.move_selection_previous,
+
+					["<CR>"] = actions.select_default,
+					["<C-x>"] = actions.select_horizontal,
+					["<C-v>"] = actions.select_vertical,
+					["<C-t>"] = actions.select_tab,
+
+					["<C-u>"] = actions.preview_scrolling_up,
+					["<C-d>"] = actions.preview_scrolling_down,
+
+					["<PageUp>"] = actions.results_scrolling_up,
+					["<PageDown>"] = actions.results_scrolling_down,
+
+					["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+					["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+					["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+					["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+					["<C-l>"] = actions.complete_tag,
+				},
+
+				n = {
+					["<esc>"] = actions.close,
+					["<CR>"] = actions.select_default,
+					["<C-x>"] = actions.select_horizontal,
+					["<C-v>"] = actions.select_vertical,
+					["<C-t>"] = actions.select_tab,
+
+					["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+					["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+					["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+					["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+
+					["j"] = actions.move_selection_next,
+					["k"] = actions.move_selection_previous,
+					["H"] = actions.move_to_top,
+					["M"] = actions.move_to_middle,
+					["L"] = actions.move_to_bottom,
+
+					["<Down>"] = actions.move_selection_next,
+					["<Up>"] = actions.move_selection_previous,
+					["gg"] = actions.move_to_top,
+					["G"] = actions.move_to_bottom,
+
+					["<C-u>"] = actions.preview_scrolling_up,
+					["<C-d>"] = actions.preview_scrolling_down,
+
+					["<PageUp>"] = actions.results_scrolling_up,
+					["<PageDown>"] = actions.results_scrolling_down,
+				},
+			},
 		},
 
 		extensions = {
@@ -118,88 +179,6 @@ function M.config()
 			cwd = opts.cwd,
 		})
 	end
-end
-
-M.edit_zsh = function()
-	require("telescope.builtin").find_files({
-		shorten_path = false,
-		cwd = "~/.zsh/",
-		prompt = "~ zsh ~",
-		hidden = true,
-		follow = true,
-
-		layout_strategy = "horizontal",
-		layout_config = {
-			preview_width = 0.55,
-		},
-	})
-end
-
-M.edit_neovim = function()
-	local opts_with_preview, opts_without_preview
-
-	opts_with_preview = {
-		prompt_title = "~ dotfiles ~",
-		shorten_path = false,
-		cwd = "~/.config/nvim",
-		follow = true,
-
-		layout_strategy = "flex",
-		layout_config = {
-			width = 0.9,
-			height = 0.8,
-
-			horizontal = {
-				width = { padding = 0.15 },
-			},
-			vertical = {
-				preview_height = 0.75,
-			},
-		},
-
-		attach_mappings = function(_, map)
-			map("i", "<c-y>", set_prompt_to_entry_value)
-			map("i", "<M-c>", function(prompt_bufnr)
-				actions.close(prompt_bufnr)
-				vim.schedule(function()
-					require("telescope.builtin").find_files(opts_without_preview)
-				end)
-			end)
-
-			return true
-		end,
-	}
-
-	opts_without_preview = vim.deepcopy(opts_with_preview)
-	opts_without_preview.previewer = false
-
-	require("telescope.builtin").find_files(opts_with_preview)
-end
-
-M.git_status = function()
-	local opts = themes.get_dropdown({
-		winblend = 10,
-		border = true,
-		previewer = false,
-		shorten_path = false,
-	})
-
-	require("telescope.builtin").git_status(opts)
-end
-
-M.git_commits = function()
-	require("telescope.builtin").git_commits({
-		winblend = 5,
-	})
-end
-
-M.git_branches = function()
-	require("telescope.builtin").git_branches({
-		attach_mappings = function(_, map)
-			map("i", "<c-d>", actions.git_delete_branch)
-			map("n", "<c-d>", actions.git_delete_branch)
-		end,
-	})
 end
 
 return M
