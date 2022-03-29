@@ -1,4 +1,4 @@
-dotfiles ![Dotfiles](https://github.com/delianides/dotfiles/workflows/Dotfiles/badge.svg)
+dotfiles [![Test & Lint Dotfiles](https://github.com/delianides/dotfiles/actions/workflows/dotfiles.yml/badge.svg)](https://github.com/delianides/dotfiles/actions/workflows/dotfiles.yml)
 ========
 
 Welcome to my dotfiles! The files here are a pretty minimal setup for easily running Docker, Tmux, and Vim. I'm currently using [RCM](https://github.com/thoughtbot/rcm) from thoughtbot to manage everything.
