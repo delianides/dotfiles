@@ -277,10 +277,8 @@ local function plugins(use)
     },
   }
 
-  use "onsails/lspkind-nvim"
   use "ray-x/lsp_signature.nvim"
   use "nvim-lua/lsp_extensions.nvim"
-  use { "tami5/lspsaga.nvim" }
 
   -- Snippet collection
   use {

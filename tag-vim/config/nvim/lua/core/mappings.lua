@@ -1,7 +1,6 @@
 local M = {}
 
 local util = require "core.utils"
-local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
 -- Remap space as leader key
@@ -112,7 +111,7 @@ util.nmap("<leader>sc", "<cmd>Telescope commands<CR>")
 util.nmap("<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>")
 util.nmap("<leader>lR", "<cmd>Telescope lsp_references<CR>")
 util.nmap("<leader>lD", "<cmd>Telescope diagnostics<CR>")
-util.nmap("<C-f>", "<cmd>lua _PROJECT_FILES()<CR>")
+util.nmap("<C-f>", '<cmd>lua require("configs.telescope").project_files()<CR>')
 -- map("n", "<C-f>", "<cmd>lua _PROJECT_FILES()<CR>", opts)
 
 -- LSP
@@ -131,7 +130,7 @@ util.nmap("<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 util.nmap("<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>")
 util.nmap("<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>")
 util.nmap("<leader>ld", "<cmd>lua vim.diagnostic.open_float()<CR>")
-util.nmap("<leader>tt", "<cmd>lua Trouble document_diagnostics<CR>")
+util.nmap("<leader>tt", "<cmd>Trouble document_diagnostics<CR>")
 
 -- Comment
 util.nmap("gcc", "<cmd>lua require('Comment.api').toggle_current_linewise()<cr>")
@@ -145,10 +144,10 @@ util.nmap("<C-q>", "<cmd>q!<CR>")
 
 -- Terminal
 util.nmap("<C-\\>", "<cmd>ToggleTerm<CR>")
-util.nmap("<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>")
-util.nmap("<leader>tn", "<cmd>lua _NODE_TOGGLE()<CR>")
-util.nmap("<leader>tp", "<cmd>lua _PYTHON_TOGGLE()<CR>")
-util.nmap("<leader>tl", "<cmd>lua _LAZYGIT_TOGGLE()<CR>")
+util.nmap("<leader>gg", '<cmd>lua require("configs.toggleterm").lazygit_toggle()<CR>')
+util.nmap("<leader>tn", '<cmd>lua require("configs.toggleterm").node_toggle()<CR>')
+util.nmap("<leader>tp", '<cmd>lua require("configs.toggleterm").python_toggle()<CR>')
+util.nmap("<leader>tl", '<cmd>lua require("configs.toggleterm").lazygit_toggle()<CR>')
 util.nmap("<leader>tf", "<cmd>ToggleTerm direction=float<cr>")
 util.nmap("<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>")
 util.nmap("<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>")

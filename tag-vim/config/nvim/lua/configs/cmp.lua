@@ -39,7 +39,7 @@ function M.config()
     TypeParameter = "",
   }
 
-  cmp.setup({
+  cmp.setup {
     preselect = cmp.PreselectMode.None,
     formatting = {
       fields = { "kind", "abbr", "menu" },
@@ -109,7 +109,7 @@ function M.config()
         "s",
       }),
     },
-  })
+  }
 end
 
 return M
