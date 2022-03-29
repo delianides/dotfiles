@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 for function in ~/.zsh/functions/*; do
   source $function
 done
@@ -11,8 +13,8 @@ fi
 # }}}
 
 # Functions and Aliases {{{
-va(){ vim ~/.aliases }
-q(){ vim "$(readlink ~/.zshrc)" }
+va(){ vim ~/.aliases; }
+q(){ vim "$(readlink ~/.zshrc)"; }
 alias qq="cd . && source ~/.zshrc"
 alias cp="cp -iv"
 alias rm="rm -iv"
@@ -122,9 +124,9 @@ fpath=(
 )
 setopt completeinword
 autoload -Uz compinit
-# completion: use cache if updated within 24h
-if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
-  compinit -d $HOME/.zcompdump
+
+if [[ -n "$HOME/.zcompdump" ]]; then
+  compinit -d "$HOME/.zcompdump"
 else
   # Without redirecting output, it prints a lot of lines like this:
   #   "^A\"-\"^C\" self-inser" undefined-key
@@ -241,11 +243,11 @@ alias ggpush='git push origin "$(git_current_branch)"'
 alias ga="git add"
 alias gcp="git rev-parse HEAD | xargs echo -n | pbcopy"
 
-join-with(){ paste -sd "$1" - }
+join-with(){ paste -sd "$1" -; }
 # turn "a b c" into "a\nb\nc"
-split-on-spaces(){ tr ' ' '\n' }
+split-on-spaces(){ tr ' ' '\n'; }
 # Sum numbers (1 per line) from STDIN
-sum(){ join-with "+" | bc }
+sum(){ join-with "+" | bc; }
 
 # Complete `g` like `git`, etc
 compdef _git ga=git-add
@@ -260,8 +262,8 @@ compdef g=git
 #
 export VISUAL=nvim
 export EDITOR=$VISUAL
-alias vi="$VISUAL"
-alias vim="$VISUAL"
+alias vi='$VISUAL'
+alias vim='$VISUAL'
 
 # Remove vim flags for crontab -e
 alias crontab="VISUAL=vim crontab"
@@ -323,7 +325,7 @@ if [[ -z "$ZSH_HIGHLIGHT_HIGHLIGHTERS" ]]; then
   # Only source Zsh Syntax Highlighting once, otherwise we can run into
   # a "maximum nested function level reached" error
   ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
 # Path {{{
@@ -332,26 +334,24 @@ PATH="$HOME/.bin:/usr/local/sbin:$PATH"
 
 # Try loading ASDF from the regular home dir location
 if [ -f "$HOME/.asdf/asdf.sh" ]; then
+  # shellcheck disable=SC1091
   . "$HOME/.asdf/asdf.sh"
 elif which brew >/dev/null &&
-  BREW_DIR="$(dirname `which brew`)/.." &&
-  [ -f "$BREW_DIR/opt/asdf/asdf.sh" ]; then
+  BREW_DIR="$(dirname "$(which brew)")/.." && [ -f "$BREW_DIR/opt/asdf/asdf.sh" ]; then
+  # shellcheck disable=SC1091
   . "$BREW_DIR/opt/asdf/asdf.sh"
-  # . "$HOME/.asdf/plugins/java/set-java-home.zsh"
 fi
 
 # mkdir .git/safe in the root of repositories you trust
 PATH=".git/safe/../../bin:/usr/local/opt/libpq/bin:$PATH:$GOBIN"
 # }}}
 
-eval "$(direnv hook zsh)"
-# eval "$(rbenv init - zsh)"
-# eval "$(pyenv init -)"
+eval "$(direnv hook zsh)";
 
-[ -f ~/.aliases ] && source ~/.aliases
-[ -f ~/.localrc ] && source ~/.localrc
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# shellcheck disable=SC1090
+[ -f ~/.aliases ] && source ~/.aliases;
+# shellcheck disable=SC1090
+[ -f ~/.localrc ] && source ~/.localrc;
+# shellcheck disable=SC1090
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh;
 
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

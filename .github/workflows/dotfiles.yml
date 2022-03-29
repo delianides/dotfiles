@@ -11,12 +11,6 @@ jobs:
 
       - uses: nebularg/actions-luacheck@v1
 
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
-        with:
-          scandir: './tag-zsh'
-          additional_files: './system/macos ./install'
-
       - name: Run StyLua
         uses: JohnnyMorganz/stylua-action@1.0.0
         with:
