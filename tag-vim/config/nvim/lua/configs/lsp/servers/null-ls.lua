@@ -1,7 +1,10 @@
 local M = {}
 
-function M.setup(options)
-  local nls = require "null-ls"
+function M.config(options)
+  local status_ok, nls = pcall(require, "null-ls")
+  if not status_ok then
+    return
+  end
   nls.setup {
     debug = false,
     debounce = 150,
@@ -12,7 +15,9 @@ function M.setup(options)
       -- nls.builtins.formatting.eslint_d,
       nls.builtins.formatting.fixjson.with { filetypes = { "jsonc" } },
       nls.builtins.diagnostics.shellcheck,
-      nls.builtins.diagnostics.luacheck,
+      nls.builtins.diagnostics.luacheck.with {
+        extra_args = { "--globals", "vim" },
+      },
       nls.builtins.diagnostics.markdownlint,
       nls.builtins.code_actions.gitsigns,
       -- nls.builtins.diagnostics.selene,

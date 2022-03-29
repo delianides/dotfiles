@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  dressing.setup({
+  dressing.setup {
     input = {
       enabled = true,
       default_prompt = "➤ ",
@@ -49,7 +49,7 @@ function M.config()
       format_item_override = {},
       get_config = nil,
     },
-  })
+  }
 end
 
 return M

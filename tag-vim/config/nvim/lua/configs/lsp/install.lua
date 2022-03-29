@@ -12,11 +12,11 @@ function M.install_missing(servers)
   end
 end
 
-function M.register_server(...) end
+-- function M.register_server(...) end
 
 function M.setup(servers, options)
   local lspi = require "nvim-lsp-installer"
-  local emmet_ls = require "configs.lsp.emmet"
+  -- local emmet_ls = require "configs.lsp.servers.emmet"
 
   lspi.on_server_ready(function(server)
     local opts = vim.tbl_deep_extend("force", options, servers[server.name] or {})

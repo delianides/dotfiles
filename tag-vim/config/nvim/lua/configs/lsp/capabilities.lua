@@ -36,9 +36,7 @@ return function()
     return vim.tbl_filter(function(key)
       -- keep only the capabilities that are interesting & available
       return vim.tbl_contains(display_keys, key) and resolved_capabilities[key] == true
-    end, vim.tbl_keys(
-      resolved_capabilities
-    ))
+    end, vim.tbl_keys(resolved_capabilities))
   end
 
   local function make_client_info(client)
