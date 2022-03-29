@@ -13,6 +13,10 @@ globals = {
 -- Rerun tests only if their modification time changed
 cache = true
 
+exclude_files = {
+  "tag-vim/config/nvim/plugin/packer_compiled.lua"
+}
+
 -- Don't report unused self arguments of methods
 self = false
 

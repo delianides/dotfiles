@@ -23,10 +23,11 @@ function M.format()
   end
 end
 
-function M.setup(client, buf)
+function M.config(client, buf)
   local ft = vim.api.nvim_buf_get_option(buf, "filetype")
-  local nls = require "configs.lsp.null-ls"
+  local nls = require "configs.lsp.servers.null-ls"
 
+  -- luacheck: ignore
   local enable = false
   if nls.has_formatter(ft) then
     enable = client.name == "null-ls"

@@ -1,0 +1,15 @@
+on: [push, pull_request]
+
+name: 'ShellCheck'
+
+jobs:
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run ShellCheck
+      uses: ludeeus/action-shellcheck@master
+      with:
+        scandir: './tag-zsh'
+        additional_files: './system/macos ./install'
