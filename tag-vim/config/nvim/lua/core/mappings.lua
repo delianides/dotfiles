@@ -144,10 +144,8 @@ util.nmap("<C-q>", "<cmd>q!<CR>")
 
 -- Terminal
 util.nmap("<C-\\>", "<cmd>ToggleTerm<CR>")
-util.nmap("<leader>gg", '<cmd>lua require("configs.toggleterm").lazygit_toggle()<CR>')
-util.nmap("<leader>tn", '<cmd>lua require("configs.toggleterm").node_toggle()<CR>')
-util.nmap("<leader>tp", '<cmd>lua require("configs.toggleterm").python_toggle()<CR>')
-util.nmap("<leader>tl", '<cmd>lua require("configs.toggleterm").lazygit_toggle()<CR>')
+util.nmap("<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>")
+util.nmap("<leader>tn", "<cmd>lua _NODE_TOGGLE()<CR>")
 util.nmap("<leader>tf", "<cmd>ToggleTerm direction=float<cr>")
 util.nmap("<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>")
 util.nmap("<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>")
