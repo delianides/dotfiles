@@ -238,7 +238,12 @@ local function plugins(use)
 
 	-- Git
 
-	use("TimUntersberger/neogit")
+	use({
+		"TimUntersberger/neogit",
+		config = function()
+			require("configs.neogit").config()
+		end,
+	})
 
 	use({
 		"ThePrimeagen/git-worktree.nvim",

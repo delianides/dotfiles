@@ -1,6 +1,6 @@
 local M = {}
 
-local util = require("core.utils")
+local util = require "core.utils"
 local opts = { noremap = true, silent = true }
 
 -- Remap space as leader key
@@ -46,7 +46,7 @@ util.inoremap("<A-j>", "<Esc>:move .+1<CR>==gi")
 util.inoremap("<A-k>", "<Esc>:move .-2<CR>==gi")
 
 util.nnoremap("<leader>no", function()
-	util.toggle("relativenumber")
+  util.toggle "relativenumber"
 end, { silent = true })
 
 -- indent
@@ -138,6 +138,9 @@ util.nmap("<leader>tt", "<cmd>Trouble document_diagnostics<CR>")
 util.nmap("gcc", "<cmd>lua require('Comment.api').toggle_current_linewise()<cr>")
 util.vmap("gcc", "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
 
+-- Git
+util.nmap("<leader>gg", "<cmd>Neogit<CR>")
+
 -- ForceWrite
 util.nmap("<C-s>", "<cmd>w!<CR>")
 
@@ -146,8 +149,6 @@ util.nmap("<C-q>", "<cmd>q!<CR>")
 
 -- Terminal
 util.nmap("<C-\\>", "<cmd>ToggleTerm<CR>")
-util.nmap("<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>")
-util.nmap("<leader>tn", "<cmd>lua _NODE_TOGGLE()<CR>")
 util.nmap("<leader>tf", "<cmd>ToggleTerm direction=float<cr>")
 util.nmap("<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>")
 util.nmap("<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>")
@@ -168,18 +169,18 @@ util.xmap("<A-j>", "<cmd>move '>+1<CR>gv-gv")
 util.xmap("<A-k>", "<cmd>move '<-2<CR>gv-gv")
 
 function _G.set_terminal_keymaps()
-	vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
 end
 
-vim.cmd([[
+vim.cmd [[
   augroup TermMappings
     autocmd! TermOpen term://* lua set_terminal_keymaps()
   augroup END
-]])
+]]
 
 return M
