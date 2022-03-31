@@ -1,6 +1,6 @@
 local M = {}
 
-local util = require "core.utils"
+local util = require("core.utils")
 local opts = { noremap = true, silent = true }
 
 -- Remap space as leader key
@@ -46,7 +46,7 @@ util.inoremap("<A-j>", "<Esc>:move .+1<CR>==gi")
 util.inoremap("<A-k>", "<Esc>:move .-2<CR>==gi")
 
 util.nnoremap("<leader>no", function()
-  util.toggle "relativenumber"
+	util.toggle("relativenumber")
 end, { silent = true })
 
 -- indent
@@ -103,16 +103,18 @@ util.nmap("<leader>fb", "<cmd>Telescope buffers<CR>")
 util.nmap("<leader>fh", "<cmd>Telescope help_tags<CR>")
 util.nmap("<leader>fo", "<cmd>Telescope oldfiles<CR>")
 util.nmap("<leader>sb", "<cmd>Telescope git_branches<CR>")
-util.nmap("<leader>sh", "<cmd>Telescope help_tags<CR>")
-util.nmap("<leader>sm", "<cmd>Telescope man_pages<CR>")
-util.nmap("<leader>sr", "<cmd>Telescope registers<CR>")
+util.nmap("<leader>ht", "<cmd>Telescope help_tags<CR>")
+util.nmap("<leader>mp", "<cmd>Telescope man_pages<CR>")
+util.nmap("<leader>fr", "<cmd>Telescope registers<CR>")
 util.nmap("<leader>wk", "<cmd>Telescope keymaps<CR>")
-util.nmap("<leader>sc", "<cmd>Telescope commands<CR>")
+util.nmap("<leader>fc", "<cmd>Telescope commands<CR>")
 util.nmap("<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>")
 util.nmap("<leader>lR", "<cmd>Telescope lsp_references<CR>")
 util.nmap("<leader>lD", "<cmd>Telescope diagnostics<CR>")
+
 util.nmap("<C-f>", '<cmd>lua require("configs.telescope").project_files()<CR>')
--- map("n", "<C-f>", "<cmd>lua _PROJECT_FILES()<CR>", opts)
+util.nmap("<leader>wt", "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
+util.nmap("<leader>ct", "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
 
 -- LSP
 util.nmap("gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
@@ -166,18 +168,18 @@ util.xmap("<A-j>", "<cmd>move '>+1<CR>gv-gv")
 util.xmap("<A-k>", "<cmd>move '<-2<CR>gv-gv")
 
 function _G.set_terminal_keymaps()
-  vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
 end
 
-vim.cmd [[
+vim.cmd([[
   augroup TermMappings
     autocmd! TermOpen term://* lua set_terminal_keymaps()
   augroup END
-]]
+]])
 
 return M
