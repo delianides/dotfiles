@@ -240,6 +240,9 @@ local function plugins(use)
 
   use {
     "TimUntersberger/neogit",
+    requires = {
+      "sindrets/diffview.nvim",
+    },
     config = function()
       require("configs.neogit").config()
     end,
@@ -387,13 +390,15 @@ local function plugins(use)
   }
   use {
     "windwp/nvim-ts-autotag",
+    config = function()
+      require("configs.autotag").config()
+    end,
     after = "nvim-treesitter",
   }
 
   -- pair completion
   use {
     "windwp/nvim-autopairs",
-    event = "InsertEnter",
     config = function()
       require("configs.autopairs").config()
     end,

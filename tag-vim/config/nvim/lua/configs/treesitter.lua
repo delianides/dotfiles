@@ -6,33 +6,19 @@ function M.config()
     return
   end
 
-  treesitter.setup {
-    ensure_installed = {
-      "bash",
-      "c",
-      "cmake",
-      "comment",
-      "cpp",
-      "css",
-      "go",
-      "graphql",
-      "html",
-      "javascript",
-      "jsonc",
-      "lua",
-      "markdown",
-      "python",
-      "regex",
-      "rust",
-      "svelte",
-      "toml",
-      "tsx",
-      "typescript",
-      "vue",
-      "yaml",
+  local default_opts = {
+    ensure_installed = "maintained",
+    sync_install = false,
+    ignore_install = {},
+    highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+      use_languagetree = true,
     },
-    highlight = { enable = true, use_languagetree = true },
-    context_commentstring = { enable = true, enable_autocmd = false },
+    context_commentstring = {
+      enable = true,
+      enable_autocmd = false,
+    },
     autopairs = {
       enable = true,
     },
@@ -69,24 +55,6 @@ function M.config()
         [";"] = "textsubjects-container-outer",
       },
     },
-    playground = {
-      enable = true,
-      disable = {},
-      updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-      persist_queries = true, -- Whether the query persists across vim sessions
-      keybindings = {
-        toggle_query_editor = "o",
-        toggle_hl_groups = "i",
-        toggle_injected_languages = "t",
-        toggle_anonymous_nodes = "a",
-        toggle_language_display = "I",
-        focus_language = "f",
-        unfocus_language = "F",
-        update = "R",
-        goto_node = "<cr>",
-        show_help = "?",
-      },
-    },
     textobjects = {
       select = {
         enable = true,
@@ -116,6 +84,8 @@ function M.config()
     },
   }
 
+  treesitter.setup(default_opts)
+
   -- Add Markdown
   local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
   parser_config.jsonc.filetype_to_parsername = "json"
@@ -130,7 +100,7 @@ function M.config()
       generate_requires_npm = true, -- if stand-alone parser without npm dependencies
       requires_generate_from_grammar = true, -- if folder contains pre-generated src/parser.c
     },
-    filetype = "tf", -- if filetype does not match the parser name
+    filetype = { "tf", "terraform" }, -- if filetype does not match the parser name
   }
 end
 

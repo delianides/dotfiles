@@ -38,6 +38,8 @@ util.nmap("<C-Right>", "<cmd>vertical resize +2<CR>")
 -- Navigate buffers
 util.nmap("<leader>bn", "<cmd>bnext<CR>")
 util.nmap("<leader>bp", "<cmd>bprevious<CR>")
+util.nmap("L", "<cmd>bnext<CR>")
+util.nmap("H", "<cmd>bprevious<CR>")
 
 -- Move text up and down
 util.nnoremap("<A-j>", ":move .+1<CR>==")
@@ -127,7 +129,7 @@ util.nmap("[d", "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>")
 util.nmap("]d", "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>")
 util.nmap("gj", "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<cr>")
 util.nmap("gk", "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<cr>")
-util.nmap("H", "<cmd>lua vim.lsp.buf.hover()<CR>")
+util.nmap("O", "<cmd>lua vim.lsp.buf.hover()<CR>")
 util.nmap("<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 util.nmap("<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>")
 util.nmap("<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>")

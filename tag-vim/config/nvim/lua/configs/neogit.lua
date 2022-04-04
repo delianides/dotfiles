@@ -12,6 +12,9 @@ function M.config()
     commit_popup = {
       kind = "split",
     },
+    integrations = {
+      diffview = true,
+    },
     disable_builtin_notifications = true,
   }
 end
