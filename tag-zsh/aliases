@@ -21,6 +21,9 @@ alias tmux="tmux -2"
 alias ssh='TERM=xterm-256color ssh'
 alias grep="egrep --color=auto"
 
+alias act='op run --env-file="$HOME/.config/op/act-env" -- act -s GITHUB_TOKEN'
+alias acthm='op run --env-file="$HOME/.config/op/act-env" -- act -s HM_GITHUB_TOKEN'
+
 # Copy-pasting `$ python something.py` works
 alias \$=''
 alias diff="colordiff -u"

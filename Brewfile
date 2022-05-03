@@ -14,6 +14,8 @@ tap "teamookla/speedtest"
 tap "achannarasappa/tap"
 
 
+brew "act"
+brew "actionlint"
 brew "ansifilter"
 brew "autoconf"
 brew "automake"

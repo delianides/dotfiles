@@ -12,8 +12,16 @@ function M.config(options)
     sources = {
       -- nls.builtins.formatting.prettierd,
       nls.builtins.formatting.stylua,
-      -- nls.builtins.formatting.eslint_d,
       nls.builtins.formatting.fixjson.with { filetypes = { "jsonc" } },
+
+      nls.builtins.diagnostics.actionlint.with {
+        condition = function()
+          local api = vim.api
+          local path = api.nvim_buf_get_name(api.nvim_get_current_buf())
+          return path:match "github/workflows/" ~= nil
+        end,
+      },
+      nls.builtins.diagnostics.yamllint,
       nls.builtins.diagnostics.shellcheck,
       nls.builtins.diagnostics.luacheck.with {
         extra_args = { "--globals", "vim" },

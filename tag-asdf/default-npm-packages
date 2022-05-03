@@ -8,3 +8,6 @@ typescript-language-server
 lua-fmt
 tree-sitter-cli
 fixjson
+commitizen
+vscode-langservers-extracted
+

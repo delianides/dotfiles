@@ -8,24 +8,13 @@ function M.config(client)
 
   -- vim.lsp.handlers["textDocument/codeAction"] = ts.code_action_handler
   ts.setup {
-    debug = true,
+    debug = false,
     disable_commands = false,
-    enable_import_on_completion = true,
-    import_on_completion_timeout = 5000,
-    eslint_bin = "eslint_d", -- use eslint_d if possible!
-    eslint_enable_diagnostics = true,
-    -- eslint_fix_current = true,
-    eslint_enable_disable_comments = true,
-    eslint_opts = {
-      -- diagnostics_format = "#{m} [#{c}]",
-      condition = function(utils)
-        return utils.root_has_file ".eslintrc.js"
-      end,
-    },
+    enable_import_on_completion = false,
 
     -- update imports on file move
-    update_imports_on_move = true,
-    require_confirmation_on_move = true,
+    update_imports_on_move = false,
+    require_confirmation_on_move = false,
     watch_dir = nil,
 
     -- filter diagnostics

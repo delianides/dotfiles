@@ -1,6 +1,8 @@
 golang 1.17.8
 python 3.10.2
 ruby 3.1.1
-nodejs 14.19.0
+nodejs 16.14.2
 lua 5.4.4
 rust 1.59.0
+java openjdk-18
+
