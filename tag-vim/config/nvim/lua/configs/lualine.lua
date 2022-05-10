@@ -42,6 +42,7 @@ function M.config()
       icons_enabled = true,
       component_separators = "",
       section_separators = "",
+      globalstatus = true,
     },
     sections = {
       lualine_a = {},
@@ -121,12 +122,18 @@ function M.config()
     end,
   }
 
-  ins_right {
-    status.lsp_progress,
-    color = { gui = "none" },
-    padding = { left = 0, right = 1 },
-    cond = conditions.hide_in_width,
-  }
+  -- ins_right {
+  --   "filename",
+  --   padding = { left = 1, right = 3 },
+  --   path = 1,
+  -- }
+
+  -- ins_right {
+  --   status.lsp_progress,
+  --   color = { gui = "none" },
+  --   padding = { left = 0, right = 1 },
+  --   cond = conditions.hide_in_width,
+  -- }
 
   ins_right {
     status.lsp_name,
