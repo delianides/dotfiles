@@ -348,6 +348,11 @@ PATH=".git/safe/../../bin:/usr/local/opt/libpq/bin:$PATH:$GOBIN"
 
 eval "$(direnv hook zsh)";
 
+# Zoxide {{{
+export _ZO_RESOLVE_SYMLINKS=1
+eval "$(zoxide init zsh)"
+# }}}
+
 # shellcheck disable=SC1090
 [ -f ~/.aliases ] && source ~/.aliases;
 # shellcheck disable=SC1090

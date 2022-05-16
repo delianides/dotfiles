@@ -12,7 +12,13 @@ function ytinfo() {
 }
 
 alias qq="cd . && source ~/.zshrc"
+
 alias ls="exa"
+alias ll="exa -alh"
+alias tree="exa --tree"
+
+alias cat="bat"
+
 alias rm="trash"
 alias aci="asciinema"
 alias aws='op run --env-file="$HOME/.config/op/aws-env" -- aws'

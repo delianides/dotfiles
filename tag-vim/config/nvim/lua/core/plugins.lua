@@ -29,10 +29,21 @@ local function plugins(use)
   -- ui and lua utilities
   use { "nvim-lua/plenary.nvim", module = "plenary" }
   use { "nvim-lua/popup.nvim", module = "popup" }
-  use { "stevearc/dressing.nvim", event = "BufReadPre" }
+  use {
+    "stevearc/dressing.nvim",
+    event = "BufReadPre",
+    config = function()
+      require("dressing").setup {
+        input = {
+          winblend = 10,
+          winhighlight = "Normal:DressingInputNormalFloat,NormalFloat:DressingInputNormalFloat,FloatBorder:DressingInputFloatBorder",
+          border = "single",
+        },
+      }
+    end,
+  }
   use "lewis6991/impatient.nvim" -- cache lua code in nvim to improve startuptime
-  use "tjdevries/colorbuddy.vim"
-  use "tjdevries/gruvbuddy.nvim"
+
   use {
     "akinsho/bufferline.nvim",
     config = function()
@@ -52,15 +63,6 @@ local function plugins(use)
   use {
     "dstein64/vim-startuptime",
     cmd = "StartupTime",
-  }
-
-  -- fix cursorhold_updatetime
-  use {
-    "antoinemadec/FixCursorHold.nvim",
-    event = "BufRead",
-    config = function()
-      vim.g.cursorhold_updatetime = 100
-    end,
   }
 
   -- illuminate highlight the same word
@@ -92,7 +94,37 @@ local function plugins(use)
         transparent = false, -- do not set background color
         dimInactive = false, -- dim inactive window `:h hl-NormalNC`
         colors = {},
-        overrides = {},
+        overrides = {
+          WinSeparator = { fg = "#363646" },
+          Comment = { fg = "#888181" },
+          FloatTitle = { fg = "#14141A", bg = "#957FB8", style = "bold" },
+          DressingInputNormalFloat = { bg = "#14141A" },
+          DressingInputFloatBorder = { fg = "#14141A", bg = "#14141A" },
+          NeoTreeGitUntracked = { link = "NeoTreeGitModified" },
+          IndentBlanklineChar = { fg = "#2F2F40" },
+          IndentBlanklineContextStart = { style = "bold" },
+          LualineGitAdd = { link = "GitSignsAdd" },
+          LualineGitChange = { link = "GitSignsAdd" },
+          LualineGitDelete = { link = "GitSignsDelete" },
+          NeoTreeNormal = { bg = "#14141A" },
+          NeoTreeNormalNC = { bg = "#14141A" },
+          TabLine = { style = "italic", bg = "#363646" },
+          TabLineFill = { bg = "#1F1F28" },
+          TabLineSel = { style = "bold", bg = "#1F1F28" },
+          TabNum = { link = "TabLine" },
+          TabNumSel = { link = "TabLineSel" },
+          TelescopeBorder = { fg = "#1a1a22", bg = "#1a1a22" },
+          TelescopeMatching = { style = "underline", fg = "#7FB4CA", guisp = "#7FB4CA" },
+          TelescopeNormal = { bg = "#1a1a22" },
+          TelescopePreviewTitle = { fg = "#1a1a22", bg = "#7FB4CA" },
+          TelescopePromptBorder = { fg = "#2A2A37", bg = "#2A2A37" },
+          TelescopePromptNormal = { fg = "#DCD7BA", bg = "#2A2A37" },
+          TelescopePromptPrefix = { fg = "#957FB8", bg = "#2A2A37" },
+          TelescopePromptTitle = { fg = "#1a1a22", bg = "#957FB8" },
+          TelescopeResultsTitle = { fg = "#1a1a22", bg = "#1a1a22" },
+          TelescopeTitle = { style = "bold", fg = "#C8C093" },
+          Visual = { bg = "#4C566A" },
+        },
       }
     end,
   }
@@ -117,8 +149,13 @@ local function plugins(use)
     end,
   }
 
-  -- testing
-  use { "rcarriga/vim-ultest", requires = { "vim-test/vim-test" }, run = ":UpdateRemotePlugins" }
+  -- turns color hex and rgb into highlights
+  use {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("configs.colorizer").config()
+    end,
+  }
 
   -- quick file navigation for current workspaces
   use {
@@ -128,9 +165,6 @@ local function plugins(use)
     end,
   }
 
-  -- manage github in neovim
-  use { "pwntester/octo.nvim" }
-
   -- telescope fuzzy finder
   use {
     "nvim-telescope/telescope.nvim",
@@ -138,6 +172,7 @@ local function plugins(use)
       require("configs.telescope").config()
     end,
     requires = {
+        { "nvim-telescope/telescope-project.nvim" },
       { "nvim-telescope/telescope-fzy-native.nvim" },
       { "nvim-telescope/telescope-github.nvim" },
       { "nvim-telescope/telescope-file-browser.nvim" },
@@ -152,44 +187,18 @@ local function plugins(use)
     end,
   }
 
-  -- folds
   use {
-    "anuvyklack/pretty-fold.nvim",
-    requires = "anuvyklack/nvim-keymap-amend", -- only for preview
-    config = function()
-      require("pretty-fold").setup {
-        keep_indentation = false,
-        fill_char = "•",
-        sections = {
-          left = {
-            "+",
-            function()
-              return string.rep("-", vim.v.foldlevel)
-            end,
-            " ",
-            "number_of_folded_lines",
-            ":",
-            "content",
-          },
-        },
-      }
-      require("pretty-fold.preview").setup()
+    "editorconfig/editorconfig-vim",
+    setup = function()
+      vim.g.EditorConfig_max_line_indicator = ""
+      vim.g.EditorConfig_preserve_formatoptions = 1
     end,
   }
 
-  -- Terminal
-  use {
-    "akinsho/nvim-toggleterm.lua",
-    config = function()
-      require("configs.toggleterm").config()
-    end,
-  }
   --
   -- languages
   --
   -- markdown
-  use "junegunn/goyo.vim"
-  use "junegunn/limelight.vim"
   use "ellisonleao/glow.nvim"
 
   -- golang
@@ -197,12 +206,6 @@ local function plugins(use)
 
   -- rust
   use { "rust-lang/rust.vim", ft = "rust" }
-  use { "eraserhd/parinfer-rust", run = "cargo build --release" }
-  use { "racer-rust/vim-racer" }
-  use {
-    "simrat39/rust-tools.nvim",
-    module = "rust-tools",
-  }
 
   -- js/ts
   use { "othree/yajs.vim", ft = { "javascript", "javascript.jsx", "html" } }
@@ -210,31 +213,24 @@ local function plugins(use)
   use {
     "heavenshell/vim-jsdoc",
     cmd = "JsDoc",
-    ft = { "javascript", "javascript.jsx" },
+    ft = { "javascript", "javascript.jsx", "typescript", "typescript.tsx" },
   }
   use "othree/javascript-libraries-syntax.vim"
   use { "HerringtonDarkholme/yats.vim", ft = { "typescript", "typescript.tsx" } }
   use "MaxMEllon/vim-jsx-pretty"
   use "jxnblk/vim-mdx-js"
-  use "othree/html5.vim"
-  use "posva/vim-vue"
-  use "leafOfTree/vim-svelte-plugin"
-  use "skwp/vim-html-escape"
-  use "kana/vim-textobj-user"
-  use "whatyouhide/vim-textobj-xmlattr"
-  use "pedrohdz/vim-yaml-folds"
-  use "hail2u/vim-css3-syntax"
-  use {
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("configs.colorizer").config()
-    end,
-  }
+
+  -- json
   use "b0o/SchemaStore.nvim" -- extra json schema
+
+  -- web3
   use "tomlion/vim-solidity" -- ethereum block chain development
 
-  -- Git
+  -- other
+  use "kana/vim-textobj-user"
+  use "whatyouhide/vim-textobj-xmlattr"
 
+  -- Git
   use {
     "TimUntersberger/neogit",
     requires = {
@@ -272,18 +268,15 @@ local function plugins(use)
     "neovim/nvim-lspconfig",
     event = "BufReadPre",
     wants = {
-      "nvim-lsp-ts-utils",
       "null-ls.nvim",
       "lua-dev.nvim",
       "cmp-nvim-lsp",
       "lsp-status.nvim",
       "nvim-lsp-installer",
     },
-    config = function()
-      require "configs.lsp"
-    end,
     requires = {
-      "jose-elias-alvarez/nvim-lsp-ts-utils",
+      "simrat39/rust-tools.nvim",
+      "jose-elias-alvarez/typescript.nvim",
       "jose-elias-alvarez/null-ls.nvim",
       "folke/lua-dev.nvim",
       "nvim-lua/lsp-status.nvim",
@@ -291,8 +284,39 @@ local function plugins(use)
     },
   }
 
+  use {
+    "rmagatti/goto-preview",
+    config = function()
+      require("goto-preview").setup {
+        default_mappings = true,
+        opacity = 7,
+        post_open_hook = function(buf_handle, win_handle)
+          vim.cmd(([[ autocmd WinLeave <buffer> ++once call nvim_win_close(%d, v:false)]]):format(win_handle))
+          vim.api.nvim_buf_set_keymap(
+          buf_handle,
+          "n",
+          "<Esc>",
+          ("<cmd>call nvim_win_close(%d, v:false)<CR>"):format(win_handle),
+          { noremap = true }
+          )
+        end,
+      }
+    end,
+  }
+
   use "ray-x/lsp_signature.nvim"
   use "nvim-lua/lsp_extensions.nvim"
+
+  -- tests
+  use {
+    "janko/vim-test",
+    setup = function()
+      vim.g["test#strategy"] = "neovim"
+      vim.g["test#neovim#term_position"] = "vsplit"
+
+      vim.api.nvim_set_keymap("n", "<space>r", "<cmd>TestNearest<CR>", { noremap = false })
+    end
+  }
 
   -- Snippet collection
   use {
@@ -370,6 +394,17 @@ local function plugins(use)
       "TSEnableAll",
     },
     config = "require('configs.treesitter')",
+  }
+
+  use {
+    "andymass/vim-matchup",
+    config = function()
+      vim.g.matchup_matchparen_offscreen = {
+        method = "popup",
+        fullwidth = 1,
+        highlight = "OffscreenMatchPopup",
+      }
+    end,
   }
 
   use {

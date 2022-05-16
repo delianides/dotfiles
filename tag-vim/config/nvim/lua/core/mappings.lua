@@ -1,6 +1,6 @@
 local M = {}
 
-local util = require "core.utils"
+local util = require("core.utils")
 local opts = { noremap = true, silent = true }
 
 -- Remap space as leader key
@@ -48,7 +48,7 @@ util.inoremap("<A-j>", "<Esc>:move .+1<CR>==gi")
 util.inoremap("<A-k>", "<Esc>:move .-2<CR>==gi")
 
 util.nnoremap("<leader>no", function()
-  util.toggle "relativenumber"
+	util.toggle("relativenumber")
 end, { silent = true })
 
 -- indent
@@ -83,17 +83,6 @@ util.nmap("<leader>pe", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>'
 util.nmap("<leader>pn", '<cmd>lua require("harpoon.ui").nav_next()<CR>')
 util.nmap("<leader>pp", '<cmd>lua require("harpoon.ui").nav_prev()<CR>')
 
--- Git
-util.nmap("<leader>gj", "<cmd>lua require 'gitsigns'.next_hunk()<CR>")
-util.nmap("<leader>gk", "<cmd>lua require 'gitsigns'.prev_hunk()<CR>")
-util.nmap("<leader>gl", "<cmd>lua require 'gitsigns'.blame_line()<CR>")
-util.nmap("<leader>gp", "<cmd>lua require 'gitsigns'.preview_hunk()<CR>")
-util.nmap("<leader>gh", "<cmd>lua require 'gitsigns'.reset_hunk()<CR>")
-util.nmap("<leader>gr", "<cmd>lua require 'gitsigns'.reset_buffer()<CR>")
-util.nmap("<leader>gs", "<cmd>lua require 'gitsigns'.stage_hunk()<CR>")
-util.nmap("<leader>gu", "<cmd>lua require 'gitsigns'.undo_stage_hunk()<CR>")
-util.nmap("<leader>gd", "<cmd>Gitsigns diffthis HEAD<CR>")
-
 -- Telescope
 util.nmap("<leader>fw", "<cmd>Telescope live_grep<CR>")
 util.nmap("<leader>gt", "<cmd>Telescope git_status<CR>")
@@ -118,23 +107,23 @@ util.nmap("<C-f>", '<cmd>lua require("configs.telescope").project_files()<CR>')
 util.nmap("<leader>wt", "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
 util.nmap("<leader>ct", "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
 
+util.nmap("<leader>sp", "<cmd>lua require('configs.telescope').project()<CR>")
+;
 -- LSP
-util.nmap("gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-util.nmap("gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-util.nmap("gI", "<cmd>lua vim.lsp.buf.implementation()<CR>")
-util.nmap("gr", "<cmd>lua vim.lsp.buf.references()<CR>")
 util.nmap("go", "<cmd>lua vim.diagnostic.open_float()<CR>")
 util.nmap("gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
 util.nmap("[d", "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>")
 util.nmap("]d", "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>")
 util.nmap("gj", "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<cr>")
 util.nmap("gk", "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<cr>")
-util.nmap("O", "<cmd>lua vim.lsp.buf.hover()<CR>")
 util.nmap("<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
 util.nmap("<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>")
 util.nmap("<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>")
 util.nmap("<leader>ld", "<cmd>lua vim.diagnostic.open_float()<CR>")
 util.nmap("<leader>tt", "<cmd>Trouble document_diagnostics<CR>")
+util.nmap("gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>")
+util.nmap("gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
+util.nmap("gP", "<cmd>lua require('goto-preview').close_all_win()<CR>")
 
 -- Comment
 util.nmap("gcc", "<cmd>lua require('Comment.api').toggle_current_linewise()<cr>")
@@ -171,18 +160,18 @@ util.xmap("<A-j>", "<cmd>move '>+1<CR>gv-gv")
 util.xmap("<A-k>", "<cmd>move '<-2<CR>gv-gv")
 
 function _G.set_terminal_keymaps()
-  vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
+	vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
 end
 
-vim.cmd [[
+vim.cmd([[
   augroup TermMappings
     autocmd! TermOpen term://* lua set_terminal_keymaps()
   augroup END
-]]
+]])
 
 return M
