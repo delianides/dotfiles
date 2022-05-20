@@ -1,14 +1,5 @@
 neovim
 vercel
 npm-check-updates
-prettier
-eslint
-eslint_d
-typescript-language-server
-lua-fmt
 tree-sitter-cli
-fixjson
-commitizen
-vscode-langservers-extracted
-yalc
 tldr

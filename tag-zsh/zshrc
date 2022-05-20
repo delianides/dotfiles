@@ -1,27 +1,22 @@
 #!/bin/zsh
 
-for function in ~/.zsh/functions/*; do
-  source $function
-done
-
-# tmux {{{
-# Returns the name of the most recent tmux session, sorted by time the session
-# was last attached.
-if ! inside_ssh && ! in_vs_code; then
-  connect_to_most_recent_tmux_session
-fi
-# }}}
-
 # Functions and Aliases {{{
 va(){ vim ~/.aliases; }
 q(){ vim "$(readlink ~/.zshrc)"; }
+
 alias qq="cd . && source ~/.zshrc"
-alias cp="cp -iv"
-alias rm="rm -iv"
-alias mv="mv -iv"
-alias ls="ls -FGh"
-alias du="du -cksh"
-alias df="df -h"
+alias ls="exa"
+alias ll="exa -alh"
+alias tree="exa --tree"
+alias diff="colordiff -u"
+
+alias mkdir="mkdir -p"
+alias cat="bat"
+alias rm="trash"
+alias tmux="tmux -2"
+alias ssh='TERM=xterm-256color ssh'
+alias grep="egrep --color=auto"
+
 # Use modern regexps for sed, i.e. "(one|two)", not "\(one\|two\)"
 alias sed="sed -E"
 
@@ -77,7 +72,6 @@ unsetopt beep
 setopt inc_append_history
 setopt hist_ignore_all_dups
 setopt hist_reduce_blanks
-setopt autocd
 setopt autopushd
 # Timestamp history entries
 setopt extended_history
@@ -210,17 +204,6 @@ bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 # }}}
 
-# CDPATH {{{
-add_dir_to_cdpath "$HOME/Code"
-add_subdirs_to_cdpath "$HOME/Code"
-add_subdirs_to_cdpath "$HOME/Code/work"
-
-# Exporting $CDPATH is bad:
-# https://bosker.wordpress.com/2012/02/12/bash-scripters-beware-of-the-cdpath/
-# So, export PROJECT_DIRECTORIES instead, but set it to $CDPATH
-export PROJECT_DIRECTORIES=$CDPATH
-# }}}
-
 # Prompt {{{
 eval "$(starship init zsh)"
 # }}}
@@ -255,6 +238,13 @@ compdef _git gc=git-branch
 compdef g=git
 # }}}
 
+for function in ~/.zsh/functions/*; do
+  source $function
+done
+
+for config in ~/.zsh/configs/*; do
+  source $config
+done
 
 # Editor {{{
 # Why set $VISUAL instead of $EDITOR?
@@ -264,6 +254,7 @@ export VISUAL=nvim
 export EDITOR=$VISUAL
 alias vi='$VISUAL'
 alias vim='$VISUAL'
+alias e="$EDITOR"
 
 # Remove vim flags for crontab -e
 alias crontab="VISUAL=vim crontab"
@@ -360,3 +351,10 @@ eval "$(zoxide init zsh)"
 # shellcheck disable=SC1090
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh;
 
+# tmux {{{
+# Returns the name of the most recent tmux session, sorted by time the session
+# was last attached.
+if ! inside_ssh && ! in_vs_code; then
+  connect_to_most_recent_tmux_session
+fi
+# }}}
