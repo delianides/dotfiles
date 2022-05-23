@@ -33,13 +33,7 @@ local function plugins(use)
     "stevearc/dressing.nvim",
     event = "BufReadPre",
     config = function()
-      require("dressing").setup {
-        input = {
-          winblend = 10,
-          winhighlight = "Normal:DressingInputNormalFloat,NormalFloat:DressingInputNormalFloat,FloatBorder:DressingInputFloatBorder",
-          border = "single",
-        },
-      }
+      require("configs.dressing").config()
     end,
   }
   use "lewis6991/impatient.nvim" -- cache lua code in nvim to improve startuptime
@@ -59,6 +53,22 @@ local function plugins(use)
     end,
   }
 
+  -- file explorer
+  use {
+    "kyazdani42/nvim-tree.lua",
+    requires = {
+      "kyazdani42/nvim-web-devicons",
+    },
+    config = function()
+      require("nvim-tree").setup {
+        auto_reload_on_write = true,
+        disable_netrw = true,
+        hijack_unnamed_buffer_when_opening = true,
+        reload_on_bufenter = true,
+      }
+    end,
+    tag = "nightly",
+  }
   -- metrics for nvim startup
   use {
     "dstein64/vim-startuptime",
@@ -172,7 +182,7 @@ local function plugins(use)
       require("configs.telescope").config()
     end,
     requires = {
-        { "nvim-telescope/telescope-project.nvim" },
+      { "nvim-telescope/telescope-project.nvim" },
       { "nvim-telescope/telescope-fzy-native.nvim" },
       { "nvim-telescope/telescope-github.nvim" },
       { "nvim-telescope/telescope-file-browser.nvim" },
@@ -236,9 +246,6 @@ local function plugins(use)
     requires = {
       "sindrets/diffview.nvim",
     },
-    config = function()
-      require("configs.neogit").config()
-    end,
   }
 
   use {
@@ -293,11 +300,11 @@ local function plugins(use)
         post_open_hook = function(buf_handle, win_handle)
           vim.cmd(([[ autocmd WinLeave <buffer> ++once call nvim_win_close(%d, v:false)]]):format(win_handle))
           vim.api.nvim_buf_set_keymap(
-          buf_handle,
-          "n",
-          "<Esc>",
-          ("<cmd>call nvim_win_close(%d, v:false)<CR>"):format(win_handle),
-          { noremap = true }
+            buf_handle,
+            "n",
+            "<Esc>",
+            ("<cmd>call nvim_win_close(%d, v:false)<CR>"):format(win_handle),
+            { noremap = true }
           )
         end,
       }
@@ -313,9 +320,7 @@ local function plugins(use)
     setup = function()
       vim.g["test#strategy"] = "neovim"
       vim.g["test#neovim#term_position"] = "vsplit"
-
-      vim.api.nvim_set_keymap("n", "<space>r", "<cmd>TestNearest<CR>", { noremap = false })
-    end
+    end,
   }
 
   -- Snippet collection
@@ -449,33 +454,11 @@ local function plugins(use)
   use "AndrewRadev/splitjoin.vim"
   use "tpope/vim-surround"
 
-  use { "folke/which-key.nvim",
+  use {
+    "folke/which-key.nvim",
     config = function()
-      require('which-key').setup({
-        plugins = {
-          marks = false, -- shows a list of your marks on ' and `
-          registers = false, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
-          spelling = {
-            enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-            suggestions = 20, -- how many suggestions should be shown in the list?
-          },
-          -- the presets plugin, adds help for a bunch of default keybindings in Neovim
-          -- No actual key bindings are created
-          presets = {
-            operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion
-            motions = true, -- adds help for motions
-            text_objects = true, -- help for text objects triggered after entering an operator
-            windows = true, -- default bindings on <c-w>
-            nav = true, -- misc bindings to work with windows
-            z = true, -- bindings for folds, spelling and others prefixed with z
-            g = true, -- bindings for prefixed with g
-          },
-        },
-        -- add operators that will trigger motion and text object completion
-        -- to enable all native operators, set the preset / operators plugin above
-        operators = { gc = "Comments" },
-      })
-    end
+      require("configs.which-key").config()
+    end,
   }
 
   -- git

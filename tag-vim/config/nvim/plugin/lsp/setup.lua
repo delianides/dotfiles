@@ -10,6 +10,7 @@ local null_ls = require "null-ls"
 
 local telescope_config = require "configs.telescope"
 
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 vim.api.nvim_create_user_command("LspLog", [[exe 'tabnew ' .. luaeval("vim.lsp.get_log_path()")]], {})
 
 require("nvim-lsp-installer").setup {
@@ -119,30 +120,39 @@ end
 ---@param bufnr number
 local function buf_set_keymaps(bufnr)
   wk.register({
-    name = "+lsp", -- optional group name
-    p = { vim.lsp.buf.formatting, "Select LSP to format buffer" }, -- create a binding with label
-    r = { vim.lsp.buf.rename, "Rename variable with LSP" }, -- additional options for creating the keymap
-    f = { vim.lsp.buf.code_action, "Run LSP Code Action" }, -- just a label. don't create any mapping
-    t = { vim.lsp.buf.signature_help, "Signature Help" },
-    s = { telescope_config.document_symbols, "Telescope show document symbols" },
-    d = { telescope_config.document_diagnostics, "Telescope show document diagnostics" },
-    g = {
-      D = { vim.lsp.buf.declaration, "Show declaration of variable under cursor" },
-      d = { telescope_config.definitions, "Show LSP Definition" },
-      r = { telescope_config.references, "Show LSP References" },
-      ["br"] = { telescope_config.buffer_references, "Show Buffer LSP Reference" },
-      I = { telescope_config.implementions, "Show LSP Implmentation" },
-      P = { "<cmd>lua require('goto-preview').close_all_win()<CR>", "Close all Preview Windows" },
-      p = {
-        d = { "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", "Show Preview Definition" },
-        i = { "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", "Show Preview Implmentation" },
+    l = {
+      name = "+lsp",
+      f = { vim.lsp.buf.formatting, "Select LSP to format buffer" }, -- create a binding with label
+      r = { vim.lsp.buf.rename, "Rename variable with LSP" }, -- additional options for creating the keymap
+      a = { vim.lsp.buf.code_action, "Run LSP Code Action" }, -- just a label. don't create any mapping
+      h = { vim.lsp.buf.signature_help, "Signature Help" },
+      O = { vim.lsp.buf.hover, "Hover" },
+      d = {
+        name = "+document",
+        d = { "<cmd>Trouble document_diagnostics<CR>", "Trouble Document Diagnostics"},
+        s = { telescope_config.document_symbols, "Telescope show document symbols" },
+        t = { telescope_config.document_diagnostics, "Telescope show document diagnostics" },
       },
-    },
-    O = { vim.lsp.buf.hover, "Hover" },
-    w = {
-      name = "workspace",
-      s = { telescope_config.workspace_symbols, "Telescope show workspace symbols" },
-      d = { telescope_config.workspace_diagnostics, "Telescope show workspace diagnostics" },
+      w = {
+        name = "+workspace",
+        w = { "<cmd>Trouble workspace_diagnostics<CR>", "Trouble Workspace Diagnostics"},
+        s = { telescope_config.workspace_symbols, "Telescope show workspace symbols" },
+        d = { telescope_config.workspace_diagnostics, "Telescope show workspace diagnostics" },
+        o = { "<cmd>lua vim.diagnostics.open_float()<CR>", "Open Diagnostics Float"},
+      },
+      g = {
+        name = "+definition",
+        D = { vim.lsp.buf.declaration, "Show declaration of variable under cursor" },
+        d = { telescope_config.definitions, "Show LSP Definition" },
+        r = { telescope_config.references, "Show LSP References" },
+        ["br"] = { telescope_config.buffer_references, "Show Buffer LSP Reference" },
+        I = { telescope_config.implementions, "Show LSP Implmentation" },
+        P = { "<cmd>lua require('goto-preview').close_all_win()<CR>", "Close all Preview Windows" },
+        p = {
+          d = { "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", "Show Preview Definition" },
+          i = { "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", "Show Preview Implmentation" },
+        },
+      },
     },
   }, { prefix = "<leader>", buffer = bufnr })
 end
@@ -153,7 +163,7 @@ local function common_on_attach(client, bufnr)
   buf_set_keymaps(bufnr)
 
   if client.config.flags then
-    client.config.flags.allow_incremental_sync = true
+    client.config.flags.allow_incremkental_sync = true
   end
 
   if client.supports_method "textDocument/documentHighlight" then
@@ -199,4 +209,24 @@ null_ls.setup {
     null_ls.builtins.code_actions.gitsigns,
     -- nls.builtins.diagnostics.selene,
   },
+      on_attach = function(client, bufnr)
+    -- requires neovim 0.8
+    if client.server_capabilities.documentFormattingProvider then
+        vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+        vim.api.nvim_create_autocmd("BufWritePost", {
+          group = augroup,
+          buffer = bufnr,
+          callback = function()
+            vim.lsp.buf.format {
+              bufnr = bufnr,
+              filter = function(clients)
+                return vim.tbl_filter(function(c)
+                  return c.name == "null-ls"
+                end, clients)
+              end,
+            }
+          end,
+        })
+      end
+  end,
 }

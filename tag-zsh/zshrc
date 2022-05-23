@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# init homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Functions and Aliases {{{
 va(){ vim ~/.aliases; }
 q(){ vim "$(readlink ~/.zshrc)"; }
@@ -58,7 +61,7 @@ bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
 if [ -z "$TMUX" ]; then
-  bindkey -s "^P" 'ta ~/Projects\n'
+  bindkey -s "^P" 'ta\n'
 fi
 # }}}
 
@@ -204,9 +207,6 @@ bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 # }}}
 
-# Prompt {{{
-eval "$(starship init zsh)"
-# }}}
 
 # Git {{{
 alias gd="git diff"
@@ -255,6 +255,8 @@ export EDITOR=$VISUAL
 alias vi='$VISUAL'
 alias vim='$VISUAL'
 alias e="$EDITOR"
+
+export GPG_TTY=$(tty)
 
 # Remove vim flags for crontab -e
 alias crontab="VISUAL=vim crontab"
@@ -316,7 +318,7 @@ if [[ -z "$ZSH_HIGHLIGHT_HIGHLIGHTERS" ]]; then
   # Only source Zsh Syntax Highlighting once, otherwise we can run into
   # a "maximum nested function level reached" error
   ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-  source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
 # Path {{{
@@ -342,6 +344,10 @@ eval "$(direnv hook zsh)";
 # Zoxide {{{
 export _ZO_RESOLVE_SYMLINKS=1
 eval "$(zoxide init zsh)"
+# }}}
+
+# Prompt {{{
+eval "$(starship init zsh)"
 # }}}
 
 # shellcheck disable=SC1090

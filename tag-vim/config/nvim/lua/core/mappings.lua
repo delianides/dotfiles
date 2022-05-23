@@ -1,6 +1,7 @@
 local M = {}
 
 local util = require("core.utils")
+local wk = require('which-key')
 local opts = { noremap = true, silent = true }
 
 -- Remap space as leader key
@@ -36,8 +37,6 @@ util.nmap("<C-Left>", "<cmd>vertical resize -2<CR>")
 util.nmap("<C-Right>", "<cmd>vertical resize +2<CR>")
 
 -- Navigate buffers
-util.nmap("<leader>bn", "<cmd>bnext<CR>")
-util.nmap("<leader>bp", "<cmd>bprevious<CR>")
 util.nmap("L", "<cmd>bnext<CR>")
 util.nmap("H", "<cmd>bprevious<CR>")
 
@@ -46,10 +45,11 @@ util.nnoremap("<A-j>", ":move .+1<CR>==")
 util.nnoremap("<A-k>", ":move .-2<CR>==")
 util.inoremap("<A-j>", "<Esc>:move .+1<CR>==gi")
 util.inoremap("<A-k>", "<Esc>:move .-2<CR>==gi")
-
-util.nnoremap("<leader>no", function()
-	util.toggle("relativenumber")
-end, { silent = true })
+util.vmap("<A-j>", "<cmd>m .+1<CR>==")
+util.vmap("<A-k>", "<cmd>m .-2<CR>==")
+util.vmap("p", '"_dP')
+util.xmap("<A-j>", "<cmd>move '>+1<CR>gv-gv")
+util.xmap("<A-k>", "<cmd>move '<-2<CR>gv-gv")
 
 -- indent
 util.vmap("<", "<gv")
@@ -65,99 +65,67 @@ util.nnoremap("<Right>", ':echoe "Use l"<CR>')
 util.nnoremap("<Up>", ':echoe "Use k"<CR>')
 util.nnoremap("<Down>", ':echoe "Use j"<CR>')
 
--- Packer
-util.nmap("<leader>pc", "<cmd>PackerCompile<cr>")
-util.nmap("<leader>pI", "<cmd>PackerInstall<cr>")
-util.nmap("<leader>pS", "<cmd>PackerSync<cr>")
-util.nmap("<leader>ps", "<cmd>PackerStatus<cr>")
-util.nmap("<leader>pU", "<cmd>PackerUpdate<cr>")
-
--- LSP
-util.nmap("<leader>lf", "<cmd>lua vim.lsp.buf.formatting_sync()<cr>")
-util.nmap("<leader>li", "<cmd>LspInfo<cr>")
-util.nmap("<leader>lI", "<cmd>LspInstallInfo<cr>")
-
--- Harpoon
-util.nmap("<leader>pa", '<cmd>lua require("harpoon.mark").add_file()<CR>')
-util.nmap("<leader>pe", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>')
-util.nmap("<leader>pn", '<cmd>lua require("harpoon.ui").nav_next()<CR>')
-util.nmap("<leader>pp", '<cmd>lua require("harpoon.ui").nav_prev()<CR>')
-
--- Telescope
-util.nmap("<leader>fw", "<cmd>Telescope live_grep<CR>")
-util.nmap("<leader>gt", "<cmd>Telescope git_status<CR>")
-util.nmap("<leader>gb", "<cmd>Telescope git_branches<CR>")
-util.nmap("<leader>gc", "<cmd>Telescope git_commits<CR>")
-util.nmap("<leader>ff", "<cmd>Telescope find_files<CR>")
-util.nmap("<leader>gf", "<cmd>Telescope git_files<CR>")
-util.nmap("<leader>fb", "<cmd>Telescope buffers<CR>")
-util.nmap("<leader>fh", "<cmd>Telescope help_tags<CR>")
-util.nmap("<leader>fo", "<cmd>Telescope oldfiles<CR>")
-util.nmap("<leader>sb", "<cmd>Telescope git_branches<CR>")
-util.nmap("<leader>ht", "<cmd>Telescope help_tags<CR>")
-util.nmap("<leader>mp", "<cmd>Telescope man_pages<CR>")
-util.nmap("<leader>fr", "<cmd>Telescope registers<CR>")
-util.nmap("<leader>wk", "<cmd>Telescope keymaps<CR>")
-util.nmap("<leader>fc", "<cmd>Telescope commands<CR>")
-util.nmap("<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>")
-util.nmap("<leader>lR", "<cmd>Telescope lsp_references<CR>")
-util.nmap("<leader>lD", "<cmd>Telescope diagnostics<CR>")
-
-util.nmap("<C-f>", '<cmd>lua require("configs.telescope").project_files()<CR>')
-util.nmap("<leader>wt", "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
-util.nmap("<leader>ct", "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
-
-util.nmap("<leader>sp", "<cmd>lua require('configs.telescope').project()<CR>")
-;
--- LSP
-util.nmap("go", "<cmd>lua vim.diagnostic.open_float()<CR>")
-util.nmap("gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
-util.nmap("[d", "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>")
-util.nmap("]d", "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>")
-util.nmap("gj", "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<cr>")
-util.nmap("gk", "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<cr>")
-util.nmap("<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
-util.nmap("<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>")
-util.nmap("<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>")
-util.nmap("<leader>ld", "<cmd>lua vim.diagnostic.open_float()<CR>")
-util.nmap("<leader>tt", "<cmd>Trouble document_diagnostics<CR>")
-util.nmap("gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>")
-util.nmap("gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
-util.nmap("gP", "<cmd>lua require('goto-preview').close_all_win()<CR>")
-
 -- Comment
 util.nmap("gcc", "<cmd>lua require('Comment.api').toggle_current_linewise()<cr>")
 util.vmap("gcc", "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
 
--- Git
-util.nmap("<leader>gg", "<cmd>Neogit<CR>")
-
--- ForceWrite
 util.nmap("<C-s>", "<cmd>w!<CR>")
-
--- ForceQuit
 util.nmap("<C-q>", "<cmd>q!<CR>")
-
--- Terminal
+util.nmap("<C-t>", "<cmd>ToggleTerm direction=float<cr>")
 util.nmap("<C-\\>", "<cmd>ToggleTerm<CR>")
-util.nmap("<leader>tf", "<cmd>ToggleTerm direction=float<cr>")
-util.nmap("<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>")
-util.nmap("<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>")
+util.nmap("<C-f>", '<cmd>lua require("configs.telescope").project_files()<CR>')
 
--- Visual --
--- Stay in indent mode
+util.nmap("<C-n>", "<cmd>NvimTreeToggle<CR>")
+util.nmap("<C-g>", "<cmd>Neogit kind=split<CR>")
+
 util.vmap("<", "<gv")
 util.vmap(">", ">gv")
 
--- Move text up and down
-util.vmap("<A-j>", "<cmd>m .+1<CR>==")
-util.vmap("<A-k>", "<cmd>m .-2<CR>==")
-util.vmap("p", '"_dP')
-
--- Visual Block --
--- Move text up and down
-util.xmap("<A-j>", "<cmd>move '>+1<CR>gv-gv")
-util.xmap("<A-k>", "<cmd>move '<-2<CR>gv-gv")
+wk.register({
+  b = {
+    name = "+buffers",
+    n = { "<cmd>bnext<CR>", "Next Buffer"},
+    p = { "<cmd>bprevious<CR>", "Previous Buffer"},
+    f = { "<cmd>Telescope buffers<CR>", "Telescope Buffers"}
+  },
+  n = {
+    name = "+settings",
+    o = { function() util.toggle("relativenumber") end, "Toggle Relative Number" },
+  },
+  p = {
+    name = "+packer",
+    i = {"<cmd>PackerInstall<CR>", "Packer Install" },
+    S = {"<cmd>PackerSync<CR>", "Packer Sync"},
+    s = {"<cmd>PackerStatus<CR>", "Packer Status"},
+    U = {"<cmd>PackerUpdate<CR>", "Packer Update"},
+  },
+  h = {
+    name = "+harpoon",
+    a = { '<cmd>lua require("harpoon.mark").add_file()<CR>', "Add File to Harpoon"},
+    e = { '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', "Edit Harpoon List"},
+    n = { '<cmd>lua require("harpoon.ui").nav_next()<CR>', "Goto Next File in Harpoon"},
+    p = { '<cmd>lua require("harpoon.ui").nav_prev()<CR>', "Goto Previus File in Harpoon"}
+  },
+  f = { -- find
+    name = "+telescope",
+    w = { "<cmd>Telescope live_grep<CR>", "Telescope Live Grep" },
+    f = { "<cmd>Telescope find_files<CR>", "Telescope Find Files" },
+    b = { "<cmd>Telescope buffers<CR>", "Telescope Buffers" },
+    h = { "<cmd>Telescope help_tags<CR>", "Telescope Help Tags" },
+    o = { "<cmd>Telescope oldfiles<CR>", "Telescope Old Files" },
+    t = { "<cmd>Telescope help_tags<CR>", "Telescope Help Files" },
+    p = { "<cmd>Telescope man_pages<CR>", "Telescope Man Pages" },
+    r = { "<cmd>Telescope registers<CR>", "Telescope Registers" },
+    k = { "<cmd>Telescope keymaps<CR>", "Telescope Keymaps" },
+    c = { "<cmd>Telescope commands<CR>", "Telescope Commands" },
+    d = { "<cmd>Telescope diagnostics<CR>", "Telescope Diagnostics" }
+  },
+  w = {
+    name = "+git_worktree",
+    t = { '<cmd>lua require("telescope").extensions.git_worktree.git_worktrees()<CR>', "Git Worktrees"},
+    ["tc"] = { '<cmd>lua require("telescope").extensions.git_worktree.create_git_worktree()<CR>', "Create Git Worktree"},
+  }
+}, { prefix = "<leader>" })
 
 function _G.set_terminal_keymaps()
 	vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
