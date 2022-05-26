@@ -88,6 +88,15 @@ local function plugins(use)
   -- better undo support, after file close
   use { "mbbill/undotree", cmd = "UndotreeToggle" }
 
+  -- notify
+  use {
+    "rcarriga/nvim-notify",
+    event = "VimEnter",
+    config = function()
+      require("configs.notify").config()
+    end,
+  }
+
   -- themes
   use {
     "rebelot/kanagawa.nvim",

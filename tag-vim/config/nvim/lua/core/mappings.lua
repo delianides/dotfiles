@@ -1,7 +1,7 @@
 local M = {}
 
-local util = require("core.utils")
-local wk = require('which-key')
+local util = require "core.utils"
+local wk = require "which-key"
 local opts = { noremap = true, silent = true }
 
 -- Remap space as leader key
@@ -84,27 +84,32 @@ util.vmap(">", ">gv")
 wk.register({
   b = {
     name = "+buffers",
-    n = { "<cmd>bnext<CR>", "Next Buffer"},
-    p = { "<cmd>bprevious<CR>", "Previous Buffer"},
-    f = { "<cmd>Telescope buffers<CR>", "Telescope Buffers"}
+    n = { "<cmd>bnext<CR>", "Next Buffer" },
+    p = { "<cmd>bprevious<CR>", "Previous Buffer" },
+    f = { "<cmd>Telescope buffers<CR>", "Telescope Buffers" },
   },
   n = {
     name = "+settings",
-    o = { function() util.toggle("relativenumber") end, "Toggle Relative Number" },
+    o = {
+      function()
+        util.toggle "relativenumber"
+      end,
+      "Toggle Relative Number",
+    },
   },
   p = {
     name = "+packer",
-    i = {"<cmd>PackerInstall<CR>", "Packer Install" },
-    S = {"<cmd>PackerSync<CR>", "Packer Sync"},
-    s = {"<cmd>PackerStatus<CR>", "Packer Status"},
-    U = {"<cmd>PackerUpdate<CR>", "Packer Update"},
+    i = { "<cmd>PackerInstall<CR>", "Packer Install" },
+    S = { "<cmd>PackerSync<CR>", "Packer Sync" },
+    s = { "<cmd>PackerStatus<CR>", "Packer Status" },
+    U = { "<cmd>PackerUpdate<CR>", "Packer Update" },
   },
   h = {
     name = "+harpoon",
-    a = { '<cmd>lua require("harpoon.mark").add_file()<CR>', "Add File to Harpoon"},
-    e = { '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', "Edit Harpoon List"},
-    n = { '<cmd>lua require("harpoon.ui").nav_next()<CR>', "Goto Next File in Harpoon"},
-    p = { '<cmd>lua require("harpoon.ui").nav_prev()<CR>', "Goto Previus File in Harpoon"}
+    a = { '<cmd>lua require("harpoon.mark").add_file()<CR>', "Add File to Harpoon" },
+    e = { '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', "Edit Harpoon List" },
+    n = { '<cmd>lua require("harpoon.ui").nav_next()<CR>', "Goto Next File in Harpoon" },
+    p = { '<cmd>lua require("harpoon.ui").nav_prev()<CR>', "Goto Previus File in Harpoon" },
   },
   f = { -- find
     name = "+telescope",
@@ -118,28 +123,31 @@ wk.register({
     r = { "<cmd>Telescope registers<CR>", "Telescope Registers" },
     k = { "<cmd>Telescope keymaps<CR>", "Telescope Keymaps" },
     c = { "<cmd>Telescope commands<CR>", "Telescope Commands" },
-    d = { "<cmd>Telescope diagnostics<CR>", "Telescope Diagnostics" }
+    d = { "<cmd>Telescope diagnostics<CR>", "Telescope Diagnostics" },
   },
   w = {
     name = "+git_worktree",
-    t = { '<cmd>lua require("telescope").extensions.git_worktree.git_worktrees()<CR>', "Git Worktrees"},
-    ["tc"] = { '<cmd>lua require("telescope").extensions.git_worktree.create_git_worktree()<CR>', "Create Git Worktree"},
-  }
+    t = { '<cmd>lua require("telescope").extensions.git_worktree.git_worktrees()<CR>', "Git Worktrees" },
+    ["tc"] = {
+      '<cmd>lua require("telescope").extensions.git_worktree.create_git_worktree()<CR>',
+      "Create Git Worktree",
+    },
+  },
 }, { prefix = "<leader>" })
 
 function _G.set_terminal_keymaps()
-	vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
-	vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
+  vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
 end
 
-vim.cmd([[
+vim.cmd [[
   augroup TermMappings
     autocmd! TermOpen term://* lua set_terminal_keymaps()
   augroup END
-]])
+]]
 
 return M

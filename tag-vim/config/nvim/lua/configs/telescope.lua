@@ -145,6 +145,8 @@ function M.config()
       project = {
         base_dirs = {
           '~/Code',
+          '~/Projects',
+          '~/Work'
         },
         hidden_files = true,
         theme = "dropdown"

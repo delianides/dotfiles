@@ -3,17 +3,17 @@ if not ok then
   return
 end
 
-local wk = require "which-key"
-local ts_utils = require "nvim-treesitter.ts_utils"
-local lsp_signature = require "lsp_signature"
-local null_ls = require "null-ls"
+local wk = require("which-key")
+local ts_utils = require("nvim-treesitter.ts_utils")
+local lsp_signature = require("lsp_signature")
+local null_ls = require("null-ls")
 
-local telescope_config = require "configs.telescope"
+local telescope_config = require("configs.telescope")
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 vim.api.nvim_create_user_command("LspLog", [[exe 'tabnew ' .. luaeval("vim.lsp.get_log_path()")]], {})
 
-require("nvim-lsp-installer").setup {
+require("nvim-lsp-installer").setup({
   automatic_installation = true,
   log_level = vim.log.levels.DEBUG,
   ui = {
@@ -23,7 +23,7 @@ require("nvim-lsp-installer").setup {
       server_uninstalled = "",
     },
   },
-}
+})
 
 local function w(fn)
   return function()
@@ -55,11 +55,10 @@ local function highlight_references()
   local node = ts_utils.get_node_at_cursor()
   while node ~= nil do
     local node_type = node:type()
-    if
-      node_type == "string"
-      or node_type == "string_fragment"
-      or node_type == "template_string"
-      or node_type == "document" -- for inline gql`` strings
+    if node_type == "string"
+        or node_type == "string_fragment"
+        or node_type == "template_string"
+        or node_type == "document" -- for inline gql`` strings
     then
       -- who wants to highlight a string? i don't. yuck
       return
@@ -105,7 +104,7 @@ local function find_and_run_codelens()
   end, lenses)
 
   if #lenses == 0 then
-    return vim.notify "Could not find codelens to run."
+    return vim.notify("Could not find codelens to run.")
   end
 
   table.sort(lenses, function(a, b)
@@ -122,23 +121,23 @@ local function buf_set_keymaps(bufnr)
   wk.register({
     l = {
       name = "+lsp",
-      f = { vim.lsp.buf.formatting, "Select LSP to format buffer" }, -- create a binding with label
+      f = { vim.lsp.buf.format, "Select LSP to format buffer" }, -- create a binding with label
       r = { vim.lsp.buf.rename, "Rename variable with LSP" }, -- additional options for creating the keymap
       a = { vim.lsp.buf.code_action, "Run LSP Code Action" }, -- just a label. don't create any mapping
       h = { vim.lsp.buf.signature_help, "Signature Help" },
       O = { vim.lsp.buf.hover, "Hover" },
       d = {
         name = "+document",
-        d = { "<cmd>Trouble document_diagnostics<CR>", "Trouble Document Diagnostics"},
+        d = { "<cmd>Trouble document_diagnostics<CR>", "Trouble Document Diagnostics" },
         s = { telescope_config.document_symbols, "Telescope show document symbols" },
         t = { telescope_config.document_diagnostics, "Telescope show document diagnostics" },
       },
       w = {
         name = "+workspace",
-        w = { "<cmd>Trouble workspace_diagnostics<CR>", "Trouble Workspace Diagnostics"},
+        w = { "<cmd>Trouble workspace_diagnostics<CR>", "Trouble Workspace Diagnostics" },
         s = { telescope_config.workspace_symbols, "Telescope show workspace symbols" },
         d = { telescope_config.workspace_diagnostics, "Telescope show workspace diagnostics" },
-        o = { "<cmd>lua vim.diagnostics.open_float()<CR>", "Open Diagnostics Float"},
+        o = { "<cmd>lua vim.diagnostics.open_float()<CR>", "Open Diagnostics Float" },
       },
       g = {
         name = "+definition",
@@ -149,8 +148,14 @@ local function buf_set_keymaps(bufnr)
         I = { telescope_config.implementions, "Show LSP Implmentation" },
         P = { "<cmd>lua require('goto-preview').close_all_win()<CR>", "Close all Preview Windows" },
         p = {
-          d = { "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", "Show Preview Definition" },
-          i = { "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", "Show Preview Implmentation" },
+          d = {
+            "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+            "Show Preview Definition",
+          },
+          i = {
+            "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+            "Show Preview Implmentation",
+          },
         },
       },
     },
@@ -166,11 +171,11 @@ local function common_on_attach(client, bufnr)
     client.config.flags.allow_incremkental_sync = true
   end
 
-  if client.supports_method "textDocument/documentHighlight" then
+  if client.supports_method("textDocument/documentHighlight") then
     buf_autocmd_document_highlight(bufnr)
   end
 
-  if client.supports_method "textDocument/codeLens" then
+  if client.supports_method("textDocument/codeLens") then
     buf_autocmd_codelens(bufnr)
     vim.schedule(vim.lsp.codelens.refresh)
   end
@@ -192,41 +197,42 @@ util.on_setup = util.add_hook_after(util.on_setup, function(config)
   config.capabilities = create_capabilities()
 end)
 
-null_ls.setup {
+null_ls.setup({
   debug = false,
   debounce = 150,
   save_after_format = false,
   sources = {
     -- nls.builtins.formatting.prettierd,
     null_ls.builtins.formatting.stylua,
-    -- nls.builtins.formatting.eslint_d,
-    null_ls.builtins.formatting.fixjson.with { filetypes = { "jsonc" } },
+    -- null_ls.builtins.formatting.eslint_d,
+    null_ls.builtins.formatting.fixjson.with({ filetypes = { "jsonc" } }),
     null_ls.builtins.diagnostics.shellcheck,
-    null_ls.builtins.diagnostics.luacheck.with {
+    -- null_ls.builtins.diagnostics.eslint_d,
+    null_ls.builtins.diagnostics.luacheck.with({
       extra_args = { "--globals", "vim" },
-    },
+    }),
     null_ls.builtins.diagnostics.markdownlint,
     null_ls.builtins.code_actions.gitsigns,
     -- nls.builtins.diagnostics.selene,
   },
-      on_attach = function(client, bufnr)
+  on_attach = function(client, bufnr)
     -- requires neovim 0.8
     if client.server_capabilities.documentFormattingProvider then
-        vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
-        vim.api.nvim_create_autocmd("BufWritePost", {
-          group = augroup,
-          buffer = bufnr,
-          callback = function()
-            vim.lsp.buf.format {
-              bufnr = bufnr,
-              filter = function(clients)
-                return vim.tbl_filter(function(c)
-                  return c.name == "null-ls"
-                end, clients)
-              end,
-            }
-          end,
-        })
-      end
+      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.format({
+            bufnr = bufnr,
+            filter = function(clients)
+              return vim.tbl_filter(function(c)
+                return c.name ~= "tsserver"
+              end, clients)
+            end,
+          })
+        end,
+      })
+    end
   end,
-}
+})
