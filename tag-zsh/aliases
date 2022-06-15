@@ -9,9 +9,9 @@ function ytinfo() {
   youtube-dl --ignore-config --dump-json "$1" | jq
 }
 
-alias act='op run --env-file="$HOME/.config/op/gh.env" -- act -s GITHUB_TOKEN'
+# alias act='op run --env-file="$HOME/.config/op/gh.env" -- act -s GITHUB_TOKEN'
 alias aws='op run --env-file="$HOME/.config/op/aws.env" -- aws'
-alias gh='op run --env-file=$HOME/.config/op/gh.env -- gh'
+# alias gh='op run --env-file=$HOME/.config/op/gh.env -- gh'
 
 alias re-source="source ~/.localrc"
 

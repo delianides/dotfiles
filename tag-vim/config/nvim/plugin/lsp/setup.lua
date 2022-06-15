@@ -3,17 +3,17 @@ if not ok then
   return
 end
 
-local wk = require("which-key")
-local ts_utils = require("nvim-treesitter.ts_utils")
-local lsp_signature = require("lsp_signature")
-local null_ls = require("null-ls")
+local wk = require "which-key"
+local ts_utils = require "nvim-treesitter.ts_utils"
+local lsp_signature = require "lsp_signature"
+local null_ls = require "null-ls"
 
-local telescope_config = require("configs.telescope")
+local telescope_config = require "configs.telescope"
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 vim.api.nvim_create_user_command("LspLog", [[exe 'tabnew ' .. luaeval("vim.lsp.get_log_path()")]], {})
 
-require("nvim-lsp-installer").setup({
+require("nvim-lsp-installer").setup {
   automatic_installation = true,
   log_level = vim.log.levels.DEBUG,
   ui = {
@@ -23,7 +23,7 @@ require("nvim-lsp-installer").setup({
       server_uninstalled = "",
     },
   },
-})
+}
 
 local function w(fn)
   return function()
@@ -104,7 +104,7 @@ local function find_and_run_codelens()
   end, lenses)
 
   if #lenses == 0 then
-    return vim.notify("Could not find codelens to run.")
+    return vim.notify "Could not find codelens to run."
   end
 
   table.sort(lenses, function(a, b)
@@ -142,24 +142,40 @@ local function buf_set_keymaps(bufnr)
       g = {
         name = "+definition",
         D = { vim.lsp.buf.declaration, "Show declaration of variable under cursor" },
-        d = { telescope_config.definitions, "Show LSP Definition" },
-        r = { telescope_config.references, "Show LSP References" },
-        ["br"] = { telescope_config.buffer_references, "Show Buffer LSP Reference" },
-        I = { telescope_config.implementions, "Show LSP Implmentation" },
-        P = { "<cmd>lua require('goto-preview').close_all_win()<CR>", "Close all Preview Windows" },
-        p = {
-          d = {
-            "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
-            "Show Preview Definition",
-          },
-          i = {
-            "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
-            "Show Preview Implmentation",
-          },
+        t = {
+          name = "+telescope",
+          d = { telescope_config.definitions, "Show LSP Definition" },
+          r = { telescope_config.references, "Show LSP References" },
+          b = { telescope_config.buffer_references, "Show Buffer LSP Reference" },
+          i = { telescope_config.implementions, "Show LSP Implmentation" },
         },
       },
     },
   }, { prefix = "<leader>", buffer = bufnr })
+
+  wk.register({
+    d = {
+      name = "+diagnostics",
+      j = { vim.diagnostic.goto_next, "Goto Next Diagnostic"},
+      k = { vim.diagnostic.goto_prev, "Goto Prev Diagnostic"},
+      l = { "<cmd>Telescope diagnostics<cr>", "List all Diagnostics"}
+    }
+  }, { prefix = "<leader>", buffer = bufnr })
+
+  wk.register({
+    O = { vim.lsp.buf.hover, "Hover" },
+    g = {
+      d = {
+        "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+        "Show Preview Definition",
+      },
+      i = {
+        "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+        "Show Preview Implmentation",
+      },
+      q = { "<cmd>lua require('goto-preview').close_all_win()<CR>", "Close all Preview Windows" },
+    },
+  }, { prefix = "", buffer = bufnr })
 end
 
 local function common_on_attach(client, bufnr)
@@ -171,11 +187,11 @@ local function common_on_attach(client, bufnr)
     client.config.flags.allow_incremkental_sync = true
   end
 
-  if client.supports_method("textDocument/documentHighlight") then
+  if client.supports_method "textDocument/documentHighlight" then
     buf_autocmd_document_highlight(bufnr)
   end
 
-  if client.supports_method("textDocument/codeLens") then
+  if client.supports_method "textDocument/codeLens" then
     buf_autocmd_codelens(bufnr)
     vim.schedule(vim.lsp.codelens.refresh)
   end
@@ -197,7 +213,7 @@ util.on_setup = util.add_hook_after(util.on_setup, function(config)
   config.capabilities = create_capabilities()
 end)
 
-null_ls.setup({
+null_ls.setup {
   debug = false,
   debounce = 150,
   save_after_format = false,
@@ -205,12 +221,12 @@ null_ls.setup({
     -- nls.builtins.formatting.prettierd,
     null_ls.builtins.formatting.stylua,
     -- null_ls.builtins.formatting.eslint_d,
-    null_ls.builtins.formatting.fixjson.with({ filetypes = { "jsonc" } }),
+    null_ls.builtins.formatting.fixjson.with { filetypes = { "jsonc" } },
     null_ls.builtins.diagnostics.shellcheck,
     -- null_ls.builtins.diagnostics.eslint_d,
-    null_ls.builtins.diagnostics.luacheck.with({
+    null_ls.builtins.diagnostics.luacheck.with {
       extra_args = { "--globals", "vim" },
-    }),
+    },
     null_ls.builtins.diagnostics.markdownlint,
     null_ls.builtins.code_actions.gitsigns,
     -- nls.builtins.diagnostics.selene,
@@ -218,21 +234,21 @@ null_ls.setup({
   on_attach = function(client, bufnr)
     -- requires neovim 0.8
     if client.server_capabilities.documentFormattingProvider then
-      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+      vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
       vim.api.nvim_create_autocmd("BufWritePost", {
         group = augroup,
         buffer = bufnr,
         callback = function()
-          vim.lsp.buf.format({
+          vim.lsp.buf.format {
             bufnr = bufnr,
             filter = function(clients)
               return vim.tbl_filter(function(c)
                 return c.name ~= "tsserver"
               end, clients)
             end,
-          })
+          }
         end,
       })
     end
   end,
-})
+}

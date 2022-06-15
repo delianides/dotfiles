@@ -1,0 +1,13 @@
+[core]
+  sshCommand = ssh -i ~/.ssh/id_ed25519_delianides_hm.pub
+[github]
+  user = hm-delianides
+[user]
+	name = hm-delianides
+	email = adelianides@happymoney.com 
+  signingKey = 7E7F8944604FCD09
+[commit]
+	gpgsign = true
+[url "git@github.com:"]
+    InsteadOf = https://github.com/
+

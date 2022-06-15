@@ -1,0 +1,14 @@
+[core]
+  sshCommand = ssh -i ~/.ssh/id_ed25519_delianides.pub
+[github]
+  user = delianides
+[user]
+	name = delianides
+	email = github@drew.delianides.com
+	signingkey = 5A1D910189D5B3A4
+[commit]
+	gpgsign = true
+[url "git@github.com:"]
+    InsteadOf = https://github.com/
+
+

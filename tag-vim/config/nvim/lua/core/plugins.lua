@@ -102,12 +102,12 @@ local function plugins(use)
     "rebelot/kanagawa.nvim",
     config = function()
       require("kanagawa").setup {
-        commentStyle = "italic",
-        functionStyle = "NONE",
-        keywordStyle = "italic",
-        statementStyle = "bold",
-        typeStyle = "NONE",
-        variablebuiltinStyle = "italic",
+        commentStyle = { italic = true },
+        functionStyle = {},
+        keywordStyle = { italic = true },
+        statementStyle = {bold = true},
+        typeStyle = {},
+        variablebuiltinStyle = { italic = true },
         specialReturn = true, -- special highlight for the return keyword
         specialException = true, -- special highlight for exception handling keywords
         transparent = false, -- do not set background color
@@ -116,24 +116,24 @@ local function plugins(use)
         overrides = {
           WinSeparator = { fg = "#363646" },
           Comment = { fg = "#888181" },
-          FloatTitle = { fg = "#14141A", bg = "#957FB8", style = "bold" },
+          FloatTitle = { fg = "#14141A", bg = "#957FB8", bold = true },
           DressingInputNormalFloat = { bg = "#14141A" },
           DressingInputFloatBorder = { fg = "#14141A", bg = "#14141A" },
           NeoTreeGitUntracked = { link = "NeoTreeGitModified" },
           IndentBlanklineChar = { fg = "#2F2F40" },
-          IndentBlanklineContextStart = { style = "bold" },
+          IndentBlanklineContextStart = { bold = true },
           LualineGitAdd = { link = "GitSignsAdd" },
           LualineGitChange = { link = "GitSignsAdd" },
           LualineGitDelete = { link = "GitSignsDelete" },
           NeoTreeNormal = { bg = "#14141A" },
           NeoTreeNormalNC = { bg = "#14141A" },
-          TabLine = { style = "italic", bg = "#363646" },
+          TabLine = {  italic = true , bg = "#363646" },
           TabLineFill = { bg = "#1F1F28" },
-          TabLineSel = { style = "bold", bg = "#1F1F28" },
+          TabLineSel = {  bold = true , bg = "#1F1F28" },
           TabNum = { link = "TabLine" },
           TabNumSel = { link = "TabLineSel" },
           TelescopeBorder = { fg = "#1a1a22", bg = "#1a1a22" },
-          TelescopeMatching = { style = "underline", fg = "#7FB4CA", guisp = "#7FB4CA" },
+          TelescopeMatching = {  underline = true , fg = "#7FB4CA", guisp = "#7FB4CA" },
           TelescopeNormal = { bg = "#1a1a22" },
           TelescopePreviewTitle = { fg = "#1a1a22", bg = "#7FB4CA" },
           TelescopePromptBorder = { fg = "#2A2A37", bg = "#2A2A37" },
@@ -141,7 +141,7 @@ local function plugins(use)
           TelescopePromptPrefix = { fg = "#957FB8", bg = "#2A2A37" },
           TelescopePromptTitle = { fg = "#1a1a22", bg = "#957FB8" },
           TelescopeResultsTitle = { fg = "#1a1a22", bg = "#1a1a22" },
-          TelescopeTitle = { style = "bold", fg = "#C8C093" },
+          TelescopeTitle = {  bold = true , fg = "#C8C093" },
           Visual = { bg = "#4C566A" },
         },
       }
@@ -374,6 +374,14 @@ local function plugins(use)
     end,
   }
 
+  use {
+    "hrsh7th/cmp-cmdline",
+    after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "cmdline"
+    end
+  }
+
   -- Path completion source
   use {
     "hrsh7th/cmp-path",
@@ -390,6 +398,14 @@ local function plugins(use)
     config = function()
       require("core.utils").add_cmp_source "nvim_lsp"
     end,
+  }
+
+  use {
+    "hrsh7th/cmp-nvim-lsp-signature-help",
+    after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "nvim_lsp_signature_help"
+    end
   }
 
   -- treesitter
@@ -476,6 +492,15 @@ local function plugins(use)
     event = "BufReadPre",
     config = function()
       require("configs.gitsigns").config()
+    end,
+  }
+
+  -- terminal
+  use { "akinsho/nvim-toggleterm.lua",
+    cmd = "ToggleTerm",
+    module = { "toggleterm", "toggleterm.terminal" },
+    config = function()
+      require("configs.toggleterm").config()
     end,
   }
 end

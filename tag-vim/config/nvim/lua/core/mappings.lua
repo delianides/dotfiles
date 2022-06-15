@@ -39,6 +39,7 @@ util.nmap("<C-Right>", "<cmd>vertical resize +2<CR>")
 -- Navigate buffers
 util.nmap("L", "<cmd>bnext<CR>")
 util.nmap("H", "<cmd>bprevious<CR>")
+util.nmap("<C-x>", "<cmd>bdelete<CR>")
 
 -- Move text up and down
 util.nnoremap("<A-j>", ":move .+1<CR>==")
@@ -78,6 +79,7 @@ util.nmap("<C-f>", '<cmd>lua require("configs.telescope").project_files()<CR>')
 util.nmap("<C-n>", "<cmd>NvimTreeToggle<CR>")
 util.nmap("<C-g>", "<cmd>Neogit kind=split<CR>")
 
+
 util.vmap("<", "<gv")
 util.vmap(">", ">gv")
 
@@ -114,7 +116,7 @@ wk.register({
   f = { -- find
     name = "+telescope",
     w = { "<cmd>Telescope live_grep<CR>", "Telescope Live Grep" },
-    f = { "<cmd>Telescope find_files<CR>", "Telescope Find Files" },
+    f = { "<cmd>Telescope current_buffer_fuzzy_find sorting_strategy=ascending prompt_position=top<CR>", "Fuzzy Find in Buffer"},
     b = { "<cmd>Telescope buffers<CR>", "Telescope Buffers" },
     h = { "<cmd>Telescope help_tags<CR>", "Telescope Help Tags" },
     o = { "<cmd>Telescope oldfiles<CR>", "Telescope Old Files" },
