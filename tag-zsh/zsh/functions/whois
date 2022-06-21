@@ -1,5 +1,0 @@
-# vi:syntax=zsh
-
-function whois() {
-	command whois $(echo "$1" | sed -E -e 's|^https?://||' -e 's|/.*$||g')
-}

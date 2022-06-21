@@ -1,5 +1,0 @@
-# vim:syntax=zsh
-
-function ff() {
-  fd --type f | fzf --ansi | xargs $EDITOR ;
-}

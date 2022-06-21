@@ -1,3 +1,0 @@
-# vi:syntax=zsh
-
-function al { ls -t | head -n ${1:-10}; }

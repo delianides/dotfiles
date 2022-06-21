@@ -1,5 +1,0 @@
-# vim:syntax=zsh
-
-function docker-kill-all(){
-  docker rm -f $(docker ps -aq)
-}

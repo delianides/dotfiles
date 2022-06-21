@@ -1,6 +1,0 @@
-#!/bin/bash
-
-sort-vscode-settings() {
-  local f="./Library/Application Support/Code/User/settings.json"
-  jq --sort-keys < "$f" | sponge "$f"
-}

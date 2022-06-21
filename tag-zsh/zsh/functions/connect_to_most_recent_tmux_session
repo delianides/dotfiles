@@ -1,7 +1,0 @@
-#!/bin/bash
-
-connect_to_most_recent_tmux_session() {
-  if _not_in_tmux && _any_tmux_sessions; then
-    tmux attach -t "$(_most_recent_tmux_session)"
-  fi
-}
