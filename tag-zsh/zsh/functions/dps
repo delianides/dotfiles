@@ -1,5 +1,0 @@
-# vim:syntax=zsh
-
-function dps(){
-  docker ps "$@"
-}

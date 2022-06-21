@@ -1,5 +1,0 @@
-# vim:syntax=zsh
-
-cdh(){
-  builtin cd $HOME
-}

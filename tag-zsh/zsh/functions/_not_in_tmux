@@ -1,5 +1,0 @@
-#!/bin/bash
-
-_not_in_tmux() {
-  [[ -z "$TMUX" ]]
-}

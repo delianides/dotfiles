@@ -1,3 +1,0 @@
-#!/bin/bash
-
-in_vs_code(){ [[ "$TERM_PROGRAM" == "vscode" ]] }

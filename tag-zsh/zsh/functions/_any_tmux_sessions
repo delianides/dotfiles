@@ -1,5 +1,0 @@
-#!/bin/bash
-
-_any_tmux_sessions() {
-  [[ -n "$(tmux ls 2>/dev/null)" ]]
-}
