@@ -5,9 +5,12 @@ $directory\
 $git_branch\
 $git_state\
 $git_status\
+$nodejs\
+$python\
+$rust\
+$golang\
 $cmd_duration\
 $line_break\
-$python\
 $character"""
 
 [directory]
@@ -23,14 +26,17 @@ format = "[$branch]($style)"
 style = "bright-black"
 
 [git_status]
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
-style = "cyan"
-conflicted = "​"
-untracked = "​"
-modified = "​"
-staged = "​"
-renamed = "​"
-deleted = "​"
+format = "[[(◦$all_status)]($style) ($ahead_behind)](27)"
+style = "yellow"
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
+conflicted = "="
+untracked = "?"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "×"
 stashed = "≡"
 
 [git_state]
@@ -42,5 +48,18 @@ format = "[$duration]($style) "
 style = "yellow"
 
 [python]
-format = "[$virtualenv]($style) "
-style = "bright-black"
+format = "[$version]($style) "
+style = "bright-yellow"
+python_binary = "python3"
+
+[nodejs]
+format = "[$version]($style) "
+style = "bright-green"
+
+[rust]
+format = "[$version]($style) "
+style = "bright-red"
+
+[golang]
+format = "[$version]($style) "
+style = "bright-blue"

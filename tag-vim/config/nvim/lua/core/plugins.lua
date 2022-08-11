@@ -20,7 +20,6 @@ local config = {
       return require("packer.util").float { border = "single" }
     end,
   },
-  local_plugins = {},
 }
 
 local function plugins(use)
@@ -75,6 +74,14 @@ local function plugins(use)
     cmd = "StartupTime",
   }
 
+  -- pretty folds
+  use {
+    "anuvyklack/pretty-fold.nvim",
+    config = function()
+      require("configs.pretty-fold").config()
+    end,
+  }
+
   -- illuminate highlight the same word
   use {
     "RRethy/vim-illuminate",
@@ -105,13 +112,14 @@ local function plugins(use)
         commentStyle = { italic = true },
         functionStyle = {},
         keywordStyle = { italic = true },
-        statementStyle = {bold = true},
+        statementStyle = { bold = true },
         typeStyle = {},
         variablebuiltinStyle = { italic = true },
         specialReturn = true, -- special highlight for the return keyword
         specialException = true, -- special highlight for exception handling keywords
         transparent = false, -- do not set background color
         dimInactive = false, -- dim inactive window `:h hl-NormalNC`
+        globalStatus = true,
         colors = {},
         overrides = {
           WinSeparator = { fg = "#363646" },
@@ -127,13 +135,13 @@ local function plugins(use)
           LualineGitDelete = { link = "GitSignsDelete" },
           NeoTreeNormal = { bg = "#14141A" },
           NeoTreeNormalNC = { bg = "#14141A" },
-          TabLine = {  italic = true , bg = "#363646" },
+          TabLine = { italic = true, bg = "#363646" },
           TabLineFill = { bg = "#1F1F28" },
-          TabLineSel = {  bold = true , bg = "#1F1F28" },
+          TabLineSel = { bold = true, bg = "#1F1F28" },
           TabNum = { link = "TabLine" },
           TabNumSel = { link = "TabLineSel" },
           TelescopeBorder = { fg = "#1a1a22", bg = "#1a1a22" },
-          TelescopeMatching = {  underline = true , fg = "#7FB4CA", guisp = "#7FB4CA" },
+          TelescopeMatching = { underline = true, fg = "#7FB4CA", guisp = "#7FB4CA" },
           TelescopeNormal = { bg = "#1a1a22" },
           TelescopePreviewTitle = { fg = "#1a1a22", bg = "#7FB4CA" },
           TelescopePromptBorder = { fg = "#2A2A37", bg = "#2A2A37" },
@@ -141,7 +149,7 @@ local function plugins(use)
           TelescopePromptPrefix = { fg = "#957FB8", bg = "#2A2A37" },
           TelescopePromptTitle = { fg = "#1a1a22", bg = "#957FB8" },
           TelescopeResultsTitle = { fg = "#1a1a22", bg = "#1a1a22" },
-          TelescopeTitle = {  bold = true , fg = "#C8C093" },
+          TelescopeTitle = { bold = true, fg = "#C8C093" },
           Visual = { bg = "#4C566A" },
         },
       }
@@ -219,7 +227,17 @@ local function plugins(use)
   --
   -- markdown
   use "ellisonleao/glow.nvim"
-
+  use {
+    "lukas-reineke/headlines.nvim",
+    config = function()
+      require("headlines").setup()
+    end,
+  }
+  use {
+    "plasticboy/vim-markdown",
+    requires = "godlygeek/tabular",
+    ft = "markdown",
+  }
   -- golang
   use { "fatih/vim-go", ft = "golang", run = ":GoInstallBinaries" }
 
@@ -279,6 +297,11 @@ local function plugins(use)
     config = "require('configs.trouble')",
   }
 
+  use {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+  }
+
   -- lsp settings
   use {
     "neovim/nvim-lspconfig",
@@ -288,7 +311,7 @@ local function plugins(use)
       "lua-dev.nvim",
       "cmp-nvim-lsp",
       "lsp-status.nvim",
-      "nvim-lsp-installer",
+      -- "nvim-lsp-installer",
     },
     requires = {
       "simrat39/rust-tools.nvim",
@@ -296,8 +319,21 @@ local function plugins(use)
       "jose-elias-alvarez/null-ls.nvim",
       "folke/lua-dev.nvim",
       "nvim-lua/lsp-status.nvim",
-      "williamboman/nvim-lsp-installer",
+      -- "williamboman/nvim-lsp-installer",
     },
+  }
+
+  use {
+    "SmiteshP/nvim-navic",
+    requires = "neovim/nvim-lspconfig",
+  }
+
+  use {
+    "glepnir/lspsaga.nvim",
+    branch = "main",
+    config = function()
+      require("configs.lspsaga").config()
+    end,
   }
 
   use {
@@ -379,7 +415,7 @@ local function plugins(use)
     after = "nvim-cmp",
     config = function()
       require("core.utils").add_cmp_source "cmdline"
-    end
+    end,
   }
 
   -- Path completion source
@@ -405,25 +441,19 @@ local function plugins(use)
     after = "nvim-cmp",
     config = function()
       require("core.utils").add_cmp_source "nvim_lsp_signature_help"
-    end
+    end,
   }
 
   -- treesitter
   use {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    event = "BufRead",
-    cmd = {
-      "TSInstall",
-      "TSInstallInfo",
-      "TSInstallSync",
-      "TSUninstall",
-      "TSUpdate",
-      "TSUpdateSync",
-      "TSDisableAll",
-      "TSEnableAll",
+    requires = {
+      "nvim-treesitter/playground",
     },
-    config = "require('configs.treesitter')",
+    config = function()
+      require "configs.treesitter"
+    end,
   }
 
   use {
@@ -496,7 +526,8 @@ local function plugins(use)
   }
 
   -- terminal
-  use { "akinsho/nvim-toggleterm.lua",
+  use {
+    "akinsho/nvim-toggleterm.lua",
     cmd = "ToggleTerm",
     module = { "toggleterm", "toggleterm.terminal" },
     config = function()

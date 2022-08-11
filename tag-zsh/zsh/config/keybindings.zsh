@@ -8,8 +8,6 @@ bindkey "^f" forward-char
 bindkey "^b" backward-char
 bindkey "^k" kill-line
 bindkey "^d" delete-char
-bindkey "^p" history-search-backward
-bindkey "^n" history-search-forward
 bindkey "^y" accept-and-hold
 bindkey "^w" backward-kill-word
 bindkey "^u" backward-kill-line
@@ -78,14 +76,13 @@ zle -N fuzzy-git-shalector _fuzzy_git_shalector
 bindkey '^g^g' fuzzy-git-shalector
 
 _fuzzy_history() {
-  selected=$(fc -l 1 | sed 's/^ *[0-9]* *//' | fzf --tac --reverse --no-sort)
-  print -z "$selected"
+  zle -U "$(fc -l 1 | sed 's/^ *[0-9]* *//' | fzf --tac --reverse --no-sort)"
 }
 zle -N fuzzy-history _fuzzy_history
-bindkey -M viins -s '^r' fuzzy-history
+bindkey -M viins '^r' fuzzy-history
 
 if [ -z "$TMUX" ]; then
-  bindkey -s "^P" 'ta\n'
+  bindkey -s "^p" 'ta\n'
 fi
 
 cd () {

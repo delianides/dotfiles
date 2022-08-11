@@ -1,4 +1,5 @@
-vim.cmd [[colorscheme kanagawa]]
+
+if vim.fn.exists "syntax_on" then vim.cmd "syntax enable" end
 
 vim.g.mapleader = " "
 vim.g.snippets = "luasnip"
@@ -7,6 +8,7 @@ vim.g.snippets = "luasnip"
 -- vim.g.sonokai_diagnostic_line_highlight = true
 
 vim.wo.signcolumn = "yes"
+vim.opt.background = "dark"
 vim.opt.termguicolors = true -- True color support
 
 vim.opt.undofile = true
@@ -43,6 +45,8 @@ vim.opt.updatetime = 50 -- Make updates happen faster
 vim.opt.hlsearch = false -- I wouldn't use this without my DoNoHL function
 vim.opt.scrolloff = 10 -- Make it so there are always ten lines below my cursor
 
+vim.opt.foldlevelstart = 99
+
 -- Tabs
 vim.opt.autoindent = true
 vim.opt.cindent = true
@@ -57,8 +61,6 @@ vim.opt.breakindent = true
 vim.opt.showbreak = string.rep(" ", 3) -- Make it so that long lines wrap smartly
 vim.opt.linebreak = true
 
-vim.opt.foldenable = true
-vim.opt.foldlevel = 99
 vim.opt.modelines = 1
 
 vim.opt.errorbells = false
@@ -72,6 +74,9 @@ vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
 
 vim.opt.mouse = "a"
 vim.opt.termguicolors = true
+
+-- global statusline
+vim.opt.laststatus = 3
 
 -- Helpful related items:
 --   1. :center, :left, :right
@@ -95,12 +100,14 @@ vim.opt.joinspaces = false -- Two spaces and grade school, we're done
 -- set fillchars=eob:~
 vim.opt.fillchars = { eob = "~" }
 
-vim.api.nvim_exec(
-  [[
-  augroup Terminal
-    autocmd!
-    au TermOpen * set nonu
-  augroup end
-]],
-  false
-)
+vim.opt.fillchars:append({
+    horiz = '━',
+    horizup = '┻',
+    horizdown = '┳',
+    vert = '┃',
+    vertleft = '┨',
+    vertright = '┣',
+    verthoriz = '╋',
+})
+
+vim.cmd [[colorscheme kanagawa]]

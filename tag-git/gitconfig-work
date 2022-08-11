@@ -3,7 +3,7 @@
 [github]
   user = hm-delianides
 [user]
-	name = hm-delianides
+	name = "Drew Delianides" 
 	email = adelianides@happymoney.com 
   signingKey = 7E7F8944604FCD09
 [commit]

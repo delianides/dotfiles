@@ -10,8 +10,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- disable macros
-util.nmap("q", "<Nop>")
-util.nmap("Q", "<Nop>")
+-- util.nmap("q", "<Nop>")
+-- util.nmap("Q", "<Nop>")
 
 -- deletes in visual
 util.vnoremap("X", '"_d')
