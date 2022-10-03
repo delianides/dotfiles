@@ -67,8 +67,8 @@ util.nnoremap("<Up>", ':echoe "Use k"<CR>')
 util.nnoremap("<Down>", ':echoe "Use j"<CR>')
 
 -- Comment
-util.nmap("gcc", "<cmd>lua require('Comment.api').toggle_current_linewise()<cr>")
-util.vmap("gcc", "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
+--[[ util.nmap("gcc", "<cmd>lua require('Comment.api').toggle_current_linewise()<cr>") ]]
+--[[ util.vmap("gcc", "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>") ]]
 
 util.nmap("<C-s>", "<cmd>w!<CR>")
 util.nmap("<C-q>", "<cmd>q!<CR>")

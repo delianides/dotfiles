@@ -32,8 +32,11 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
     virtual_text = {
         spacing = 5,
         prefix = "",
+        severity_limit = "Warning",
     },
-    signs = true, -- rely on highlight styles instead, don't want to clobber signcolumn
+    signs = {
+      severity_limit = "Warning",
+    }, -- rely on highlight styles instead, don't want to clobber signcolumn
 })
 
 local signs = { Error = "E ", Warn = "W ", Hint = "H ", Info = "I " }

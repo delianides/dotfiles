@@ -185,12 +185,14 @@ end
 local function common_on_attach(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-  navic.attach(client, bufnr)
-
   buf_set_keymaps(bufnr)
 
   if client.config.flags then
     client.config.flags.allow_incremkental_sync = true
+  end
+
+  if client.supports_method("textDocument/documentSymbol") then
+    navic.attach(client, bufnr)
   end
 
   if client.supports_method("textDocument/documentHighlight") then
