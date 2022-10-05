@@ -81,9 +81,7 @@ _fuzzy_history() {
 zle -N fuzzy-history _fuzzy_history
 bindkey -M viins '^r' fuzzy-history
 
-if [ -z "$TMUX" ]; then
-  bindkey -s "^p" 'ta\n'
-fi
+bindkey -s "^p" 'ta\n'
 
 cd () {
   if   [[ "x$*" == "x..." ]]; then

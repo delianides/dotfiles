@@ -1,21 +1,22 @@
-#!/bin/zsh
-
 stty -ixon
 
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
-zplug 'mafredri/zsh-async'
+zplug "mafredri/zsh-async"
 zplug 'zsh-users/zsh-syntax-highlighting', defer:2
 zplug 'zsh-users/zsh-completions', defer:2
 zplug 'zsh-users/zsh-autosuggestions', defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
 zplug "jeffreytse/zsh-vi-mode"
-zplug "Aloxaf/fzf-tab"
 zplug "plugins/git", from:oh-my-zsh
 zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "Aloxaf/fzf-tab", defer:3
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+ZVM_VI_ESCAPE_BINDKEY=jj
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
+ZVM_INIT_MODE=sourcing
 
 zplug load
 
@@ -35,6 +36,8 @@ eval "$(starship init zsh)"
 for zsh_source in $HOME/.zsh/config/*.zsh; do
 	source $zsh_source
 done
+
+enable-fzf-tab
 
 # Returns the name of the most recent tmux session, sorted by time the session
 # was last attached.
