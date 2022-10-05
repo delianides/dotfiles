@@ -249,11 +249,11 @@ null_ls.setup({
         callback = function()
           vim.lsp.buf.format({
             bufnr = bufnr,
-            filter = function(clients)
-              return vim.tbl_filter(function(c)
-                return c.name ~= "tsserver"
-              end, clients)
-            end,
+            -- filter = function(clients)
+            --   return vim.tbl_filter(function(c)
+            --     return c.name ~= "tsserver"
+            --   end, clients)
+            -- end,
           })
         end,
       })
