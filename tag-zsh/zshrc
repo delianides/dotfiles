@@ -18,6 +18,8 @@ ZVM_VI_ESCAPE_BINDKEY=jj
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 ZVM_INIT_MODE=sourcing
 
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+
 zplug load
 
 . $(brew --prefix asdf)/libexec/asdf.sh
