@@ -13,44 +13,25 @@ function M.config()
 
   local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
   end
 
-  local kind_icons = {
-    Text = "",
-    Method = "",
-    Function = "",
-    Constructor = "",
-    Field = "ﰠ",
-    Variable = "",
-    Class = "",
-    Interface = "",
-    Module = "",
-    Property = "",
-    Unit = "",
-    Value = "",
-    Enum = "",
-    Keyword = "",
-    Snippet = "",
-    Color = "",
-    File = "",
-    Reference = "",
-    Folder = "",
-    EnumMember = "",
-    Constant = "",
-    Struct = "פּ",
-    Event = "",
-    Operator = "",
-    TypeParameter = "",
-  }
+  local select_opts = { behavior = cmp.SelectBehavior.Select }
 
-  cmp.setup({
+  cmp.setup {
     preselect = cmp.PreselectMode.None,
     formatting = {
-      fields = { "kind", "abbr", "menu" },
-      format = function(_, vim_item)
-        vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-        return vim_item
+      fields = { "menu", "abbr", "kind" },
+      format = function(entry, item)
+        local menu_icon = {
+          nvim_lsp = "λ",
+          luasnip = "⋗",
+          buffer = "Ω",
+          path = "🖫",
+        }
+
+        item.menu = menu_icon[entry.source.name]
+        return item
       end,
     },
     snippet = {
@@ -70,62 +51,68 @@ function M.config()
       select = false,
     },
     window = {
-      documentation = {
-        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-      },
+      documentation = cmp.config.window.bordered(),
     },
     experimental = {
       ghost_text = false,
       native_menu = false,
     },
     completion = {
-      keyword_length = 1,
+      keyword_length = 3,
     },
     mapping = {
       ["<C-k>"] = cmp.mapping.select_prev_item(),
       ["<C-j>"] = cmp.mapping.select_next_item(),
-      ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-      ["<C-f>"] = cmp.mapping.scroll_docs(4),
-      ["<C-space>"] = cmp.mapping.complete(),
+      ["<C-f>"] = cmp.mapping.scroll_docs(-4),
+      ["<C-u>"] = cmp.mapping.scroll_docs(4),
       ["<C-y>"] = cmp.config.disable,
-      ["<C-e>"] = cmp.mapping({
-        i = cmp.mapping.abort(),
-        c = cmp.mapping.close(),
-      }),
-      ["<CR>"] = cmp.mapping.confirm({ select = true }),
-      ["<Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
-        elseif has_words_before() then
-          cmp.complete()
+      ["<CR>"] = cmp.mapping.confirm { select = true },
+      ["<C-d>"] = cmp.mapping(function(fallback)
+        if luasnip.jumpable(1) then
+          luasnip.jump(1)
         else
           fallback()
         end
       end, { "i", "s" }),
 
-      ["<S-Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then
+      ["<C-b>"] = cmp.mapping(function(fallback)
+        if luasnip.jumpable(-1) then
           luasnip.jump(-1)
         else
           fallback()
         end
       end, { "i", "s" }),
-    },
-  })
 
-  cmp.setup.cmdline(':', {
+      ["<Tab>"] = cmp.mapping(function(fallback)
+        local col = vim.fn.col "." - 1
+
+        if cmp.visible() then
+          cmp.select_next_item(select_opts)
+        elseif col == 0 or vim.fn.getline("."):sub(col, col):match "%s" then
+          fallback()
+        else
+          cmp.complete()
+        end
+      end, { "i", "s" }),
+
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_prev_item(select_opts)
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
+    },
+  }
+
+  cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-      { name = 'path' }
+      { name = "path" },
     }, {
-      { name = 'cmdline' }
-    })
+      { name = "cmdline" },
+    }),
   })
-
 end
 
 return M
