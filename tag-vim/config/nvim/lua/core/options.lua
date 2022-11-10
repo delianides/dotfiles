@@ -1,6 +1,4 @@
-
-if vim.fn.exists "syntax_on" then vim.cmd "syntax enable" end
-
+-- if vim.fn.exists "syntax_on" then vim.cmd "syntax enable" end
 vim.g.mapleader = " "
 vim.g.snippets = "luasnip"
 -- vim.g.sonokai_diagnostic_virtual_text = "colored"

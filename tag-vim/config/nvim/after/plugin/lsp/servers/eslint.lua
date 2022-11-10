@@ -4,6 +4,7 @@ if not ok then
 end
 
 lspconfig.eslint.setup {
+  root_dir = lspconfig.util.find_git_ancestor,
   settings = {
     format = { enable = true },
   },

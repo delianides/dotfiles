@@ -165,5 +165,8 @@
   "tabnine.experimentalAutoImports": true,
   "editor.suggestSelection": "first",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "editor.fontFamily": "'SauceCodePro Nerd Font Mono', monospace"
+  "editor.fontFamily": "'SauceCodePro Nerd Font Mono', monospace",
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
+  }
 }

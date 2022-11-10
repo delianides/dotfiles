@@ -1,5 +1,34 @@
-local rename = vim.lsp.handlers["textDocument/rename"]
+local signs = { Error = "E ", Warn = "W ", Hint = "H ", Info = "I " }
 
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
+local config = {
+  virtual_text = {
+      spacing = 5,
+      prefix = "",
+      severity_limit = "Warning",
+  },
+	signs = {
+    severity_limit = "Warning",
+		active = signs,
+	},
+	update_in_insert = false,
+	underline = true,
+	severity_sort = true,
+	float = {
+		focusable = false,
+		style = "minmal",
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+	},
+}
+
+local rename = vim.lsp.handlers["textDocument/rename"]
 -- Populates the quickfix list with all rename locations.
 vim.lsp.handlers["textDocument/rename"] = function(err, result, ...)
     rename(err, result, ...)
@@ -28,20 +57,14 @@ vim.lsp.handlers["textDocument/rename"] = function(err, result, ...)
     vim.fn.setqflist(entries, "r")
 end
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = {
-        spacing = 5,
-        prefix = "",
-        severity_limit = "Warning",
-    },
-    signs = {
-      severity_limit = "Warning",
-    }, -- rely on highlight styles instead, don't want to clobber signcolumn
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, config)
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+	border = "rounded",
 })
 
-local signs = { Error = "E ", Warn = "W ", Hint = "H ", Info = "I " }
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+	border = "rounded",
+})
 
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
+vim.diagnostic.config(config)

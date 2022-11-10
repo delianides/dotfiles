@@ -1,0 +1,5 @@
+#!/bin/bash
+
+docker-remove-images(){
+  docker rmi -f $(docker images -aq)
+}

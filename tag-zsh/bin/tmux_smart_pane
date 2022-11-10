@@ -1,0 +1,6 @@
+#!/bin/bash
+
+tmux_smart_pane() {
+  [[ $(_tmux_orientation) = 'portrait' ]] && orient='-v' || orient='-h'
+  eval "tmux split-window $orient $@"
+}
