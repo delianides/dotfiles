@@ -21,4 +21,3 @@ for _, source in ipairs(sources) do
     utils.error("**** Failed to load " .. source .. "\n\n" .. fault)
   end
 end
-

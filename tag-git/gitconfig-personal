@@ -5,7 +5,11 @@
 [user]
 	name = delianides
 	email = github@drew.delianides.com
-	signingkey = 5A1D910189D5B3A4
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDuYiuvLnqanNkQ2csbzCPgtZHKMJYFxoNfcvP+buIyz
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [commit]
 	gpgsign = true
 [url "git@github.com:"]

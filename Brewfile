@@ -1,6 +1,7 @@
 # vim:ft=ruby:
 #
 
+tap "facebook/fb"
 tap "derailed/k9s"
 tap "github/gh"
 tap "goreleaser/tap"
@@ -55,6 +56,7 @@ brew "emacs"
 brew "fasd"
 brew "fd"
 brew "ffmpeg"
+brew "fig"
 brew "forego"
 brew "fzf"
 brew "gawk"

@@ -1,5 +1,47 @@
 stty -ixon
 
+# makes color constants available
+autoload -U colors
+colors
+
+export GPG_TTY=$(tty)
+export PATH="$PATH:~/.bin"
+
+## Command history configuration
+if [ -z "$HISTFILE" ]; then
+  HISTFILE=$HOME/.zsh_history
+fi
+
+HISTSIZE=10000
+SAVEHIST=10000
+
+# Show history
+case $HIST_STAMPS in
+  "mm/dd/yyyy") alias history='fc -fl 1' ;;
+  "dd.mm.yyyy") alias history='fc -El 1' ;;
+  "yyyy-mm-dd") alias history='fc -il 1' ;;
+  *) alias history='fc -l 1' ;;
+esac
+
+setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS # IGNORE DUPLICATION COMMAND HISTORY LIST
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY # SHARE COMMAND HISTORY DATA
+setopt NO_BG_NICE
+setopt NO_HUP                    # don't kill background jobs when the shell exits
+setopt NO_LIST_BEEP
+setopt LOCAL_OPTIONS
+setopt LOCAL_TRAPS
+setopt PROMPT_SUBST
+setopt EXTENDED_GLOB
+setopt INC_APPEND_HISTORY
+setopt AUTOPUSHD
+unsetopt AUTO_CD # with cdpath enabled, auto_cd gives too many false positives
+
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
@@ -7,7 +49,10 @@ zplug "mafredri/zsh-async"
 zplug 'zsh-users/zsh-syntax-highlighting', defer:2
 zplug 'zsh-users/zsh-completions', defer:2
 zplug 'zsh-users/zsh-autosuggestions', defer:2
+zplug "g-plane/zsh-yarn-autocompletions", hook-build:"./zplug.zsh", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
+zplug "lukechilds/zsh-better-npm-completion", defer:2
+zplug "joshskidmore/zsh-fzf-history-search", defer:2
 zplug "jeffreytse/zsh-vi-mode"
 zplug "plugins/git", from:oh-my-zsh
 zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
@@ -23,26 +68,28 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 zplug load
 
 . $(brew --prefix asdf)/libexec/asdf.sh
+# . $HOME/.asdf/plugins/java/set-java-home.zsh
 
 eval "$(direnv hook zsh)";
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
-# shellcheck disable=SC1090
-[ -f ~/.aliases ] && source ~/.aliases;
-# shellcheck disable=SC1090
-[ -f ~/.localrc ] && source ~/.localrc;
-# shellcheck disable=SC1090
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh;
 
-for zsh_source in $HOME/.zsh/config/*.zsh; do
-	source $zsh_source
+for file in ~/.{aliases,functions,dockerfunc,path,extra,exports,localrc,fzf.zsh}; do
+	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
+		# shellcheck source=/dev/null
+		source "$file"
+	fi
 done
+
+if [ -z "$TMUX" ]; then
+  bindkey -s "^p" 'ta\n';
+fi
 
 enable-fzf-tab
 
 # Returns the name of the most recent tmux session, sorted by time the session
 # was last attached.
-if ! inside_ssh && ! in_vs_code; then
+if ! _in_ssh && ! _in_vs_code; then
   connect_to_most_recent_tmux_session
 fi

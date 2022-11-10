@@ -1,9 +1,16 @@
-local ok, lspconfig = pcall(require, "lspconfig")
-if not ok then
+local lspconfig = safe_require "lspconfig"
+if not lspconfig then
   return
 end
 
-lspconfig.sumneko_lua.setup(require("lua-dev").setup {
+local neodev = safe_require "neodev"
+if not neodev then
+  return
+end
+
+neodev.setup()
+
+lspconfig.sumneko_lua.setup {
   settings = {
     Lua = {
       diagnostics = {
@@ -11,4 +18,4 @@ lspconfig.sumneko_lua.setup(require("lua-dev").setup {
       },
     },
   },
-})
+}

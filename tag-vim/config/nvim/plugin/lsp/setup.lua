@@ -25,6 +25,21 @@ require("mason").setup({
 })
 require("mason-lspconfig").setup({
   automatic_installation = true,
+  ensure_installed = {
+    "sumneko_lua",
+    "jsonls",
+    "tsserver",
+    "astro",
+    -- "eslint",
+    "prismals",
+    "tailwindcss",
+    "html",
+    "cssls",
+    "astro",
+    "yamlls",
+    "marksman",
+    "dockerls",
+  },
 })
 
 local function w(fn)
@@ -39,7 +54,7 @@ local function create_capabilities(opts)
     with_snippet_support = true,
   }
   opts = opts or default_opts
-  local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
   capabilities.textDocument.completion.completionItem.snippetSupport = opts.with_snippet_support
   if opts.with_snippet_support then
     capabilities.textDocument.completion.completionItem.resolveSupport = {
@@ -95,27 +110,13 @@ local function buf_autocmd_codelens(bufnr)
   })
 end
 
--- Finds and runs the closest codelens (searches upwards only)
-local function find_and_run_codelens()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-  local lenses = vim.lsp.codelens.get(bufnr)
-
-  lenses = vim.tbl_filter(function(lense)
-    return lense.range.start.line < row
-  end, lenses)
-
-  if #lenses == 0 then
-    return vim.notify("Could not find codelens to run.")
-  end
-
-  table.sort(lenses, function(a, b)
-    return a.range.start.line > b.range.start.line
-  end)
-
-  vim.api.nvim_win_set_cursor(0, { lenses[1].range.start.line + 1, 0 })
-  vim.lsp.codelens.run()
-  vim.api.nvim_win_set_cursor(0, { row, col }) -- restore cursor, TODO: also restore position
+local function buf_run_prettier(bufnr)
+  vim.g.should_run_prettier = true
+  vim.lsp.buf.format({
+    bufnr = bufnr,
+    name = "null-ls",
+  })
+  vim.g.should_run_prettier = false
 end
 
 ---@param bufnr number
@@ -133,6 +134,7 @@ local function buf_set_keymaps(bufnr)
         d = { "<cmd>Trouble document_diagnostics<CR>", "Trouble Document Diagnostics" },
         s = { telescope_config.document_symbols, "Telescope show document symbols" },
         t = { telescope_config.document_diagnostics, "Telescope show document diagnostics" },
+        p = { buf_run_prettier, "Run Prettier" },
       },
       w = {
         name = "+workspace",
@@ -226,7 +228,11 @@ null_ls.setup({
   debounce = 150,
   save_after_format = false,
   sources = {
-    -- nls.builtins.formatting.prettierd,
+    null_ls.builtins.formatting.prettierd.with({
+      runtime_condition = function()
+        return vim.g.should_run_prettier
+      end,
+    }),
     null_ls.builtins.formatting.stylua,
     -- null_ls.builtins.formatting.eslint_d,
     null_ls.builtins.formatting.fixjson.with({ filetypes = { "jsonc" } }),
@@ -235,7 +241,7 @@ null_ls.setup({
     null_ls.builtins.diagnostics.luacheck.with({
       extra_args = { "--globals", "vim" },
     }),
-    null_ls.builtins.diagnostics.markdownlint,
+    -- null_ls.builtins.diagnostics.markdownlint,
     null_ls.builtins.code_actions.gitsigns,
     -- nls.builtins.diagnostics.selene,
   },
@@ -246,13 +252,11 @@ null_ls.setup({
       vim.api.nvim_create_autocmd("BufWritePost", {
         group = augroup,
         buffer = bufnr,
-        callback = function()
+        callback = function(opts)
           vim.lsp.buf.format({
             bufnr = bufnr,
             -- filter = function(clients)
-            --   return vim.tbl_filter(function(c)
-            --     return c.name ~= "tsserver"
-            --   end, clients)
+            --   return clients.name ~= "tsserver"
             -- end,
           })
         end,

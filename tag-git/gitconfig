@@ -38,7 +38,9 @@
 [include]
   path = .gitconfig.local
 [commit]
-	gpgsign = true
+  gpgsign = true
+[gpg]
+	program = /opt/homebrew/bin/gpg
 [fetch]
   prune = true
 [credential]

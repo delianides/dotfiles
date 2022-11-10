@@ -11,7 +11,7 @@
 # ask the user which directory to start in
 # `brew install exa` or replace with /bin/ls
 _PROJECT_DIR="$(\
-  find "$HOME/Code" "$HOME/Projects" "$HOME/Work" -mindepth 1 -maxdepth 1 -type d -exec exa -d --color always {} \; \
+  find "$HOME/Code" "$HOME/Projects" "$HOME/Work" -not -path '*/\.*' -mindepth 1 -maxdepth 1 -type d -exec exa -d --color always {} \; \
   | fzf --ansi --layout="reverse" --header="Select Project >>>"\
 )"
 

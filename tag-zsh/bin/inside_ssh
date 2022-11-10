@@ -1,0 +1,8 @@
+#!/bin/bash
+  
+_inside_ssh(){
+  [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]
+}
+
+_inside_ssh
+

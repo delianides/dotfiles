@@ -1,0 +1,13 @@
+#!/bin/bash
+
+_any_tmux_sessions() {
+  [[ -n "$(tmux ls 2>/dev/null)" ]]
+}
+
+_not_in_tmux() {
+  [[ -z "$TMUX" ]]
+}
+
+if _not_in_tmux && _any_tmux_sessions; then
+  tmux attach -t "$(_most_recent_tmux_session)"
+fi
