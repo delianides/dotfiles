@@ -1,3 +1,4 @@
+# vi: ft=gitconfig
 [core]
   sshCommand = ssh -i ~/.ssh/id_ed25519_delianides.pub
 [github]

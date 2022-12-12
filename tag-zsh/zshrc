@@ -44,6 +44,7 @@ unsetopt AUTO_CD # with cdpath enabled, auto_cd gives too many false positives
 
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
+source $HOME/.config/op/plugins.sh
 
 zplug "mafredri/zsh-async"
 zplug 'zsh-users/zsh-syntax-highlighting', defer:2

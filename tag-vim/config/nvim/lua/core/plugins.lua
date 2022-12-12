@@ -225,13 +225,6 @@ local function plugins(use)
   })
 
   use({
-    "abecodes/tabout.nvim",
-    config = function()
-      require("configs.tabout").config()
-    end,
-  })
-
-  use({
     "sitiom/nvim-numbertoggle",
     config = function()
       require("numbertoggle").setup()

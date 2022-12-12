@@ -23,6 +23,11 @@ require("mason").setup({
     },
   },
 })
+
+require("mason-null-ls").setup({
+  ensure_installed = { "actionlint", "prettierd" }
+})
+
 require("mason-lspconfig").setup({
   automatic_installation = true,
   ensure_installed = {
@@ -127,7 +132,7 @@ local function buf_set_keymaps(bufnr)
       f = { vim.lsp.buf.format, "Select LSP to format buffer" }, -- create a binding with label
       r = { vim.lsp.buf.rename, "Rename variable with LSP" }, -- additional options for creating the keymap
       a = { vim.lsp.buf.code_action, "Run LSP Code Action" }, -- just a label. don't create any mapping
-      h = { vim.lsp.buf.signature_help, "Signature Help" },
+      s = { "<cmd>Lspsaga show_line_diagnostics<CR>", "Signature Help" },
       O = { vim.lsp.buf.hover, "Hover" },
       d = {
         name = "+document",
@@ -228,11 +233,11 @@ null_ls.setup({
   debounce = 150,
   save_after_format = false,
   sources = {
-    null_ls.builtins.formatting.prettierd.with({
-      runtime_condition = function()
-        return vim.g.should_run_prettier
-      end,
-    }),
+    -- null_ls.builtins.formatting.prettierd.with({
+    --   runtime_condition = function()
+    --     return vim.g.should_run_prettier
+    --   end,
+    -- }),
     null_ls.builtins.formatting.stylua,
     -- null_ls.builtins.formatting.eslint_d,
     null_ls.builtins.formatting.fixjson.with({ filetypes = { "jsonc" } }),
@@ -255,9 +260,9 @@ null_ls.setup({
         callback = function(opts)
           vim.lsp.buf.format({
             bufnr = bufnr,
-            -- filter = function(clients)
-            --   return clients.name ~= "tsserver"
-            -- end,
+            filter = function(clients)
+              return clients.name ~= "tsserver"
+            end,
           })
         end,
       })

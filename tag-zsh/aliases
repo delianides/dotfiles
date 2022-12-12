@@ -24,6 +24,8 @@ alias ls="exa"
 alias ll="exa -alh"
 alias tree="exa --tree"
 alias diff="colordiff -u"
+alias pn="pnpm"
+alias dig="dig +noall +answer +multiline"
 
 alias gs='git status -sb'
 
