@@ -19,7 +19,6 @@ style = "blue"
 [character]
 success_symbol = "[❯](purple)"
 error_symbol = "[❯](red)"
-vicmd_symbol = "[❮](green)"
 
 [git_branch]
 format = "[$branch]($style)"
@@ -55,11 +54,3 @@ python_binary = "python3"
 [nodejs]
 format = "[$version]($style) "
 style = "bright-green"
-
-[rust]
-format = "[$version]($style) "
-style = "bright-red"
-
-[golang]
-format = "[$version]($style) "
-style = "bright-blue"

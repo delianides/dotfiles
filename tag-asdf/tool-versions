@@ -7,3 +7,4 @@ rust 1.59.0
 java temurin-11.0.17+8
 
 yarn 1.22.19
+redis-cli 7.0.8
