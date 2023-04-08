@@ -1,6 +1,7 @@
 local Util = require("lazyvim.util")
 
 return {
+  { import = "lazyvim.plugins.extras.ui.mini-starter" },
   -- git conflict
   {
     "akinsho/git-conflict.nvim",
@@ -18,9 +19,94 @@ return {
     },
   },
   {
-    "aserowy/tmux.nvim",
+    "mrjones2014/smart-splits.nvim",
     config = true,
-    lazy = false,
+    keys = {
+      {
+        "<A-h>",
+        function()
+          require("smart-splits").resize_left()
+        end,
+        desc = "Resize Left",
+      },
+      {
+        "<A-j>",
+        function()
+          require("smart-splits").resize_down()
+        end,
+        desc = "Resize Down",
+      },
+      {
+        "<A-k>",
+        function()
+          require("smart-splits").resize_up()
+        end,
+        desc = "Resize Up",
+      },
+      {
+        "<A-l>",
+        function()
+          require("smart-splits").resize_right()
+        end,
+        desc = "Resize Right",
+      },
+      {
+        "<C-h>",
+        function()
+          require("smart-splits").move_cursor_left()
+        end,
+        desc = "Move Cursor Left",
+      },
+      {
+        "<C-j>",
+        function()
+          require("smart-splits").move_cursor_down()
+        end,
+        desc = "Move Cursor Down",
+      },
+      {
+        "<C-k>",
+        function()
+          require("smart-splits").move_cursor_up()
+        end,
+        desc = "Move Cursor Up",
+      },
+      {
+        "<C-l>",
+        function()
+          require("smart-splits").move_cursor_right()
+        end,
+        desc = "Move Cursor Right",
+      },
+      {
+        "<leader><leader>h",
+        function()
+          require("smart-splits").swap_buf_left()
+        end,
+        desc = "Swap Buffer Left",
+      },
+      {
+        "<leader><leader>j",
+        function()
+          require("smart-splits").swap_buf_down()
+        end,
+        desc = "Swap Buffer Down",
+      },
+      {
+        "<leader><leader>k",
+        function()
+          require("smart-splits").swap_buf_up()
+        end,
+        desc = "Swap Buffer Up",
+      },
+      {
+        "<leader><leader>l",
+        function()
+          require("smart-splits").swap_buf_right()
+        end,
+        desc = "Swap Buffer Right",
+      },
+    },
   },
   {
     "ThePrimeagen/harpoon",
@@ -38,6 +124,7 @@ return {
     "brenoprata10/nvim-highlight-colors",
     cmd = "HighlightColorsToggle",
     opts = { enable_tailwind = true, enable_named_colors = true },
+    enable = false,
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -68,13 +155,46 @@ return {
     },
     dependencies = { "sindrets/diffview.nvim" },
   },
+  { "echasnovski/mini.indentscope", version = false },
+  { "echasnovski/mini.splitjoin", version = false },
+  { "echasnovski/mini.trailspace", version = false },
+  {
+    "nvim-neorg/neorg",
+    build = ":Neorg sync-parsers",
+    opts = {
+      load = {
+        ["core.defaults"] = {}, -- Loads default behaviour
+        ["core.norg.concealer"] = {}, -- Adds pretty icons to your documents
+        ["core.norg.dirman"] = { -- Manages Neorg workspaces
+          config = {
+            workspaces = {
+              notes = "~/notes",
+            },
+          },
+        },
+      },
+    },
+    dependencies = { { "nvim-lua/plenary.nvim" } },
+  },
   {
     "nvim-telescope/telescope.nvim",
+    dependencies = {
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+        config = function()
+          require("telescope").load_extension("fzf")
+        end,
+      },
+    },
     opts = function(_, opts)
       local actions = require("telescope.actions")
       return {
         defaults = {
-          file_ignore_patterns = { ".git/", "node_modules/*" },
+          preview = {
+            treesitter = false,
+          },
+          file_ignore_patterns = { ".git/", "node_modules/*", "__snapshots__" },
           mappings = {
             -- pull the mappings from lazyvim
             i = vim.list_extend(opts.defaults.mappings.i, {
