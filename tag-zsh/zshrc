@@ -91,6 +91,6 @@ enable-fzf-tab
 
 # Returns the name of the most recent tmux session, sorted by time the session
 # was last attached.
-if ! _in_ssh && ! _in_vs_code; then
-  connect_to_most_recent_tmux_session
-fi
+# if ! _in_ssh && ! _in_vs_code; then
+#   connect_to_most_recent_tmux_session
+# fi

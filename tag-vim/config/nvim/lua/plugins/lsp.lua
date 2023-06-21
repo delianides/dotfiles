@@ -19,6 +19,7 @@ return {
       keys[#keys + 1] = { "O", vim.lsp.buf.hover, desc = "Hover" }
     end,
     opts = {
+      autoformat = false,
       diagnostics = {
         float = {
           focusable = false,
@@ -32,28 +33,4 @@ return {
     },
   },
 
-  {
-    "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        "lua-language-server",
-      },
-      ui = {
-        icons = {
-          package_installed = "✓",
-          package_pending = "",
-          package_uninstalled = "✗",
-        },
-      },
-    },
-  },
-
-  -- language specific extension modules
-  { import = "lazyvim.plugins.extras.lang.typescript" },
-  { import = "lazyvim.plugins.extras.lang.json" },
-  { import = "lazyvim.plugins.extras.linting.eslint" },
-  -- { import = "plugins.extras.lang.go" },
-  -- { import = "plugins.extras.lang.java" },
-  -- { import = "plugins.extras.lang.rust" },
-  { import = "plugins.extras.lang.nodejs" },
 }

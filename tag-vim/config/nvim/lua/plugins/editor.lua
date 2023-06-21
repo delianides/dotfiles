@@ -1,7 +1,6 @@
 local Util = require("lazyvim.util")
 
 return {
-  { import = "lazyvim.plugins.extras.ui.mini-starter" },
   -- git conflict
   {
     "akinsho/git-conflict.nvim",
@@ -10,6 +9,7 @@ return {
   },
   {
     "sindrets/diffview.nvim",
+    lazy = true,
     cmd = "DiffviewOpen",
   },
   {
@@ -18,6 +18,7 @@ return {
       current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
     },
   },
+  { 'Bekaboo/dropbar.nvim' },
   {
     "mrjones2014/smart-splits.nvim",
     config = true,
@@ -109,10 +110,6 @@ return {
     },
   },
   {
-    "ThePrimeagen/harpoon",
-    config = true,
-  },
-  {
     "abecodes/tabout.nvim",
     config = true,
   },
@@ -158,24 +155,6 @@ return {
   { "echasnovski/mini.indentscope", version = false },
   { "echasnovski/mini.splitjoin", version = false },
   { "echasnovski/mini.trailspace", version = false },
-  {
-    "nvim-neorg/neorg",
-    build = ":Neorg sync-parsers",
-    opts = {
-      load = {
-        ["core.defaults"] = {}, -- Loads default behaviour
-        ["core.norg.concealer"] = {}, -- Adds pretty icons to your documents
-        ["core.norg.dirman"] = { -- Manages Neorg workspaces
-          config = {
-            workspaces = {
-              notes = "~/notes",
-            },
-          },
-        },
-      },
-    },
-    dependencies = { { "nvim-lua/plenary.nvim" } },
-  },
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
