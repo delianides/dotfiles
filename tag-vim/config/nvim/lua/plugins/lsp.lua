@@ -32,5 +32,14 @@ return {
       },
     },
   },
-
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    opts = function(_, opts)
+      local nls = require("null-ls")
+      local bufdir = vim.fn.expand("%:p")
+      if not string.find(bufdir, "Work") then
+        table.insert(opts.sources, nls.builtins.formatting.prettierd)
+      end
+    end,
+  },
 }
