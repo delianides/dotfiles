@@ -1,18 +1,18 @@
 # vi: ft=gitconfig
 [core]
-  sshCommand = ssh -i ~/.ssh/id_ed25519_delianides_hm.pub
-[github]
-  user = hm-delianides
+  sshCommand = ssh -i ~/.ssh/id_ed25519_delianides_tg.pub
+[gitlab]
+  user = delianides-tg
 [user]
 	name = "Drew Delianides" 
-	email = adelianides@happymoney.com 
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFWYtSzx5Mj4GIeFSA94w0qM3WjuPIBBHV4oGeabB80j
+	email = adelianides@traeger.com 
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJS4peroEDqum+IyjvuRdEsH/SB7ypoLhfAz5qRFQgFv
 [commit]
 	gpgsign = true
 [gpg]
   format = ssh
 [gpg "ssh"]
   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-[url "git@github.com:"]
-    InsteadOf = https://github.com/
+[url "git@gitlab.com:"]
+    InsteadOf = https://gitlab.com/
 

@@ -7,48 +7,48 @@ set -eo pipefail
 mkdir -p ~/Code
 
 color() {
-  local colornumber="$1"
-  shift
-  tput setaf "$colornumber"
-  echo "$*"
-  tput sgr0
+	local colornumber="$1"
+	shift
+	tput setaf "$colornumber"
+	echo "$*"
+	tput sgr0
 }
 
-red(){ color 1 "$*"; }
-green(){ color 2 "$*"; }
-yellow(){ color 3 "$*"; }
+red() { color 1 "$*"; }
+green() { color 2 "$*"; }
+yellow() { color 3 "$*"; }
 
-info(){
-  green "=== $*"
+info() {
+	green "=== $*"
 }
 
-error(){
-  red "!! $*"
+error() {
+	red "!! $*"
 }
 
-stay_awake_while(){
-  caffeinate -dims "$@"
+stay_awake_while() {
+	caffeinate -dims "$@"
 }
 
-quietly_brew_bundle(){
-  local brewfile=$1
-  shift
-  local regex='(^Using )|Homebrew Bundle complete|Skipping install of|It is not currently installed|Verifying SHA-256|==> (Downloading|Purging)|Already downloaded:|No SHA-256'
-  stay_awake_while brew bundle --no-lock --file="$brewfile" "$@" | (grep -vE "$regex" || true)
+quietly_brew_bundle() {
+	local brewfile=$1
+	shift
+	local regex='(^Using )|Homebrew Bundle complete|Skipping install of|It is not currently installed|Verifying SHA-256|==> (Downloading|Purging)|Already downloaded:|No SHA-256'
+	stay_awake_while brew bundle --no-lock --file="$brewfile" "$@" | (grep -vE "$regex" || true)
 }
 
-command_does_not_exist(){
-  ! command -v "$1" > /dev/null
+command_does_not_exist() {
+	! command -v "$1" >/dev/null
 }
 
 info "Checking for command-line tools..."
 if command_does_not_exist xcodebuild; then
-  stay_awake_while xcode-select --install
+	stay_awake_while xcode-select --install
 fi
 
 info "Installing Homebrew (if not already installed)..."
 if command_does_not_exist brew; then
-  stay_awake_while /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+	stay_awake_while /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
 info "Installing Homebrew packages..."
@@ -61,21 +61,21 @@ quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.casks" || true
 app_store_id=$(mas account || true)
 desired_app_store_id="apple@drew.delianides.com"
 if [[ "$app_store_id" == "$desired_app_store_id" ]]; then
-  quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.mas"
+	quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.mas"
 else
-  if mas account &>/dev/null; then
-    error "You are signed in to the App Store as $app_store_id."
-    error "Sign out and re-sign in as $desired_app_store_id"
-  else
-    error "You are not signed in to the App Store."
-    error "Sign in as $desired_app_store_id"
-  fi
-  error "(This won't affect your iCloud account.)"
+	if mas account &>/dev/null; then
+		error "You are signed in to the App Store as $app_store_id."
+		error "Sign out and re-sign in as $desired_app_store_id"
+	else
+		error "You are not signed in to the App Store."
+		error "Sign in as $desired_app_store_id"
+	fi
+	error "(This won't affect your iCloud account.)"
 fi
 
 if ! echo "$SHELL" | grep -Fq zsh; then
-  info "Your shell is not Zsh. Changing it to Zsh..."
-  chsh -s /bin/zsh
+	info "Your shell is not Zsh. Changing it to Zsh..."
+	chsh -s /bin/zsh
 fi
 
 info "Linking dotfiles into ~..."
@@ -88,53 +88,41 @@ stay_awake_while rcup -d .
 info "Setting Pre-Commit Hook"
 cp "$HOME/Code/dotfiles/lib/dotfiles-precommit-hook" "$HOME/Code/dotfiles/.git/hooks/pre-commit"
 
-info "Installing Vim packages..."
-vim +PackerSync +qa
-
 info "Installing MacOS system settings..."
 stay_awake_while sudo "$HOME"/Code/dotfiles/system/macos
 
 info "Installing ASDF language version manager..."
 alias install_asdf_plugin=add_or_update_asdf_plugin
 add_or_update_asdf_plugin() {
-  local name="$1"
-  local url="$2"
+	local name="$1"
+	local url="$2"
 
-  if ! asdf plugin-list | grep -Fq "$name"; then
-    asdf plugin-add "$name" "$url"
-  else
-    asdf plugin-update "$name"
-  fi
+	if ! asdf plugin-list | grep -Fq "$name"; then
+		asdf plugin-add "$name" "$url"
+	else
+		asdf plugin-update "$name"
+	fi
 }
+
 declare -a languages=(
-  "nodejs"
-  "python"
-  "ruby"
-  "rust"
-  "yarn"
-  "golang"
+	"nodejs"
+	"python"
+	"ruby"
+	"rust"
+	"golang"
 )
 
-for language in "${languages[@]}"
-do
-  add_or_update_asdf_plugin "$language"
+for language in "${languages[@]}"; do
+	add_or_update_asdf_plugin "$language"
 done
-  
+
 # Installs to ~/.terminfo
 echo "Installing italics-capable terminfo files..."
 if ! [[ -r ~/.terminfo/61/alacritty ]]; then
-  alacritty_terminfo=$(mktemp)
-  stay_awake_while curl -o "$alacritty_terminfo" https://raw.githubusercontent.com/jwilm/alacritty/master/extra/alacritty.info
-  tic -xe alacritty,alacritty-direct "$alacritty_terminfo"
+	alacritty_terminfo=$(mktemp)
+	stay_awake_while curl -o "$alacritty_terminfo" https://raw.githubusercontent.com/jwilm/alacritty/master/extra/alacritty.info
+	tic -xe alacritty,alacritty-direct "$alacritty_terminfo"
 fi
-
-# info "Running all setup scripts..."
-# for setup in "$HOME"/Code/dotfiles/tag-*/setup; do
-#   dir=$(basename "$(dirname "$setup")")
-#   info "Running setup for ${dir#tag-}..."
-#   # shellcheck disable=SC1090
-#   . "$setup"
-# done
 
 info "Success!"
 yellow "== Post-install instructions =="

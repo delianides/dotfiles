@@ -19,7 +19,6 @@ return {
       keys[#keys + 1] = { "O", vim.lsp.buf.hover, desc = "Hover" }
     end,
     opts = {
-      autoformat = false,
       diagnostics = {
         float = {
           focusable = false,
@@ -31,15 +30,5 @@ return {
         },
       },
     },
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      local bufdir = vim.fn.expand("%:p")
-      if not string.find(bufdir, "Work") then
-        table.insert(opts.sources, nls.builtins.formatting.prettierd)
-      end
-    end,
   },
 }

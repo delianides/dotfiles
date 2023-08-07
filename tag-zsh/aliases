@@ -15,8 +15,12 @@ alias aws='op run --env-file="$HOME/.config/op/aws.env" -- aws'
 
 alias re-source="source ~/.localrc"
 
+export VISUAL="nvim"
+
 alias vi='$VISUAL'
 alias vim='$VISUAL'
+
+alias cd="z"
 
 alias reload!='RELOAD=1 source ~/.zshrc'
 alias qq="cd . && source ~/.zshrc"

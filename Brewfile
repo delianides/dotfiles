@@ -15,12 +15,6 @@ tap "teamookla/speedtest"
 tap "achannarasappa/tap"
 
 brew "asdf"
-brew "vint"
-brew "shfmt"
-brew "yamllint"
-brew "shellcheck"
-brew "golangci-lint"
-brew "markdownlint-cli"
 
 brew "act"
 brew "actionlint"

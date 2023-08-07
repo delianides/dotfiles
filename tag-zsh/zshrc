@@ -40,7 +40,7 @@ setopt PROMPT_SUBST
 setopt EXTENDED_GLOB
 setopt INC_APPEND_HISTORY
 setopt AUTOPUSHD
-unsetopt AUTO_CD # with cdpath enabled, auto_cd gives too many false positives
+unsetopt AUTO_CD 
 
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
@@ -69,7 +69,6 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 zplug load
 
 . $(brew --prefix asdf)/libexec/asdf.sh
-# . $HOME/.asdf/plugins/java/set-java-home.zsh
 
 eval "$(direnv hook zsh)";
 eval "$(zoxide init zsh)"

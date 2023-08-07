@@ -3,7 +3,6 @@ export HOMEBREW_AUTO_UPDATE_SECS=604800
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_INSTALL_CLEANUP=1
 export HOMEBREW_NO_ENV_HINTS=1
-export BREW_HOME="/opt/homebrew"
 export FZF_DEFAULT_COMMAND='rg --hidden --files --ignore-file ~/.ignore'
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
 export TIMEFMT=$'\nreal\t%*E\nuser\t%*U\nsys\t%*S'
