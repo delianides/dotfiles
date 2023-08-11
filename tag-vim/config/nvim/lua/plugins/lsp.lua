@@ -1,6 +1,7 @@
 return {
   {
     "ray-x/lsp_signature.nvim",
+    enabled = false,
     opts = {
       bind = true,
       handler_opts = {
@@ -11,6 +12,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    version = false,
     init = function()
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
       -- disable a keymap
@@ -30,5 +32,15 @@ return {
         },
       },
     },
+  },
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    version = false,
+    opts = function(_, opts)
+      local nls = require("null-ls")
+      vim.list_extend(opts.sources, {
+        nls.builtins.diagnostics.pylint,
+      })
+    end,
   },
 }

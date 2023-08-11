@@ -18,6 +18,6 @@ return {
     "petertriho/nvim-scrollbar",
     opts = { handlers = { diagnostic = true, search = true } },
   },
-  { "catppuccin/nvim", name = "catppuccin" },
+  { "catppuccin/nvim", branch = "main", name = "catppuccin" },
   { "LazyVim/LazyVim", opts = { colorscheme = "catppuccin" } },
 }

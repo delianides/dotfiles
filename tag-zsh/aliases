@@ -6,11 +6,11 @@ alias ytp='youtube-dl --output "$PWD/%(extractor_key)s/%(uploader)s [%(channel_i
 alias audio='youtube-dl --ignore-config -f bestaudio --extract-audio --audio-format mp3 --embed-thumbnail --add-metadata --audio-quality 0 --output "$PWD/%(uploader)s - %(title)s.%(ext)s"'
 
 function ytinfo() {
-  youtube-dl --ignore-config --dump-json "$1" | jq
+	youtube-dl --ignore-config --dump-json "$1" | jq
 }
 
 # alias act='op run --env-file="$HOME/.config/op/gh.env" -- act -s GITHUB_TOKEN'
-alias aws='op run --env-file="$HOME/.config/op/aws.env" -- aws'
+# alias aws='op run --env-file="$HOME/.config/op/aws.env" -- aws'
 # alias gh='op run --env-file=$HOME/.config/op/gh.env -- gh'
 
 alias re-source="source ~/.localrc"
@@ -40,6 +40,5 @@ alias tmux="tmux -2"
 alias ssh='TERM=xterm-256color ssh'
 # alias grep="egrep --color=auto"
 
-alias sed="sed -E" # Use modern regexps for sed, i.e. "(one|two)", not "\(one\|two\)"
+alias sed="sed -E"                 # Use modern regexps for sed, i.e. "(one|two)", not "\(one\|two\)"
 alias crontab="VISUAL=vim crontab" # Remove vim flags for crontab -e
-
