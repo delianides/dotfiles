@@ -64,8 +64,6 @@ ZVM_VI_ESCAPE_BINDKEY=jj
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 ZVM_INIT_MODE=sourcing
 
-eval "$(_PIPENV_COMPLETE=zsh_source pipenv)"
-
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 
 zplug load
