@@ -17,12 +17,14 @@ fi
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+
 export GOPATH="$HOME/Code/src/go"
 export GOBIN="$HOME/Code/src/go/bin"
+export BOB="$HOME/.local/share/bob/nvim-bin"
 
 # Add homebrew binaries
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/opt/libpq/bin:$PATH"
 
 # Add my custom commands
-export PATH="$HOME/.bin:$PATH"
+export PATH="$BOB:$HOME/.bin:$PATH"
 

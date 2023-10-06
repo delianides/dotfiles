@@ -126,5 +126,6 @@
   "editor.fontFamily": "'SauceCodePro Nerd Font Mono', monospace",
   "terminal.integrated.env.osx": {
     "FIG_NEW_SESSION": "1"
-  }
+  },
+  "security.workspace.trust.untrustedFiles": "open"
 }
