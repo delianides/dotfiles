@@ -1,18 +1,18 @@
 #!/bin/bash
 # Based on https://github.com/WaylonWalker/devtainer/blob/main/bin/.local/bin/ta
 
- not_in_tmux() {
-   [ -z "$TMUX" ]
- }
+not_in_tmux() {
+	[ -z "$TMUX" ]
+}
 
 # Alternate version using fd and getting more results
 # _PROJECT_DIR="$(fd -a -t d -H --full-path --color always --max-depth 2 --ignore-file "$HOME/.fdignore" . "$HOME" | fzf --ansi --layout="reverse" --header="Select Project >>>")"
 
 # ask the user which directory to start in
 # `brew install exa` or replace with /bin/ls
-_PROJECT_DIR="$(\
-  find "$HOME/Code" "$HOME/Projects" "$HOME/Work" -not -path '*/\.*' -mindepth 1 -maxdepth 1 -type d -exec exa -d --color always {} \; \
-  | fzf --ansi --layout="reverse" --header="Select Project >>>"\
+_PROJECT_DIR="$(
+	find "$HOME/Code" "$HOME/Projects" "$HOME/Work" -not -path '*/\.*' -mindepth 1 -maxdepth 1 -type d -exec exa -d --color always {} \; 2>/dev/null |
+		fzf --ansi --layout="reverse" --header="Select Project >>>"
 )"
 
 PROJECT_DIR="$_PROJECT_DIR"
@@ -22,33 +22,34 @@ PROJECT_NAME="$(basename "$_PROJECT_DIR")"
 # echo "PROJECT_NAME is $PROJECT_NAME"
 
 if [ -z "$PROJECT_NAME" ]; then
-  exit 1
+	exit 1
 fi
 
 session_exists() {
-  tmux has-session -t "$PROJECT_NAME"
+	tmux has-session -t "$PROJECT_NAME"
 }
- 
+
 create_detached_session() {
-  (TMUX='' 
-  tmux new-session -c "$PROJECT_DIR" -Ad -s "$PROJECT_NAME";
-  )
+	(
+		TMUX=''
+		tmux new-session -c "$PROJECT_DIR" -Ad -s "$PROJECT_NAME"
+	)
 }
 
 create_if_needed_and_attach() {
-  if not_in_tmux; then
-    tmux new-session -As "$PROJECT_NAME" -c "$PROJECT_DIR"
-  else
-    if ! session_exists; then
-      create_detached_session
-    fi
-    tmux switch-client -t "$PROJECT_NAME"
-  fi
+	if not_in_tmux; then
+		tmux new-session -As "$PROJECT_NAME" -c "$PROJECT_DIR"
+	else
+		if ! session_exists; then
+			create_detached_session
+		fi
+		tmux switch-client -t "$PROJECT_NAME"
+	fi
 }
 
 attach_to_first_session() {
-  tmux attach -t "$(tmux list-sessions -F "${PROJECT_NAME}" | head -n 1)"
-  tmux choose-tree -Za
+	tmux attach -t "$(tmux list-sessions -F "${PROJECT_NAME}" | head -n 1)"
+	tmux choose-tree -Za
 }
- 
+
 create_if_needed_and_attach || attach_to_first_session

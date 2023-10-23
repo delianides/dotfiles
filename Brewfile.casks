@@ -3,7 +3,6 @@
 cask_args appdir: '/Applications'
 
 tap "homebrew/cask"
-tap "homebrew/cask-drivers"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 
@@ -30,7 +29,6 @@ cask "inkdrop"
 cask "insomnia"
 cask "iterm2"
 cask "kitty"
-cask "muteme"
 cask "ngrok"
 cask "notion"
 cask "obsbot-webcam"

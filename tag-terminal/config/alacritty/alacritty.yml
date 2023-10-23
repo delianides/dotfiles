@@ -2,9 +2,6 @@
 
 env:
   TERM: alacritty
-shell:
-  program: login
-  args: ["-fp", "adelianides"]
 window:
   dimensions:
     columns: 0
