@@ -3,13 +3,7 @@ python 3.11.4
 ruby 3.2.2
 nodejs 18.17.1
 lua 5.4.4
-<<<<<<< Updated upstream
-rust 1.72.1
-||||||| Stash base
-rust 1.59.0
-=======
 rust stable
->>>>>>> Stashed changes
 java temurin-11.0.17+8
 bun 1.0.1
 redis-cli 7.0.8
