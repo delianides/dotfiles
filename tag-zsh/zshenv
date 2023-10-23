@@ -7,6 +7,10 @@ export FZF_DEFAULT_COMMAND='rg --hidden --files --ignore-file ~/.ignore'
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
 export TIMEFMT=$'\nreal\t%*E\nuser\t%*U\nsys\t%*S'
 
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+
 export JAVA_HOME=$(/usr/libexec/java_home -v1.11)
 
 export ANDROID_SDK_ROOT=${BREW_HOME}/share/android-commandlinetools
