@@ -18,7 +18,7 @@ return {
       current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
     },
   },
-  { 'Bekaboo/dropbar.nvim' },
+  { "Bekaboo/dropbar.nvim" },
   {
     "mrjones2014/smart-splits.nvim",
     config = true,
