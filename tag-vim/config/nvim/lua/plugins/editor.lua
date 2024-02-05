@@ -18,7 +18,10 @@ return {
       current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
     },
   },
-  { "Bekaboo/dropbar.nvim" },
+  {
+    "Bekaboo/dropbar.nvim",
+    enabled = vim.version().minor > 9,
+  },
   {
     "mrjones2014/smart-splits.nvim",
     config = true,
@@ -112,6 +115,7 @@ return {
   {
     "abecodes/tabout.nvim",
     config = true,
+    enabled = false,
   },
   {
     "max397574/better-escape.nvim",
@@ -133,7 +137,7 @@ return {
       enable_diagnostics = true,
       window = { mappings = { ["l"] = "open", ["o"] = "open" } },
       filesystem = {
-        filtered_items = { never_show = { ".git", ".DS_Store" } },
+        filtered_items = { never_show = { ".git", ".ds_store" } },
         follow_current_file = true,
         use_libuv_file_watcher = true,
       },
@@ -147,62 +151,13 @@ return {
       disable_signs = true,
       kind = "split",
       commit_popup = { kind = "split" },
-      integrations = { diffview = true },
+      integrations = {
+        diffview = true,
+      },
       disable_builtin_notifications = true,
     },
     dependencies = { "sindrets/diffview.nvim" },
   },
-  { "echasnovski/mini.indentscope", version = false },
-  { "echasnovski/mini.splitjoin", version = false },
-  { "echasnovski/mini.trailspace", version = false },
-  {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
-        config = function()
-          require("telescope").load_extension("fzf")
-        end,
-      },
-    },
-    opts = function(_, opts)
-      local actions = require("telescope.actions")
-      return {
-        defaults = {
-          preview = {
-            treesitter = false,
-          },
-          file_ignore_patterns = { ".git/", "node_modules/*", "__snapshots__" },
-          mappings = {
-            -- pull the mappings from lazyvim
-            i = vim.list_extend(opts.defaults.mappings.i, {
-              ["<C-j>"] = actions.move_selection_next,
-              ["<C-k>"] = actions.move_selection_previous,
-              ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-              ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-              ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-              ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-              ["<C-u>"] = actions.preview_scrolling_up,
-              ["<C-d>"] = actions.preview_scrolling_down,
-            }),
-            n = {
-              ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-              ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-              ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-              ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-              ["gg"] = actions.move_to_top,
-              ["G"] = actions.move_to_bottom,
-              ["<C-u>"] = actions.preview_scrolling_up,
-              ["<C-d>"] = actions.preview_scrolling_down,
-            },
-          },
-        },
-        pickers = {
-          find_files = { theme = "dropdown", previewer = false },
-          buffers = { theme = "dropdown", previewer = false },
-        },
-      }
-    end,
-  },
+  { "echasnovski/mini.indentscope", config = true, version = false },
+  { "echasnovski/mini.trailspace", config = true, version = false },
 }
