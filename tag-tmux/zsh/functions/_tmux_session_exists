@@ -1,5 +1,0 @@
-_tmux_session_exists(){
-	local session_name="$1"
-	sessions=$(tmux list-sessions | awk -F ':' '{print $1}')
-	echo $sessions | grep -q "$session_name"
-}

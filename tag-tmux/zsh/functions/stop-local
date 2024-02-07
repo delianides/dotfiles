@@ -1,7 +1,0 @@
-# vim:syntax=zsh
-
-function stop-local() {
-	if _tmux_session_exists 'local'; then
-		tmux kill-session -t 'local'
-	fi
-}
