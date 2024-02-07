@@ -1,28 +1,201 @@
-stty -ixon
+export TERM="xterm-256color"
 
-# makes color constants available
-autoload -U colors
-colors
-
-export GPG_TTY=$(tty)
 export PATH="$PATH:~/.bin"
 
-## Command history configuration
-if [ -z "$HISTFILE" ]; then
-  HISTFILE=$HOME/.zsh_history
-fi
+export VISUAL="nvim"
 
-HISTSIZE=10000
-SAVEHIST=10000
+alias vi='$VISUAL'
+alias vim='$VISUAL'
+alias cd="z"
+alias rm="trash"
 
-# Show history
-case $HIST_STAMPS in
-  "mm/dd/yyyy") alias history='fc -fl 1' ;;
-  "dd.mm.yyyy") alias history='fc -El 1' ;;
-  "yyyy-mm-dd") alias history='fc -il 1' ;;
-  *) alias history='fc -l 1' ;;
-esac
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
 
+zinit pack for ls_colors
+
+zinit lucid light-mode for \
+    as"command" from"gh-r" atload'eval "$(starship init zsh)"' bpick'*darwin*' \
+    starship/starship \
+
+zinit lucid light-mode for \
+    as"command" from"gh-r" bpick'*darwin_arm*' \
+    @junegunn/fzf
+
+
+zinit lucid light-mode from"gh-r" as"command" bpick'*darwin*' for \
+    atload'
+        eval "$(zoxide init --no-aliases zsh)"
+        alias z="__zoxide_z"
+    ' pick'zoxide/zoxide' \
+        @ajeetdsouza/zoxide \
+    mv'ripgrep* -> rg' pick'rg/rg' \
+        @BurntSushi/ripgrep \
+    mv'fd* -> fd' pick'fd/fd' \
+        @sharkdp/fd \
+    mv'bat* -> bat' pick'bat/bat' atload'
+        export MANPAGER="bat --plain"
+        alias cat="bat"
+    ' \
+        @sharkdp/bat \
+    mv'delta* -> delta' pick'delta/delta' \
+        @dandavison/delta \
+    atload'
+        alias l="exa -abghHlS --git --group-directories-first"
+        alias ls="exa"
+        alias ll="exa -alh"
+        alias tree="exa --tree"
+    ' pick'bin/exa' bpick'*macos*'\
+        @ogham/exa \
+
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+
+# fix underline in VSCode Terminal
+local znt_history_active_text=reverse
+
+zinit lucid for \
+    atinit"
+      ZSH_TMUX_FIXTERM=false
+      ZSH_TMUX_AUTOSTART=false
+      ZSH_TMUX_AUTOCONNECT=false" \
+    OMZP::tmux \
+    atinit"HIST_STAMPS=dd.mm.yyyy" \
+    OMZL::history.zsh \
+
+zinit wait lucid for \
+  atload"
+      alias ..='cd ..'
+      alias ...='cd ../..'
+      alias ....='cd ../../..'
+      alias .....='cd ../../../..'" \
+    OMZL::directories.zsh \
+    OMZL::git.zsh \
+    OMZL::grep.zsh \
+    OMZL::key-bindings.zsh \
+    OMZP::cp \
+    OMZP::colored-man-pages \
+    OMZP::command-not-found \
+    OMZP::copyfile \
+    OMZP::copypath \
+    OMZP::dirhistory \
+    OMZP::extract \
+    OMZP::colorize \
+  atload"
+      alias gcd='gco dev'" \
+    OMZP::git \
+    OMZP::fzf \
+    OMZP::zsh-interactive-cd \
+    Aloxaf/fzf-tab \
+    psprint/zsh-navigation-tools \
+  atinit"ZVM_INIT_MODE=sourcing;ZVM_VI_ESCAPE_BINDKEY=jj;ZVM_VI_INSERT_ESCAPE_BINDKEY=jj" \
+    jeffreytse/zsh-vi-mode
+
+alias gs="git status -sb"
+alias tmux="tmux -2"
+alias ssh='TERM=xterm-256color ssh'
+
+zinit wait lucid for \
+    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload"_zsh_autosuggest_start" \
+  zsh-users/zsh-autosuggestions \
+    light-mode atinit"
+      typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100;
+      zpcompinit; zpcdreplay" \
+  zdharma-continuum/fast-syntax-highlighting \
+    atpull'zinit creinstall -q .' \
+    atinit"
+      zstyle ':completion:*' completer _expand _complete _ignored _approximate
+      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+      zstyle ':completion:*' menu select=2
+      zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+      zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
+      zstyle ':completion:*:descriptions' format '-- %d --'
+      zstyle ':completion:*:processes' command 'ps -au$USER'
+      zstyle ':completion:complete:*:options' sort false
+      zstyle ':fzf-tab:complete:_zlua:*' query-string input
+      zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
+      zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap" \
+    blockf light-mode \
+  zsh-users/zsh-completions \
+    atinit"
+      zstyle :history-search-multi-word page-size 10
+      zstyle :history-search-multi-word highlight-color fg=red,bold
+      zstyle :plugin:history-search-multi-word reset-prompt-protect 1" \
+    bindmap"^R -> ^H" \
+  zdharma-continuum/history-search-multi-word \
+  zsh-users/zsh-history-substring-search \
+  joshskidmore/zsh-fzf-history-search \
+
+zinit from"gh-r" as"program" mv"direnv* -> direnv" \
+    atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' \
+    pick"direnv" src="zhook.zsh" for \
+        direnv/direnv
+
+zinit as"program" mv"asdf* -> asdf" \
+  pick"asdf" src="asdf.sh" for \
+    @asdf-vm/asdf
+
+export ASDF_DIR="${ASDF_DIR:-$HOME/.asdf}"
+source "${ASDF_DIR}/asdf.sh"
+zinit fpath -f "${ASDF_DIR}/completions"
+zicompinit
+
+# zpcompinit 
+# zi load Aloxaf/fzf-tab
+# zi light zsh-users/zsh-completions 
+# zi light zsh-users/zsh-autosuggestions 
+# zi light zdharma-continuum/fast-syntax-highlighting
+# zi snippet OMZ::/plugins/sudo/sudo.plugin.zsh
+# zi light zsh-users/zsh-history-substring-search
+#
+# zi ice as"completion"
+# zi snippet OMZP::git/git.plugin.zsh
+#
+# zi ice as"completion"
+# zi snippet OMZP::git-flow/git-flow.plugin.zsh
+#
+# zi ice if"[[ $OSTYPE == *darwin* ]]"
+# zi snippet OMZ::lib/clipboard.zsh
+#
+# zi ice lucid wait'0'
+# zi light joshskidmore/zsh-fzf-history-search
+#
+# zi ice depth=1
+# zi light jeffreytse/zsh-vi-mode
+#
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+# ZVM_VI_ESCAPE_BINDKEY=jj
+# ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
+# ZVM_INIT_MODE=sourcing
+#
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+#
+# . $(brew --prefix asdf)/libexec/asdf.sh
+#
+# eval "$(direnv hook zsh)";
+# eval "$(zoxide init zsh)"
+# eval "$(starship init zsh)"
+#
+#
+# for file in ~/.{aliases,functions,dockerfunc,path,extra,exports,localrc,fzf.zsh}; do
+# 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
+# 		# shellcheck source=/dev/null
+# 		source "$file"
+# 	fi
+# done
+#
+# if [ -z "$TMUX" ]; then
+#   bindkey -s "^p" 'ta\n';
+# fi
+#
+# enable-fzf-tab
+
+# Returns the name of the most recent tmux session, sorted by time the session
+# was last attached.
+# if ! _in_ssh && ! _in_vs_code; then
+#   connect_to_most_recent_tmux_session
+#
 setopt APPEND_HISTORY
 setopt EXTENDED_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -41,63 +214,3 @@ setopt EXTENDED_GLOB
 setopt INC_APPEND_HISTORY
 setopt AUTOPUSHD
 unsetopt AUTO_CD 
-
-source $HOME/.config/op/plugins.sh
-export ZINIT_HOME=/opt/homebrew/opt/zinit
-source $ZINIT_HOME/zinit.zsh
-
-zpcompinit 
-zi load Aloxaf/fzf-tab
-zi light zsh-users/zsh-completions 
-zi light zsh-users/zsh-autosuggestions 
-zi light zdharma-continuum/fast-syntax-highlighting
-zi snippet OMZ::/plugins/sudo/sudo.plugin.zsh
-zi light zsh-users/zsh-history-substring-search
-
-zi ice as"completion"
-zi snippet OMZP::git/git.plugin.zsh
-
-zi ice as"completion"
-zi snippet OMZP::git-flow/git-flow.plugin.zsh
-
-zi ice if"[[ $OSTYPE == *darwin* ]]"
-zi snippet OMZ::lib/clipboard.zsh
-
-zi ice lucid wait'0'
-zi light joshskidmore/zsh-fzf-history-search
-
-zi ice depth=1
-zi light jeffreytse/zsh-vi-mode
-
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-ZVM_VI_ESCAPE_BINDKEY=jj
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
-ZVM_INIT_MODE=sourcing
-
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-
-. $(brew --prefix asdf)/libexec/asdf.sh
-
-eval "$(direnv hook zsh)";
-eval "$(zoxide init zsh)"
-eval "$(starship init zsh)"
-
-
-for file in ~/.{aliases,functions,dockerfunc,path,extra,exports,localrc,fzf.zsh}; do
-	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
-		# shellcheck source=/dev/null
-		source "$file"
-	fi
-done
-
-if [ -z "$TMUX" ]; then
-  bindkey -s "^p" 'ta\n';
-fi
-
-enable-fzf-tab
-
-# Returns the name of the most recent tmux session, sorted by time the session
-# was last attached.
-# if ! _in_ssh && ! _in_vs_code; then
-#   connect_to_most_recent_tmux_session
-# fi

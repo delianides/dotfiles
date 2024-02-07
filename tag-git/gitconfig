@@ -54,13 +54,11 @@
 [init]
   defaultBranch = main
 
+[include]
+  path = .gitconfig-personal
+
 [includeIf "gitdir:~/Work/"]
   path = .gitconfig-work
 
-[includeIf "gitdir:~/Projects/"]
-  path = .gitconfig-personal
-
-[includeIf "gitdir:~/Code/"]
-  path = .gitconfig-personal
 
 

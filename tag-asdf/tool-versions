@@ -1,7 +1,7 @@
 golang 1.21.1
 python 3.11.4
 ruby 3.2.2
-nodejs 18.17.1
+nodejs 18.19.0
 lua 5.4.4
 rust stable
 java temurin-11.0.17+8
