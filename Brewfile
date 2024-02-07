@@ -14,7 +14,7 @@ tap "px4/px4"
 tap "teamookla/speedtest"
 tap "achannarasappa/tap"
 
-brew "asdf"
+# brew "asdf" # moved to zinit
 
 brew "act"
 brew "actionlint"
@@ -29,7 +29,7 @@ brew "openssl@1.1"
 brew "readline"
 brew "unixodbc"
 brew "autoenv"
-brew "direnv"
+# brew "direnv" # moved to zinit
 brew "avrdude"
 brew "clipper", restart_service: true
 brew "speedtest", force: true
@@ -43,12 +43,12 @@ brew "glow"
 brew "gpg"
 brew "gpg2"
 brew "doctl"
-brew "exa"
+# brew "exa" # moved to zinit
 brew "emacs"
 brew "fd"
 brew "ffmpeg"
 brew "forego"
-brew "fzf"
+# brew "fzf" # moved to zinit
 brew "gawk"
 brew "gcc"
 brew "gh"
@@ -68,7 +68,7 @@ brew "libxslt"
 brew "markdown"
 brew "mas"
 brew "minikube"
-brew "neovim"
+# brew "neovim" # moved to bob
 brew "noti"
 brew "openssh"
 brew "packer"
@@ -80,7 +80,7 @@ brew "ripgrep"
 brew "rga"
 brew "rke"
 brew "ssh-copy-id"
-brew "starship"
+# brew "starship" # moved to zinit
 brew "streamlink"
 brew "svn"
 brew "terraform"
@@ -99,13 +99,12 @@ brew "watchman"
 brew "wget"
 brew "youtube-dl"
 brew "zsh"
-brew "zsh-autosuggestions"
-brew "zsh-syntax-highlighting"
+brew "zinit"
 brew "derailed/k9s/k9s"
 brew "goreleaser/tap/goreleaser"
 brew "osx-cross/avr/avr-gcc@8", link: true
 brew "px4/px4/gcc-arm-none-eabi"
 brew 'tree'
 brew 'atomicparsley'
-brew 'zoxide'
+# brew 'zoxide' # moved to zinit
 
