@@ -58,8 +58,10 @@ local znt_history_active_text=reverse
 zinit lucid for \
     atinit"
       ZSH_TMUX_FIXTERM=false
-      ZSH_TMUX_AUTOSTART=false
-      ZSH_TMUX_AUTOCONNECT=false" \
+      ZSH_TMUX_AUTOSTART=true
+      ZSH_TMUX_AUTOQUIT=false
+      ZSH_TMUX_DEFAULT_SESSION_NAME=main
+      ZSH_TMUX_AUTOCONNECT=true" \
     OMZP::tmux \
     atinit"HIST_STAMPS=dd.mm.yyyy" \
     OMZL::history.zsh \
@@ -141,61 +143,6 @@ source "${ASDF_DIR}/asdf.sh"
 zinit fpath -f "${ASDF_DIR}/completions"
 zicompinit
 
-# zpcompinit 
-# zi load Aloxaf/fzf-tab
-# zi light zsh-users/zsh-completions 
-# zi light zsh-users/zsh-autosuggestions 
-# zi light zdharma-continuum/fast-syntax-highlighting
-# zi snippet OMZ::/plugins/sudo/sudo.plugin.zsh
-# zi light zsh-users/zsh-history-substring-search
-#
-# zi ice as"completion"
-# zi snippet OMZP::git/git.plugin.zsh
-#
-# zi ice as"completion"
-# zi snippet OMZP::git-flow/git-flow.plugin.zsh
-#
-# zi ice if"[[ $OSTYPE == *darwin* ]]"
-# zi snippet OMZ::lib/clipboard.zsh
-#
-# zi ice lucid wait'0'
-# zi light joshskidmore/zsh-fzf-history-search
-#
-# zi ice depth=1
-# zi light jeffreytse/zsh-vi-mode
-#
-# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-# ZVM_VI_ESCAPE_BINDKEY=jj
-# ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
-# ZVM_INIT_MODE=sourcing
-#
-# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-#
-# . $(brew --prefix asdf)/libexec/asdf.sh
-#
-# eval "$(direnv hook zsh)";
-# eval "$(zoxide init zsh)"
-# eval "$(starship init zsh)"
-#
-#
-# for file in ~/.{aliases,functions,dockerfunc,path,extra,exports,localrc,fzf.zsh}; do
-# 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
-# 		# shellcheck source=/dev/null
-# 		source "$file"
-# 	fi
-# done
-#
-# if [ -z "$TMUX" ]; then
-#   bindkey -s "^p" 'ta\n';
-# fi
-#
-# enable-fzf-tab
-
-# Returns the name of the most recent tmux session, sorted by time the session
-# was last attached.
-# if ! _in_ssh && ! _in_vs_code; then
-#   connect_to_most_recent_tmux_session
-#
 setopt APPEND_HISTORY
 setopt EXTENDED_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -213,4 +160,4 @@ setopt PROMPT_SUBST
 setopt EXTENDED_GLOB
 setopt INC_APPEND_HISTORY
 setopt AUTOPUSHD
-unsetopt AUTO_CD 
+unsetopt AUTO_CD
