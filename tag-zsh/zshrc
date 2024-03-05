@@ -60,7 +60,8 @@ zinit lucid for \
       ZSH_TMUX_FIXTERM=false
       ZSH_TMUX_AUTOSTART=true
       ZSH_TMUX_AUTOQUIT=false
-      ZSH_TMUX_DEFAULT_SESSION_NAME=main" \
+      ZSH_TMUX_DEFAULT_SESSION_NAME=main
+      ZSH_TMUX_AUTOCONNECT=true" \
     OMZP::tmux \
     atinit"HIST_STAMPS=dd.mm.yyyy" \
     OMZL::history.zsh \
@@ -159,4 +160,4 @@ setopt PROMPT_SUBST
 setopt EXTENDED_GLOB
 setopt INC_APPEND_HISTORY
 setopt AUTOPUSHD
-unsetopt AUTO_CD 
+unsetopt AUTO_CD
