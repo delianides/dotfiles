@@ -23,93 +23,21 @@ return {
     enabled = vim.version().minor > 9,
   },
   {
-    "mrjones2014/smart-splits.nvim",
-    config = true,
+    "christoomey/vim-tmux-navigator",
+    event = "BufReadPre",
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
+    },
     keys = {
-      {
-        "<A-h>",
-        function()
-          require("smart-splits").resize_left()
-        end,
-        desc = "Resize Left",
-      },
-      {
-        "<A-j>",
-        function()
-          require("smart-splits").resize_down()
-        end,
-        desc = "Resize Down",
-      },
-      {
-        "<A-k>",
-        function()
-          require("smart-splits").resize_up()
-        end,
-        desc = "Resize Up",
-      },
-      {
-        "<A-l>",
-        function()
-          require("smart-splits").resize_right()
-        end,
-        desc = "Resize Right",
-      },
-      {
-        "<C-h>",
-        function()
-          require("smart-splits").move_cursor_left()
-        end,
-        desc = "Move Cursor Left",
-      },
-      {
-        "<C-j>",
-        function()
-          require("smart-splits").move_cursor_down()
-        end,
-        desc = "Move Cursor Down",
-      },
-      {
-        "<C-k>",
-        function()
-          require("smart-splits").move_cursor_up()
-        end,
-        desc = "Move Cursor Up",
-      },
-      {
-        "<C-l>",
-        function()
-          require("smart-splits").move_cursor_right()
-        end,
-        desc = "Move Cursor Right",
-      },
-      {
-        "<leader><leader>h",
-        function()
-          require("smart-splits").swap_buf_left()
-        end,
-        desc = "Swap Buffer Left",
-      },
-      {
-        "<leader><leader>j",
-        function()
-          require("smart-splits").swap_buf_down()
-        end,
-        desc = "Swap Buffer Down",
-      },
-      {
-        "<leader><leader>k",
-        function()
-          require("smart-splits").swap_buf_up()
-        end,
-        desc = "Swap Buffer Up",
-      },
-      {
-        "<leader><leader>l",
-        function()
-          require("smart-splits").swap_buf_right()
-        end,
-        desc = "Swap Buffer Right",
-      },
+      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+      { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
   },
   {

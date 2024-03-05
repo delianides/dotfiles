@@ -125,5 +125,7 @@
     "FIG_NEW_SESSION": "1"
   },
   "security.workspace.trust.untrustedFiles": "open",
-  "workbench.editor.tabActionCloseVisibility": false
+  "workbench.editor.tabActionCloseVisibility": false,
+  "window.confirmSaveUntitledWorkspace": false,
+  "python.analysis.typeCheckingMode": "standard"
 }

@@ -13,6 +13,7 @@ tap "osx-cross/avr"
 tap "px4/px4"
 tap "teamookla/speedtest"
 tap "achannarasappa/tap"
+tap "ankitpokhrel/jira-cli"
 
 # brew "asdf" # moved to zinit
 
@@ -60,6 +61,7 @@ brew "go-jira"
 brew "helm"
 brew "hub"
 brew "hugo"
+brew "jira-cli"
 brew "jless"
 brew "jq"
 brew "k3d"
