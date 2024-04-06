@@ -3,7 +3,7 @@
   user = delianides
 [user]
 	name = "Drew Delianides"
-	email = gitlab@drew.delianides.com
+	email = gitlab@delianides.com
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDuYiuvLnqanNkQ2csbzCPgtZHKMJYFxoNfcvP+buIyz
 
 
