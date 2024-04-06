@@ -23,7 +23,7 @@
 [core]
   excludesfile = ~/.gitignore
   editor = nvim
-  pager = delta 
+  pager = delta
 [interactive]
   diffFilter = delta --color-only
 [apply]
@@ -39,12 +39,14 @@
   path = .gitconfig.local
 [commit]
   gpgsign = true
-[gpg]
-	program = /opt/homebrew/bin/gpg
 [fetch]
   prune = true
-[credential]
-  helper = osxkeychain
+[commit]
+	gpgsign = true
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [diff]
   colorMoved = default
 [merge]
@@ -54,11 +56,23 @@
 [init]
   defaultBranch = main
 
-[include]
-  path = .gitconfig-personal
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+
+[url "git@gitlab.com:"]
+	insteadOf = https://gitlab.com/
+
+[includeIf "gitdir:~/.dotfiles/"]
+  path = .gitconfig-personal-github
+
+[includeIf "gitdir:~/Github/"]
+  path = .gitconfig-personal-github
+
+[includeIf "gitdir:~/Gitlib/"]
+  path = .gitconfig-personal-gitlab
 
 [includeIf "gitdir:~/Work/"]
-  path = .gitconfig-work
+  path = .gitconfig-work-gitlab
 
 
 
