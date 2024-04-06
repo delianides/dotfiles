@@ -2,7 +2,6 @@ return {
   {
     "mason.nvim",
     opts = function(_, opts)
-      print("hello")
       opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, { "cfn-lint" })
     end,
@@ -12,8 +11,17 @@ return {
     optional = true,
     opts = {
       linters_by_ft = {
-        yaml = { "cfn-lint" },
+        yaml = { "cfn_lint" },
       },
     },
   },
+  -- {
+  --   "nvimtools/none-ls.nvim",
+  --   opts = function(_, opts)
+  --     local null_ls = require("null-ls")
+  --     opts.sources = vim.list_extend(opts.sources or {}, {
+  --       null_ls.builtins.diagnostics.cfn_lint,
+  --     })
+  --   end,
+  -- },
 }
