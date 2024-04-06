@@ -3,8 +3,6 @@
   sshCommand = ssh -i ~/.ssh/id_ed25519_delianides.pub
 [github]
   user = delianides
-[gitlab]
-  user = delianides
 [user]
 	name = delianides
 	email = github@drew.delianides.com
