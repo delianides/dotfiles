@@ -14,6 +14,7 @@ tap "px4/px4"
 tap "teamookla/speedtest"
 tap "achannarasappa/tap"
 tap "ankitpokhrel/jira-cli"
+tap "jaxxstorm/tap"
 
 # brew "asdf" # moved to zinit
 
@@ -22,6 +23,7 @@ brew "actionlint"
 brew "ansifilter"
 brew "autoconf"
 brew "automake"
+brew "aws-sso-creds"
 brew "coreutils"
 brew "libtool"
 brew "libyaml"

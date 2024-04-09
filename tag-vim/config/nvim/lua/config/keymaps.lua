@@ -36,3 +36,10 @@ map("n", "<Left>", ':echoe "Use h"<CR>', opts)
 map("n", "<Right>", ':echoe "Use l"<CR>', opts)
 map("n", "<Up>", ':echoe "Use k"<CR>', opts)
 map("n", "<Down>", ':echoe "Use j"<CR>', opts)
+
+if os.getenv("TMUX") then
+  map("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
+  map("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
+  map("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>")
+  map("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>")
+end
