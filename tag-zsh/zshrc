@@ -9,6 +9,10 @@ alias vim='$VISUAL'
 alias cd="z"
 alias rm="trash"
 
+ZSH_LOCAL="$HOME/.zsh.local"
+[ ! -d $ZSH_LOCAL ] && mkdir -p "$(dirname $ZSH_LOCAL)"
+source "${ZSH_LOCAL}"
+
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
@@ -27,6 +31,10 @@ zinit lucid light-mode for \
 
 zinit lucid light-mode from"gh-r" as"command" bpick'*darwin*' for \
     atload'
+        alias l="eza -abghHlS --git --group-directories-first"
+        alias ls="eza"
+        alias ll="eza -alh"
+        alias tree="eza --tree"
         eval "$(zoxide init --no-aliases zsh)"
         alias z="__zoxide_z"
     ' pick'zoxide/zoxide' \
@@ -42,13 +50,6 @@ zinit lucid light-mode from"gh-r" as"command" bpick'*darwin*' for \
         @sharkdp/bat \
     mv'delta* -> delta' pick'delta/delta' \
         @dandavison/delta \
-    atload'
-        alias l="exa -abghHlS --git --group-directories-first"
-        alias ls="exa"
-        alias ll="exa -alh"
-        alias tree="exa --tree"
-    ' pick'bin/exa' bpick'*macos*'\
-        @ogham/exa \
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
@@ -163,3 +164,10 @@ setopt AUTOPUSHD
 unsetopt AUTO_CD
 
 source $HOME/.localrc
+
+# bun completions
+[ -s "/Users/drewdelianides/.bun/_bun" ] && source "/Users/drewdelianides/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

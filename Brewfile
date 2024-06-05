@@ -15,6 +15,7 @@ tap "teamookla/speedtest"
 tap "achannarasappa/tap"
 tap "ankitpokhrel/jira-cli"
 tap "jaxxstorm/tap"
+tap "hashicorp/tap"
 
 # brew "asdf" # moved to zinit
 
