@@ -1,8 +1,10 @@
 # vi: ft=gitconfig
+[core]
+  sshCommand = "ssh -i ~/.ssh/id_gitlab_work.pub"
 [gitlab]
-  user = delianides-tg
+  user = "delianides-tg"
 [user]
 	name = "Drew Delianides"
-	email = adelianides@traeger.com
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJS4peroEDqum+IyjvuRdEsH/SB7ypoLhfAz5qRFQgFv
+	email = "adelianides@traeger.com"
+  signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJS4peroEDqum+IyjvuRdEsH/SB7ypoLhfAz5qRFQgFv"
 

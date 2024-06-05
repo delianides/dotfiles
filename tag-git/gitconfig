@@ -62,6 +62,9 @@
 [url "git@gitlab.com:"]
 	insteadOf = https://gitlab.com/
 
+[includeIf "gitdir:~/Work/"]
+  path = .gitconfig-work-gitlab
+
 [includeIf "gitdir:~/.dotfiles/"]
   path = .gitconfig-personal-github
 
@@ -71,8 +74,6 @@
 [includeIf "gitdir:~/Gitlib/"]
   path = .gitconfig-personal-gitlab
 
-[includeIf "gitdir:~/Work/"]
-  path = .gitconfig-work-gitlab
 
 
 

@@ -3,7 +3,7 @@ python 3.12.1
 ruby 3.2.2
 nodejs 18.19.0
 lua 5.4.4
-rust 1.72.1
+rust 1.78.0
 java temurin-11.0.17+8
 bun 1.0.1
 redis-cli 7.0.8

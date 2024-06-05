@@ -1,4 +1,6 @@
 # vi: ft=gitconfig
+[core]
+  sshCommand = "ssh -i ~/.ssh/id_github_personal.pub"
 [github]
   user = delianides
 [user]

@@ -1,4 +1,6 @@
 # vi: ft=gitconfig
+[core]
+  sshCommand = "ssh -i ~/.ssh/id_gitlab_personal.pub"
 [gitlab]
   user = delianides
 [user]
