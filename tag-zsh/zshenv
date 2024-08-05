@@ -21,9 +21,25 @@ fi
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# pnpm
+export PNPM_HOME="/Users/drewdelianides/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
 
-export GOPATH="$HOME/Code/src/go"
-export GOBIN="$HOME/Code/src/go/bin"
+# asdf-vm
+. "$(brew --prefix)/opt/asdf/libexec/asdf.sh"
+
+# bun completions
+[ -s "/Users/drewdelianides/.bun/_bun" ] && source "/Users/drewdelianides/.bun/_bun"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export GOPATH="$HOME/Github/Golang/src/go"
+export GOBIN="$HOME/Github/Golang/src/go/bin"
+
 export BOB="$HOME/.local/share/bob/nvim-bin"
 
 # Add homebrew binaries
@@ -31,4 +47,6 @@ export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/opt/libpq/bin:$PATH"
 
 # Add my custom commands
 export PATH="$BOB:$HOME/.bin:$PATH"
+export AWS_PROFILE="DelianidesAccount"
 
+. "$HOME/.cargo/env"

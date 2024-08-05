@@ -6,5 +6,7 @@ local opt = vim.opt
 
 opt.swapfile = false
 
+vim.g.maplocalleader = " "
+
 vim.g.python_host_prog = "/Users/adelianides/.asdf/shims/python"
 vim.g.python3_host_prog = "/Users/adelianides/.asdf/shims/python"

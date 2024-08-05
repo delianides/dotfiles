@@ -1,13 +1,6 @@
 export TERM="xterm-256color"
-
 export PATH="$PATH:~/.bin"
-
 export VISUAL="nvim"
-
-alias vi='$VISUAL'
-alias vim='$VISUAL'
-alias cd="z"
-alias rm="trash"
 
 ZSH_LOCAL="$HOME/.zsh.local"
 [ ! -d $ZSH_LOCAL ] && mkdir -p "$(dirname $ZSH_LOCAL)"
@@ -19,37 +12,6 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
 zinit pack for ls_colors
-
-zinit lucid light-mode for \
-    as"command" from"gh-r" atload'eval "$(starship init zsh)"' bpick'*darwin*' \
-    starship/starship \
-
-zinit lucid light-mode for \
-    as"command" from"gh-r" bpick'*darwin_arm*' \
-    @junegunn/fzf
-
-
-zinit lucid light-mode from"gh-r" as"command" bpick'*darwin*' for \
-    atload'
-        alias l="eza -abghHlS --git --group-directories-first"
-        alias ls="eza"
-        alias ll="eza -alh"
-        alias tree="eza --tree"
-        eval "$(zoxide init --no-aliases zsh)"
-        alias z="__zoxide_z"
-    ' pick'zoxide/zoxide' \
-        @ajeetdsouza/zoxide \
-    mv'ripgrep* -> rg' pick'rg/rg' \
-        @BurntSushi/ripgrep \
-    mv'fd* -> fd' pick'fd/fd' \
-        @sharkdp/fd \
-    mv'bat* -> bat' pick'bat/bat' atload'
-        export MANPAGER="bat --plain"
-        alias cat="bat"
-    ' \
-        @sharkdp/bat \
-    mv'delta* -> delta' pick'delta/delta' \
-        @dandavison/delta \
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
@@ -85,8 +47,6 @@ zinit wait lucid for \
     OMZP::dirhistory \
     OMZP::extract \
     OMZP::colorize \
-  atload"
-      alias gcd='gco dev'" \
     OMZP::git \
     OMZP::fzf \
     OMZP::zsh-interactive-cd \
@@ -130,18 +90,6 @@ zinit wait lucid for \
   zsh-users/zsh-history-substring-search \
   joshskidmore/zsh-fzf-history-search \
 
-zinit from"gh-r" as"program" mv"direnv* -> direnv" \
-    atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' \
-    pick"direnv" src="zhook.zsh" for \
-        direnv/direnv
-
-zinit as"program" mv"asdf* -> asdf" \
-  pick"asdf" src="asdf.sh" for \
-    @asdf-vm/asdf
-
-export ASDF_DIR="${ASDF_DIR:-$HOME/.asdf}"
-source "${ASDF_DIR}/asdf.sh"
-zinit fpath -f "${ASDF_DIR}/completions"
 zicompinit
 
 setopt APPEND_HISTORY
@@ -165,9 +113,46 @@ unsetopt AUTO_CD
 
 source $HOME/.localrc
 
-# bun completions
-[ -s "/Users/drewdelianides/.bun/_bun" ] && source "/Users/drewdelianides/.bun/_bun"
+# starship
+eval "$(starship init zsh)"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# zoxide
+eval "$(zoxide init --no-aliases zsh)"
+alias z="__zoxide_z"
+
+export VISUAL="nvim"
+export MANPAGER="bat --plain"
+
+alias reload!='RELOAD=1 source ~/.zshrc'
+
+alias cat="bat"
+alias vi='$VISUAL'
+alias vim='$VISUAL'
+alias cd="z"
+alias rm="trash"
+
+alias l="eza -abghHlS --git --group-directories-first"
+alias ls="eza"
+alias ll="eza -alh"
+alias tree="eza --tree"
+
+alias dig="dig +noall +answer +multiline"
+alias gs='git status -sb'
+alias mkdir="mkdir -p"
+alias cat="bat"
+alias rm="trash"
+alias tmux="tmux -2"
+alias ssh='TERM=xterm-256color ssh'
+# alias grep="egrep --color=auto"
+
+alias sed="sed -E"                 # Use modern regexps for sed, i.e. "(one|two)", not "\(one\|two\)"
+alias crontab="VISUAL=vim crontab" # Remove vim flags for crontab -e
+
+
+# pnpm
+export PNPM_HOME="/Users/drewdelianides/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
