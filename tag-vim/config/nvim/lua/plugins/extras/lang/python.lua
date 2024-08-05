@@ -1,53 +1,27 @@
 return {
-  "neovim/nvim-lspconfig",
-  opts = {
-    servers = {
-      pyright = {
-        single_file_support = true,
-        settings = {
-          pyright = {
-            disableLanguageServices = false,
-            disableOrganizeImports = false,
-          },
-          python = {
-            analysis = {
-              autoImportCompletions = true,
-              autoSearchPaths = true,
-              diagnosticMode = "workspace", -- openFilesOnly, workspace
-              typeCheckingMode = "basic", -- off, basic, strict
-              useLibraryCodeForTypes = true,
-            },
+  {
+    "linux-cultist/venv-selector.nvim",
+    branch = "regexp", -- Use this branch for the new version
+    cmd = "VenvSelect",
+    enabled = function()
+      return LazyVim.has("telescope.nvim")
+    end,
+    opts = {
+      settings = {
+        search = {
+          local_share = {
+            command = "fd python$ $HOME/.local/share/virtualenvs/",
           },
         },
-      },
-      ruff_lsp = {
-        keys = {
-          {
-            "<leader>co",
-            function()
-              vim.lsp.buf.code_action({
-                apply = true,
-                context = {
-                  only = { "source.organizeImports" },
-                  diagnostics = {},
-                },
-              })
-            end,
-            desc = "Organize Imports",
-          },
+        options = {
+          debug = true,
+          notify_user_on_venv_activation = true,
         },
       },
     },
-    setup = {
-      ruff_lsp = function()
-        require("lazyvim.util").lsp.on_attach(function(client, _)
-          if client.name == "ruff_lsp" then
-            -- Disable hover in favor of Pyright
-            client.server_capabilities.hoverProvider = false
-          end
-        end)
-      end,
-    },
+    --  Call config for python files and load the cached venv automatically
+    ft = "python",
+    keys = { { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv", ft = "python" } },
   },
   {
     "mfussenegger/nvim-lint",
