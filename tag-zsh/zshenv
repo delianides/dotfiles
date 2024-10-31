@@ -49,4 +49,4 @@ export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/opt/libpq/bin:$PATH"
 export PATH="$BOB:$HOME/.bin:$PATH"
 export AWS_PROFILE="DelianidesAccount"
 
-. "$HOME/.cargo/env"
+[ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

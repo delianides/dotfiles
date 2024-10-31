@@ -1,5 +1,25 @@
 return {
   {
+    "neovim/nvim-lspconfig",
+    -- config = function(_, opts)
+    --   vim.api.nvim_create_autocmd("LspAttach", {
+    --     callback = function(ev)
+    --       vim.keymap.del("n", "K", { buffer = ev.buf })
+    --     end,
+    --   })
+    --   if opts.on_attach then
+    --     opts.on_attach(args)
+    --   end
+    -- end,
+    init = function()
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(ev)
+          vim.keymap.del("n", "K", { buffer = ev.buf })
+        end,
+      })
+    end,
+  },
+  {
     "linux-cultist/venv-selector.nvim",
     branch = "regexp", -- Use this branch for the new version
     cmd = "VenvSelect",

@@ -102,8 +102,6 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "workbench.colorTheme": "Monokai Pro",
-  "workbench.iconTheme": "Monokai Pro Icons",
   "go.useLanguageServer": true,
   "go.formatTool": "goimports",
   "vsicons.dontShowNewVersionMessage": true,
@@ -127,5 +125,6 @@
   "security.workspace.trust.untrustedFiles": "open",
   "workbench.editor.tabActionCloseVisibility": false,
   "window.confirmSaveUntitledWorkspace": false,
-  "python.analysis.typeCheckingMode": "standard"
+  "python.analysis.typeCheckingMode": "standard",
+  "workbench.colorTheme": "Catppuccin Mocha"
 }
