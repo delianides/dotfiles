@@ -21,10 +21,10 @@ local znt_history_active_text=reverse
 zinit lucid for \
     atinit"
       ZSH_TMUX_FIXTERM=false
-      ZSH_TMUX_AUTOSTART=true
+      ZSH_TMUX_AUTOSTART=false
       ZSH_TMUX_AUTOQUIT=false
       ZSH_TMUX_DEFAULT_SESSION_NAME=main
-      ZSH_TMUX_AUTOCONNECT=true" \
+      ZSH_TMUX_AUTOCONNECT=false" \
     OMZP::tmux \
     atinit"HIST_STAMPS=dd.mm.yyyy" \
     OMZL::history.zsh \

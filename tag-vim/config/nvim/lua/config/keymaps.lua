@@ -20,22 +20,14 @@ vim.g.maplocalleader = " "
 -- quick escape
 map("i", "jj", "<ESC>", opts)
 
-map("n", "J", "5j", opts)
-map("n", "K", "5k", opts)
-map("v", "J", "5j", opts)
-map("v", "K", "5k", opts)
-
-map("n", "<Tab>", ":BufferLineCycleNext<CR>", opts)
-map("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", opts)
-
+map("n", "<Down>", "5j", opts)
+map("n", "<Up>", "5k", opts)
+map("v", "<Down>", "5j", opts)
+map("v", "<Up>", "5k", opts)
 map("i", "<Down>", "<NOP>", opts)
 map("i", "<Up>", "<NOP>", opts)
 map("i", "<Left>", "<NOP>", opts)
 map("i", "<Right>", "<NOP>", opts)
-map("n", "<Left>", ':echoe "Use h"<CR>', opts)
-map("n", "<Right>", ':echoe "Use l"<CR>', opts)
-map("n", "<Up>", ':echoe "Use k"<CR>', opts)
-map("n", "<Down>", ':echoe "Use j"<CR>', opts)
 
 if os.getenv("TMUX") then
   map("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
