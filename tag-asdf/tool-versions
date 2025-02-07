@@ -1,10 +1,10 @@
 golang 1.21.1
-python 3.12.3
+python 3.13.1
 ruby 3.2.2
 nodejs 20.14.0
 lua 5.4.4
 rust 1.79.0
-java temurin-11.0.17+8
+java temurin-jre-23.0.1+11
 bun 1.0.1
 redis-cli 7.0.8
 pdm 2.12.4

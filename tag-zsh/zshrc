@@ -59,6 +59,8 @@ alias gs="git status -sb"
 alias tmux="tmux -2"
 alias ssh='TERM=xterm-256color ssh'
 
+fpath+=~/.zfunc
+
 zinit wait lucid for \
     light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload"_zsh_autosuggest_start" \
   zsh-users/zsh-autosuggestions \
@@ -156,3 +158,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# Created by `pipx` on 2025-01-10 19:18:28
+export PATH="$PATH:/Users/drewdelianides/.local/bin"
