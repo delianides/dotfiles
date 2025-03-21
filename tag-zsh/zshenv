@@ -50,3 +50,6 @@ export PATH="$BOB:$HOME/.bin:$PATH"
 export AWS_PROFILE="DelianidesAccount"
 
 [ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# uv
+export PATH="/Users/adelianides/.local/bin:$PATH"
