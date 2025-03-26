@@ -8,6 +8,8 @@ opt.swapfile = false
 opt.formatoptions = "jcroqlnt"
 opt.textwidth = 80
 
+vim.g.augment_workspace_folders = { "~/Work/smoke/", "~/Work/order-ingestion/" }
+
 vim.g.maplocalleader = " "
 vim.g.mapleader = " "
 
