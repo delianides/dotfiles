@@ -1,10 +1,18 @@
 # vi: ft=gitconfig
-[core]
-  sshCommand = "ssh -i ~/.ssh/id_github_personal.pub"
 [github]
   user = delianides
 [user]
 	name = delianides
 	email = github@drew.delianides.com
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDuYiuvLnqanNkQ2csbzCPgtZHKMJYFxoNfcvP+buIyz
+
+[commit]
+  gpgsign = true
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+
 
