@@ -158,6 +158,13 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+<<<<<<< HEAD
 
 # Created by `pipx` on 2025-01-10 19:18:28
 export PATH="$PATH:/Users/drewdelianides/.local/bin"
+||||||| parent of 283cb70 (chore: updated lock)
+=======
+
+# bun completions
+[ -s "/Users/drewdelianides/.bun/_bun" ] && source "/Users/drewdelianides/.bun/_bun"
+>>>>>>> 283cb70 (chore: updated lock)
