@@ -126,5 +126,8 @@
   "workbench.editor.tabActionCloseVisibility": false,
   "window.confirmSaveUntitledWorkspace": false,
   "python.analysis.typeCheckingMode": "standard",
-  "workbench.colorTheme": "Catppuccin Mocha"
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "vs-kubernetes": {
+    "vs-kubernetes.minikube-show-information-expiration": "2025-09-23T15:21:55.096Z"
+  }
 }
