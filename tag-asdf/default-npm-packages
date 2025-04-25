@@ -1,5 +1,5 @@
 neovim
 vercel
-serverless
 npm-check-updates
 aws-cdk
+@anthropic-ai/claude-code
