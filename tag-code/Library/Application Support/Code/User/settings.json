@@ -129,5 +129,6 @@
   "workbench.colorTheme": "Catppuccin Mocha",
   "vs-kubernetes": {
     "vs-kubernetes.minikube-show-information-expiration": "2025-09-23T15:21:55.096Z"
-  }
+  },
+  "diffEditor.codeLens": true
 }
