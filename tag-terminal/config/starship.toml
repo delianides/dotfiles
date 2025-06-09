@@ -49,7 +49,7 @@ style = "yellow"
 [python]
 format = "[$version]($style) "
 style = "bright-yellow"
-python_binary = "python3"
+python_binary = "python"
 
 [nodejs]
 format = "[$version]($style) "
