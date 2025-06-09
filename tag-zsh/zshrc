@@ -1,6 +1,5 @@
-export TERM="xterm-256color"
 export PATH="$PATH:~/.bin"
-export VISUAL="nvim"
+
 
 ZSH_LOCAL="$HOME/.zsh.local"
 [ ! -d $ZSH_LOCAL ] && mkdir -p "$(dirname $ZSH_LOCAL)"
@@ -62,6 +61,8 @@ alias ssh='TERM=xterm-256color ssh'
 fpath+=~/.zfunc
 
 zinit wait lucid for \
+
+zinit wait lucid for \
     light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload"_zsh_autosuggest_start" \
   zsh-users/zsh-autosuggestions \
     light-mode atinit"
@@ -115,18 +116,13 @@ unsetopt AUTO_CD
 
 source $HOME/.localrc
 
-# starship
-eval "$(starship init zsh)"
-
-# zoxide
-eval "$(zoxide init --no-aliases zsh)"
-alias z="__zoxide_z"
-
 export VISUAL="nvim"
 export MANPAGER="bat --plain"
 
 alias reload!='RELOAD=1 source ~/.zshrc'
-
+alias gs="git status -sb"
+alias tmux="tmux -2"
+alias ssh='TERM=xterm-256color ssh'
 alias cat="bat"
 alias vi='$VISUAL'
 alias vim='$VISUAL'
@@ -145,19 +141,16 @@ alias cat="bat"
 alias rm="trash"
 alias tmux="tmux -2"
 alias ssh='TERM=xterm-256color ssh'
-# alias grep="egrep --color=auto"
 
 alias sed="sed -E"                 # Use modern regexps for sed, i.e. "(one|two)", not "\(one\|two\)"
 alias crontab="VISUAL=vim crontab" # Remove vim flags for crontab -e
 
+# starship
+eval "$(starship init zsh)"
 
-# pnpm
-export PNPM_HOME="/Users/drewdelianides/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+# zoxide
+eval "$(zoxide init --no-aliases zsh)"
+alias z="__zoxide_z"
 
 # Created by `pipx` on 2025-01-10 19:18:28
 export PATH="$PATH:/Users/drewdelianides/.local/bin"
@@ -170,3 +163,25 @@ fpath=(/Users/adelianides/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+alias claude="/Users/drewdelianides/.claude/local/claude"
+
+function sesh-sessions() {
+  {
+    exec </dev/tty
+    exec <&1
+    local session
+    session=$(sesh list | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
+    zle reset-prompt > /dev/null 2>&1 || true
+    [[ -z "$session" ]] && return
+    sesh connect $session
+  }
+}
+
+zle     -N            sesh-sessions
+bindkey -M emacs '^O' sesh-sessions
+bindkey -M vicmd '^O' sesh-sessions
+bindkey -M viins '^O' sesh-sessions
+
+zicompinit
+
