@@ -164,6 +164,8 @@ autoload -Uz compinit
 compinit
 
 [ ! -d $HOME/.config/opencode ] && curl -fsSL https://opencode.ai/install | bash
+alias claude="/Users/drewdelianides/.claude/local/claude"
+alias bu="brew outdated | fzf | xargs -I {} brew upgrade {}"
 
 function sesh-sessions() {
   {
@@ -186,4 +188,7 @@ zicompinit
 
 # opencode
 export PATH=/Users/adelianides/.opencode/bin:$PATH
-export AWS_PROFILE=integrations-dev
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/drewdelianides/.lmstudio/bin"
+# End of LM Studio CLI section
+
