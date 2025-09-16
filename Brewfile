@@ -115,5 +115,7 @@ brew "osx-cross/avr/avr-gcc@8", link: true
 brew "px4/px4/gcc-arm-none-eabi"
 brew 'tree'
 brew 'atomicparsley'
+brew 'sst/tap/opencode'
+brew 'charmbracelet/tap/crush'
 # brew 'zoxide' # moved to zinit
 

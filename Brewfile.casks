@@ -50,3 +50,4 @@ cask "transmit"
 cask "ultimaker-cura"
 cask "visual-studio-code"
 cask "vlc"
+cask 'claude-code'
