@@ -8,7 +8,7 @@
 [user]
 	name = "Drew Delianides"
 	email = "adelianides@traeger.com"
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJS4peroEDqum+IyjvuRdEsH/SB7ypoLhfAz5qRFQgFv
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5VtVOc5gmCRldLyUZBlF0U8v7XLrjNC0WCzy9KHneL
 
 [gpg]
   format = ssh
