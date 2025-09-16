@@ -20,10 +20,10 @@ local znt_history_active_text=reverse
 zinit lucid for \
     atinit"
       ZSH_TMUX_FIXTERM=false
-      ZSH_TMUX_AUTOSTART=true
+      ZSH_TMUX_AUTOSTART=false
       ZSH_TMUX_AUTOQUIT=false
       ZSH_TMUX_DEFAULT_SESSION_NAME=main
-      ZSH_TMUX_AUTOCONNECT=true" \
+      ZSH_TMUX_AUTOCONNECT=false" \
     OMZP::tmux \
     atinit"HIST_STAMPS=dd.mm.yyyy" \
     OMZL::history.zsh \
@@ -54,15 +54,7 @@ zinit wait lucid for \
   atinit"ZVM_INIT_MODE=sourcing;ZVM_VI_ESCAPE_BINDKEY=jj;ZVM_VI_INSERT_ESCAPE_BINDKEY=jj" \
     jeffreytse/zsh-vi-mode
 
-alias gs="git status -sb"
-alias tmux="tmux -2"
-alias ssh='TERM=xterm-256color ssh'
-
-fpath+=~/.zfunc
-
-zinit wait lucid for \
-
-zinit wait lucid for \
+  zinit wait lucid for \
     light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload"_zsh_autosuggest_start" \
   zsh-users/zsh-autosuggestions \
     light-mode atinit"
@@ -152,20 +144,11 @@ eval "$(starship init zsh)"
 eval "$(zoxide init --no-aliases zsh)"
 alias z="__zoxide_z"
 
-# Created by `pipx` on 2025-01-10 19:18:28
-export PATH="$PATH:/Users/drewdelianides/.local/bin"
-
 # bun completions
-[ -s "/Users/drewdelianides/.bun/_bun" ] && source "/Users/drewdelianides/.bun/_bun"
-alias claude="/Users/adelianides/.claude/local/claude"
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/adelianides/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
+[ ! -d $HOME/.bun ] && curl -fsSL https://bun.sh/install | bash
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 [ ! -d $HOME/.config/opencode ] && curl -fsSL https://opencode.ai/install | bash
-alias claude="/Users/drewdelianides/.claude/local/claude"
-alias bu="brew outdated | fzf | xargs -I {} brew upgrade {}"
 
 function sesh-sessions() {
   {
@@ -188,7 +171,5 @@ zicompinit
 
 # opencode
 export PATH=/Users/adelianides/.opencode/bin:$PATH
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/drewdelianides/.lmstudio/bin"
-# End of LM Studio CLI section
+export AWS_PROFILE=integrations-dev
 
