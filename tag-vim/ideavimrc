@@ -16,6 +16,12 @@ set ignorecase smartcase " Case-insensitive search
 set relativenumber       " Relative line numbers by default
 set peekaboo             " Show contents in the registers (IDEA plugin required)
 
+""" Map leader to space ---------------------
+let mapleader=" "
+
+""" Map jj to ESC ---------------------------
+imap jj <ESC>
+
 " Leader maps
 map <Leader>n :set rnu!<CR>
 map <Leader>sw <Action>(SurroundWith)

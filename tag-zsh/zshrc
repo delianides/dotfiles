@@ -162,9 +162,8 @@ alias claude="/Users/adelianides/.claude/local/claude"
 fpath=(/Users/adelianides/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
-# End of Docker CLI completions
 
-alias claude="/Users/drewdelianides/.claude/local/claude"
+[ ! -d $HOME/.config/opencode ] && curl -fsSL https://opencode.ai/install | bash
 
 function sesh-sessions() {
   {
@@ -185,3 +184,6 @@ bindkey -M viins '^O' sesh-sessions
 
 zicompinit
 
+# opencode
+export PATH=/Users/adelianides/.opencode/bin:$PATH
+export AWS_PROFILE=integrations-dev
