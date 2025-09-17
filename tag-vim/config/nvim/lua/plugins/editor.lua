@@ -72,6 +72,6 @@ return {
     },
     dependencies = { "sindrets/diffview.nvim" },
   },
-  { "echasnovski/mini.indentscope", config = true, version = false },
-  { "echasnovski/mini.trailspace", config = true, version = false },
+  { "nvim-mini/mini.indentscope", config = true, version = false },
+  { "nvim-mini/mini.trailspace", config = true, version = false },
 }

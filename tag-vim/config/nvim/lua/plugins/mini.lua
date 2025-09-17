@@ -1,6 +1,6 @@
 return {
   {
-    "echasnovski/mini.splitjoin",
+    "nvim-mini/mini.splitjoin",
     opts = {
       mappings = {
         toggle = "msj",
