@@ -1,19 +1,8 @@
 #!/bin/bash
 
-# youtube-dl
-alias yt='youtube-dl --output "$PWD/%(extractor_key)s/%(uploader)s [%(channel_id)s]/%(title)s [%(id)s].%(ext)s"'
-alias ytp='youtube-dl --output "$PWD/%(extractor_key)s/%(uploader)s [%(channel_id)s]/%(playlist)s/%(playlist_index)s - %(title)s [%(id)s].%(ext)s"'
-alias audio='youtube-dl --ignore-config -f bestaudio --extract-audio --audio-format mp3 --embed-thumbnail --add-metadata --audio-quality 0 --output "$PWD/%(uploader)s - %(title)s.%(ext)s"'
-
-function ytinfo() {
-  youtube-dl --ignore-config --dump-json "$1" | jq
-}
-
 # alias act='op run --env-file="$HOME/.config/op/gh.env" -- act -s GITHUB_TOKEN'
 # alias aws='op run --env-file="$HOME/.config/op/aws.env" -- aws'
 # alias gh='op run --env-file=$HOME/.config/op/gh.env -- gh'
-
-alias re-source="source ~/.localrc"
 
 alias qq="cd . && source ~/.zshrc"
 alias ls="exa"
@@ -23,3 +12,29 @@ alias diff="colordiff -u"
 alias pn="pnpm"
 
 alias k='kubectl --kubeconfig $HOME/.kubeconfig-integrations-developer'
+
+alias reload!='RELOAD=1 source ~/.zshrc'
+alias gs="git status -sb"
+alias tmux="tmux -2"
+alias ssh='TERM=xterm-256color ssh'
+alias cat="bat"
+alias vi='$VISUAL'
+alias vim='$VISUAL'
+alias cd="z"
+alias rm="trash"
+
+alias l="eza -abghHlS --git --group-directories-first"
+alias ls="eza"
+alias ll="eza -alh"
+alias tree="eza --tree"
+
+alias dig="dig +noall +answer +multiline"
+alias gs='git status -sb'
+alias mkdir="mkdir -p"
+alias cat="bat"
+alias rm="trash"
+alias tmux="tmux -2"
+alias ssh='TERM=xterm-256color ssh'
+
+alias sed="sed -E"                 # Use modern regexps for sed, i.e. "(one|two)", not "\(one\|two\)"
+alias crontab="VISUAL=vim crontab" # Remove vim flags for crontab -e

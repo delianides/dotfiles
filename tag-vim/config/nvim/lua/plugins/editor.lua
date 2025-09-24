@@ -49,7 +49,7 @@ return {
       popup_border_style = "rounded",
       enable_git_status = true,
       enable_diagnostics = true,
-      window = { mappings = { ["l"] = "open", ["o"] = "open" } },
+      window = { position = "right", mappings = { ["l"] = "open", ["o"] = "open" } },
       filesystem = {
         filtered_items = { never_show = { ".git", ".ds_store" } },
         follow_current_file = true,
@@ -72,6 +72,4 @@ return {
     },
     dependencies = { "sindrets/diffview.nvim" },
   },
-  { "nvim-mini/mini.indentscope", config = true, version = false },
-  { "nvim-mini/mini.trailspace", config = true, version = false },
 }

@@ -1,6 +1,5 @@
 export PATH="$PATH:~/.bin"
 
-
 ZSH_LOCAL="$HOME/.zsh.local"
 [ ! -d $ZSH_LOCAL ] && mkdir -p "$(dirname $ZSH_LOCAL)"
 source "${ZSH_LOCAL}"
@@ -26,7 +25,7 @@ zinit lucid for \
       ZSH_TMUX_AUTOCONNECT=false" \
     OMZP::tmux \
     atinit"HIST_STAMPS=dd.mm.yyyy" \
-    OMZL::history.zsh \
+    OMZL::history.zsh
 
 zinit wait lucid for \
   atload"
@@ -54,7 +53,7 @@ zinit wait lucid for \
   atinit"ZVM_INIT_MODE=sourcing;ZVM_VI_ESCAPE_BINDKEY=jj;ZVM_VI_INSERT_ESCAPE_BINDKEY=jj" \
     jeffreytse/zsh-vi-mode
 
-  zinit wait lucid for \
+zinit wait lucid for \
     light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload"_zsh_autosuggest_start" \
   zsh-users/zsh-autosuggestions \
     light-mode atinit"
@@ -83,9 +82,39 @@ zinit wait lucid for \
     bindmap"^R -> ^H" \
   zdharma-continuum/history-search-multi-word \
   zsh-users/zsh-history-substring-search \
-  joshskidmore/zsh-fzf-history-search \
+  joshskidmore/zsh-fzf-history-search
 
-zicompinit
+zinit ice as"command" from"gh-r" \
+    atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+    atpull"%atclone" src"init.zsh"
+
+zinit light starship/starship
+
+zinit lucid light-mode for \
+  as"command" from"gh-r" bpick'*darwin_arm*' \
+  @junegunn/fzf
+
+zinit lucid light-mode from"gh-r" as"command" bpick'*darwin*' for \
+    atload'
+        alias l="eza -abghHlS --git --group-directories-first"
+        alias ls="eza"
+        alias ll="eza -alh"
+        alias tree="eza --tree"
+        eval "$(zoxide init --no-aliases zsh)"
+        alias z="__zoxide_z"
+    ' pick'zoxide/zoxide' \
+        @ajeetdsouza/zoxide \
+    mv'ripgrep* -> rg' pick'rg/rg' \
+        @BurntSushi/ripgrep \
+    mv'fd* -> fd' pick'fd/fd' \
+        @sharkdp/fd \
+    mv'bat* -> bat' pick'bat/bat' atload'
+        export MANPAGER="bat --plain"
+        alias cat="bat"
+    ' \
+        @sharkdp/bat \
+    mv'delta* -> delta' pick'delta/delta' \
+        @dandavison/delta \
 
 setopt APPEND_HISTORY
 setopt EXTENDED_HISTORY
@@ -106,49 +135,12 @@ setopt INC_APPEND_HISTORY
 setopt AUTOPUSHD
 unsetopt AUTO_CD
 
-source $HOME/.localrc
-
 export VISUAL="nvim"
 export MANPAGER="bat --plain"
 
-alias reload!='RELOAD=1 source ~/.zshrc'
-alias gs="git status -sb"
-alias tmux="tmux -2"
-alias ssh='TERM=xterm-256color ssh'
-alias cat="bat"
-alias vi='$VISUAL'
-alias vim='$VISUAL'
-alias cd="z"
-alias rm="trash"
 
-alias l="eza -abghHlS --git --group-directories-first"
-alias ls="eza"
-alias ll="eza -alh"
-alias tree="eza --tree"
-
-alias dig="dig +noall +answer +multiline"
-alias gs='git status -sb'
-alias mkdir="mkdir -p"
-alias cat="bat"
-alias rm="trash"
-alias tmux="tmux -2"
-alias ssh='TERM=xterm-256color ssh'
-
-alias sed="sed -E"                 # Use modern regexps for sed, i.e. "(one|two)", not "\(one\|two\)"
-alias crontab="VISUAL=vim crontab" # Remove vim flags for crontab -e
-
-# starship
-eval "$(starship init zsh)"
-
-# zoxide
-eval "$(zoxide init --no-aliases zsh)"
-alias z="__zoxide_z"
-
-# bun completions
-[ ! -d $HOME/.bun ] && curl -fsSL https://bun.sh/install | bash
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-[ ! -d $HOME/.config/opencode ] && curl -fsSL https://opencode.ai/install | bash
+source $HOME/.localrc
+source $HOME/.aliases
 
 function sesh-sessions() {
   {
@@ -168,8 +160,3 @@ bindkey -M vicmd '^O' sesh-sessions
 bindkey -M viins '^O' sesh-sessions
 
 zicompinit
-
-# opencode
-export PATH=/Users/adelianides/.opencode/bin:$PATH
-export AWS_PROFILE=integrations-dev
-
