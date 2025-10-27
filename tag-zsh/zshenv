@@ -29,9 +29,6 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-# asdf-vm
-. "$(brew --prefix)/opt/asdf/libexec/asdf.sh"
-
 # bun completions
 [ -s "/Users/drewdelianides/.bun/_bun" ] && source "/Users/drewdelianides/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
@@ -40,16 +37,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export GOPATH="$HOME/Github/Golang/src/go"
 export GOBIN="$HOME/Github/Golang/src/go/bin"
 
-export BOB="$HOME/.local/share/bob/nvim-bin"
-
-# Add homebrew binaries
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/opt/libpq/bin:$PATH"
-
-# Add my custom commands
-export PATH="$BOB:$HOME/.bin:$PATH"
-export AWS_PROFILE="DelianidesAccount"
-
 [ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-# uv
 export PATH="/Users/adelianides/.local/bin:$PATH"

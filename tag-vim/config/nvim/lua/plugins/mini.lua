@@ -8,6 +8,5 @@ return {
     },
     version = "*",
   },
-  { "nvim-mini/mini.indentscope", config = true, version = false },
   { "nvim-mini/mini.trailspace", config = true, version = false },
 }

@@ -7,11 +7,11 @@ return {
     event = "BufReadPre",
     config = true,
   },
-  {
-    "sindrets/diffview.nvim",
-    lazy = true,
-    cmd = "DiffviewOpen",
-  },
+  -- {
+  --   "sindrets/diffview.nvim",
+  --   lazy = true,
+  --   cmd = "DiffviewOpen",
+  -- },
   {
     "lewis6991/gitsigns.nvim",
     opts = {

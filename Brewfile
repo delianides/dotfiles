@@ -27,6 +27,7 @@ brew "autoconf"
 brew "automake"
 brew "aws-sso-creds"
 brew "bat"
+brew "black"
 brew "cargo-lambda"
 brew "coreutils"
 brew "libtool"
@@ -50,7 +51,7 @@ brew "glow"
 brew "gpg"
 brew "gpg2"
 brew "doctl"
-brew "exa"
+brew "eza"
 brew "emacs"
 brew "fd"
 brew "ffmpeg"
@@ -83,11 +84,13 @@ brew "openssh"
 brew "packer"
 brew "pre-commit"
 brew "pure"
+brew "python"
 brew "rcm"
 brew "rename"
 brew "ripgrep"
 brew "rga"
 brew "rke"
+brew "sesh"
 brew "ssh-copy-id"
 brew "starship"
 brew "streamlink"
@@ -117,5 +120,5 @@ brew 'tree'
 brew 'atomicparsley'
 brew 'sst/tap/opencode'
 brew 'charmbracelet/tap/crush'
-# brew 'zoxide' # moved to zinit
+brew 'zoxide'
 

@@ -160,3 +160,6 @@ bindkey -M vicmd '^O' sesh-sessions
 bindkey -M viins '^O' sesh-sessions
 
 zicompinit
+
+# export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
