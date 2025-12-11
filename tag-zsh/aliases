@@ -38,3 +38,4 @@ alias ssh='TERM=xterm-256color ssh'
 
 alias sed="sed -E"                 # Use modern regexps for sed, i.e. "(one|two)", not "\(one\|two\)"
 alias crontab="VISUAL=vim crontab" # Remove vim flags for crontab -e
+alias claude="~/.claude/local/claude"

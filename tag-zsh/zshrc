@@ -138,9 +138,10 @@ unsetopt AUTO_CD
 export VISUAL="nvim"
 export MANPAGER="bat --plain"
 
-
 source $HOME/.localrc
 source $HOME/.aliases
+
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 function sesh-sessions() {
   {
@@ -161,5 +162,4 @@ bindkey -M viins '^O' sesh-sessions
 
 zicompinit
 
-# export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
