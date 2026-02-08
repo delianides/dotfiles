@@ -90,12 +90,6 @@ info "Linking dotfiles into ~..."
 export RCRC=rcrc
 stay_awake_while rcup -d .
 
-info "Setting Pre-Commit Hook"
-cp "$HOME/Code/dotfiles/lib/dotfiles-precommit-hook" "$HOME/Code/dotfiles/.git/hooks/pre-commit"
-
-info "Installing MacOS system settings..."
-stay_awake_while sudo "$HOME"/Code/dotfiles/system/macos
-
 info "Installing ASDF language version manager..."
 alias install_asdf_plugin=add_or_update_asdf_plugin
 add_or_update_asdf_plugin() {
