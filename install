@@ -73,21 +73,7 @@ install_taps "$install_dir/Brewfile"
 info "Installing formulae..."
 quietly_brew_bundle "$install_dir/Brewfile" --verbose || true
 quietly_brew_bundle "$install_dir/Brewfile.casks" --verbose || true
-
-app_store_id=$(mas account || true)
-desired_app_store_id="apple@drew.delianides.com"
-if [[ "$app_store_id" == "$desired_app_store_id" ]]; then
-  quietly_brew_bundle "$install_dir/Brewfile.mas"
-else
-  if mas account &>/dev/null; then
-    error "You are signed in to the App Store as $app_store_id."
-    error "Sign out and re-sign in as $desired_app_store_id"
-  else
-    error "You are not signed in to the App Store."
-    error "Sign in as $desired_app_store_id"
-  fi
-  error "(This won't affect your iCloud account.)"
-fi
+quietly_brew_bundle "$install_dir/Brewfile.mas" --verbose || true
 
 if ! echo "$SHELL" | grep -Fq zsh; then
   info "Your shell is not Zsh. Changing it to Zsh..."
@@ -107,10 +93,10 @@ add_or_update_asdf_plugin() {
   local name="$1"
   local url="$2"
 
-  if ! asdf plugin-list | grep -Fq "$name"; then
-    asdf plugin-add "$name" "$url"
+  if ! asdf plugin list | grep -Fq "$name"; then
+    asdf plugin add "$name" "$url"
   else
-    asdf plugin-update "$name"
+    asdf plugin update "$name"
   fi
 }
 
