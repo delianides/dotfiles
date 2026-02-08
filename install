@@ -57,10 +57,8 @@ if command_does_not_exist brew; then
 fi
 
 info "Installing Homebrew packages..."
-brew tap homebrew/bundle
 brew install mas 2>/dev/null
 quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile"
-quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.lang" || true
 quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.casks" || true
 
 app_store_id=$(mas account || true)
