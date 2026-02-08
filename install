@@ -53,7 +53,7 @@ if command_does_not_exist brew; then
   (
     echo
     echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
-  ) >>/Users/drewdelianides/.zprofile
+  ) >>"$HOME/.zprofile"
 fi
 
 info "Installing Homebrew packages..."
