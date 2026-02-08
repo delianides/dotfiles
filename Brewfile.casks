@@ -2,52 +2,47 @@
 
 cask_args appdir: '/Applications'
 
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
+tap 'homebrew/cask'
+tap 'homebrew/cask-fonts'
+tap 'homebrew/cask-versions'
 
-cask "alacritty"
-cask "iterm2"
-cask "kitty"
-cask "wezterm"
-cask "wave"
-cask "warp"
+cask 'ghostty'
+cask 'wezterm'
 
-cask "1password"
-cask "1password-cli"
-cask "arduino"
-cask "brave-browser"
-cask "discord"
-cask "docker"
-cask "dropbox"
-cask "figma"
-cask "firefox"
-cask "font-anonymous-pro"
-cask "font-fira-code"
-cask "font-jetbrains-mono"
-cask "font-roboto-mono"
-cask "font-source-code-pro"
-cask "font-space-mono"
-cask "font-monaspace"
-cask "font-sauce-code-pro-nerd-font"
-cask 'font-jetbrains-mono-nerd-font'
-cask "google-chrome"
-cask "imageoptim"
-cask "inkdrop"
-cask "insomnia"
-cask "ngrok"
-cask "notion"
-cask 'obsidian'
-cask "obsbot-center"
-cask "openvpn-connect"
-cask "openscad"
-cask "postman"
-cask "raspberry-pi-imager"
-cask "raycast"
-cask "slack"
-cask "spotify"
-cask "transmit"
-cask "ultimaker-cura"
-cask "visual-studio-code"
-cask "vlc"
 cask 'claude-code'
+cask 'visual-studio-code'
+cask 'zed'
+
+cask 'brave-browser'
+cask 'firefox'
+cask 'google-chrome'
+
+cask '1password'
+cask '1password-cli'
+cask 'docker'
+cask 'docker-desktop'
+cask 'figma'
+cask 'blip'
+cask 'font-anonymous-pro'
+cask 'font-fira-code'
+cask 'font-jetbrains-mono'
+cask 'font-roboto-mono'
+cask 'font-source-code-pro'
+cask 'font-space-mono'
+cask 'font-monaspace'
+cask 'font-sauce-code-pro-nerd-font'
+cask 'font-jetbrains-mono-nerd-font'
+cask 'lm-studio'
+cask 'ollama-app'
+cask 'insomnia'
+cask 'ngrok'
+cask 'notion'
+cask 'obsidian'
+cask 'postman'
+cask 'raycast'
+cask 'slack'
+cask 'zoom'
+cask 'spotify'
+
+# cask "vlc"
+# cask "discord"
