@@ -12,6 +12,7 @@ tap 'cargo-lambda/cargo-lambda'
 tap 'charmbracelet/tap'
 
 brew 'asdf'
+brew 'mas'
 
 brew 'act'
 brew 'actionlint'

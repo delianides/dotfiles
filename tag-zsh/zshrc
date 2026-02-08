@@ -165,6 +165,6 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/drewdelianides/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 

@@ -64,9 +64,6 @@ if command_does_not_exist brew; then
   ) >>"$HOME/.zprofile"
 fi
 
-info "Installing Homebrew packages..."
-brew install mas 2>/dev/null
-
 info "Tapping Homebrew repositories..."
 install_taps "$install_dir/Brewfile"
 
@@ -100,14 +97,7 @@ add_or_update_asdf_plugin() {
   fi
 }
 
-declare -a languages=(
-  "bun",
-  "nodejs"
-  "python"
-  "ruby"
-  "rust"
-  "golang"
-)
+declare -a languages=("bun" "nodejs" "python" "ruby" "rust" "golang")
 
 for language in "${languages[@]}"; do
   add_or_update_asdf_plugin "$language"

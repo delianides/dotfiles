@@ -11,14 +11,6 @@ export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 
-export JAVA_HOME=$(/usr/libexec/java_home -v1.11)
-
-export ANDROID_SDK_ROOT=${BREW_HOME}/share/android-commandlinetools
-export ANDROID_HOME=${BREW_HOME}/share/android-commandlinetools
-if [[ -d "${ANDROID_HOME}/emulator" ]]; then
-  export PATH=$PATH:${ANDROID_HOME}/emulator
-fi
-
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # pnpm
@@ -30,7 +22,7 @@ esac
 # pnpm end
 
 # bun completions
-[ -s "/Users/drewdelianides/.bun/_bun" ] && source "/Users/drewdelianides/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
@@ -39,4 +31,4 @@ export GOBIN="$HOME/Github/Golang/src/go/bin"
 
 [ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-export PATH="/Users/adelianides/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"

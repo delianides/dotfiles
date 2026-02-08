@@ -14,6 +14,7 @@
   },
   "icon_theme": "Catppuccin Mocha",
   "edit_predictions": {
+    "provider": "zed",
     "disabled_globs": [
       "**/.git",
       "**/.svn",
@@ -384,9 +385,6 @@
   },
   "preferred_line_length": 120,
   "format_on_save": "on",
-  "features": {
-    "edit_prediction_provider": "zed",
-  },
   "auto_install_extensions": {
     "astro": true,
     "catppuccin": true,

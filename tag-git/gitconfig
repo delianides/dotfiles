@@ -63,7 +63,7 @@
 	insteadOf = https://gitlab.com/
 
 [includeIf "gitdir:~/Work/"]
-  path = .gitconfig-work-gitlab
+  path = .gitconfig-personal-github
 
 [includeIf "gitdir:~/.dotfiles/"]
   path = .gitconfig-personal-github
