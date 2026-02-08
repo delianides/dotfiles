@@ -2,7 +2,7 @@
 # vim: tw=0
 # from https://github.com/gabebw/dotfiles/blob/main/install.sh
 
-set -eo pipefail
+set -eo
 
 color() {
   local colornumber="$1"
@@ -28,6 +28,14 @@ install_dir="$(cd "$(dirname "$0")" && pwd)"
 
 stay_awake_while() {
   caffeinate -dims "$@"
+}
+
+install_taps() {
+  local brewfile=$1
+  grep "^tap " "$brewfile" | while read -r line; do
+    tap_name=$(echo "$line" | sed "s/tap '\\(.*\\)'/\\1/")
+    brew tap "$tap_name" 2>/dev/null || yellow "Warning: failed to tap $tap_name"
+  done
 }
 
 quietly_brew_bundle() {
@@ -58,8 +66,13 @@ fi
 
 info "Installing Homebrew packages..."
 brew install mas 2>/dev/null
-quietly_brew_bundle "$install_dir/Brewfile"
-quietly_brew_bundle "$install_dir/Brewfile.casks" || true
+
+info "Tapping Homebrew repositories..."
+install_taps "$install_dir/Brewfile"
+
+info "Installing formulae..."
+quietly_brew_bundle "$install_dir/Brewfile" --verbose || true
+quietly_brew_bundle "$install_dir/Brewfile.casks" --verbose || true
 
 app_store_id=$(mas account || true)
 desired_app_store_id="apple@drew.delianides.com"

@@ -1,18 +1,15 @@
 # vim:ft=ruby:
 #
 
-tap 'facebook/fb'
 tap 'derailed/k9s'
 tap 'github/gh'
-tap 'homebrew/services'
 tap 'jesseduffield/lazygit'
-tap 'osx-cross/avr'
-tap 'px4/px4'
 tap 'teamookla/speedtest'
 tap 'achannarasappa/tap'
 tap 'jaxxstorm/tap'
 tap 'hashicorp/tap'
 tap 'cargo-lambda/cargo-lambda'
+tap 'charmbracelet/tap'
 
 brew 'asdf'
 
@@ -105,10 +102,8 @@ brew 'wget'
 brew 'zsh'
 brew 'zinit'
 brew 'derailed/k9s/k9s'
-brew 'osx-cross/avr/avr-gcc@8', link: true
-brew 'px4/px4/gcc-arm-none-eabi'
 brew 'tree'
 brew 'atomicparsley'
-brew 'sst/tap/opencode'
 brew 'charmbracelet/tap/crush'
+brew 'opencode'
 brew 'zoxide'
