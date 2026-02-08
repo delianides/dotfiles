@@ -7,6 +7,12 @@
 // custom settings, run `zed: open default settings` from the
 // command palette
 {
+  "agent_servers": {
+    "claude": {
+      "default_model": "sonnet"
+    }
+  },
+  "icon_theme": "Catppuccin Mocha",
   "edit_predictions": {
     "disabled_globs": [
       "**/.git",
@@ -28,66 +34,164 @@
       "**/__pycache__",
       "**/.ropeproject",
       "**/.pytest_cache",
-      "**/.ruff_cache"
+      "**/.ruff_cache",
     ],
     "mode": "eager",
     "copilot": {
       "proxy": null,
-      "proxy_no_verify": null
+      "proxy_no_verify": null,
     },
-    "enabled_in_text_threads": false
+    "enabled_in_text_threads": false,
   },
-  "icon_theme": "Catppuccin Mocha",
   "notification_panel": {
-    "enabled": false,
-    "button": false
+    "button": false,
   },
-
   "agent": {
     "default_profile": "ask",
-    "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-3-7-sonnet-latest"
-    },
   },
   "show_edit_predictions": true,
   "languages": {
+    "JavaScript": {
+      "tab_size": 2,
+      "hard_tabs": false,
+      "preferred_line_length": 100,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"],
+        },
+      },
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true,
+      },
+    },
+    "TypeScript": {
+      "tab_size": 2,
+      "hard_tabs": false,
+      "preferred_line_length": 100,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"],
+        },
+      },
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true,
+      },
+      "inlay_hints": {
+        "enabled": true,
+        "show_type_hints": true,
+        "show_parameter_hints": true,
+      },
+    },
+    "TSX": {
+      "tab_size": 2,
+      "hard_tabs": false,
+      "preferred_line_length": 100,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"],
+        },
+      },
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true,
+      },
+    },
+    "JSX": {
+      "tab_size": 2,
+      "hard_tabs": false,
+      "preferred_line_length": 100,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"],
+        },
+      },
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true,
+      },
+    },
     "Python": {
       "language_servers": ["ruff", "basedpyright", "!pyright"],
       "formatter": [
         {
-          "code_actions": {
-            "source.organizeImports.ruff": true,
-            "source.fixAll.ruff": true
-          }
+          "code_action": "source.organizeImports.ruff",
+        },
+        {
+          "code_action": "source.fixAll.ruff",
         },
         {
           "language_server": {
-            "name": "ruff"
-          }
-        }
-      ]
-    }
+            "name": "ruff",
+          },
+        },
+      ],
+    },
+    "CSS": {
+      "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server"],
+    },
   },
   "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "classFunctions": ["cva", "cx"],
+        "experimental": {
+          "classRegex": ["[cls|className]\\s\\:\\=\\s\"([^\"]*)"],
+        },
+      },
+    },
     "basedpyright": {
       "settings": {
         "python": {
-          "pythonPath": "./.venv/bin/python"
+          "pythonPath": "./.venv/bin/python",
         },
         "basedpyright.analysis": {
           "diagnosticMode": "workspace",
           "inlayHints": {
-            "callArgumentNames": false
-          }
-        }
-      }
+            "callArgumentNames": false,
+          },
+        },
+      },
     },
     "gopls": {
-      "gofumpt": true,
       "initialization_options": {
-        "gofumpt": true
-      }
+        "gofumpt": true,
+      },
+    },
+    "eslint": {
+      "settings": {
+        "codeActionOnSave": {
+          "mode": "fixAll",
+          "rules": ["import/order", "import/first", "import/no-duplicates"],
+        },
+        "problems": {
+          "shortenToSingleLine": false,
+        },
+        "validate": "on",
+        "run": "onType",
+      },
+    },
+    "typescript-language-server": {
+      "initialization_options": {
+        "preferences": {
+          "includeInlayParameterNameHints": "all",
+          "includeInlayParameterNameHintsWhenArgumentMatchesName": true,
+          "includeInlayFunctionParameterTypeHints": true,
+          "includeInlayVariableTypeHints": true,
+          "includeInlayVariableTypeHintsWhenTypeMatchesName": true,
+          "includeInlayPropertyDeclarationTypeHints": true,
+          "includeInlayFunctionLikeReturnTypeHints": true,
+          "includeInlayEnumMemberValueHints": true,
+        },
+      },
     },
     "yaml-language-server": {
       "settings": {
@@ -144,54 +248,53 @@
             "!Join sequence",
             "!Condition scalar",
             "!Condition mapping",
-            "!Condition sequence"
+            "!Condition sequence",
           ],
           "format": {
             "enable": true,
-            "singleQuote": true
+            "singleQuote": true,
           },
           "editor": {
-            "tabSize": 4
+            "tabSize": 4,
           },
           "schemas": {
-            "https://raw.githubusercontent.com/lalcebo/json-schema/master/serverless/reference.json": [
-              "/*"
-            ]
-          }
-        }
-      }
-    }
+            "https://raw.githubusercontent.com/lalcebo/json-schema/master/serverless/reference.json": ["/*"],
+          },
+        },
+      },
+    },
   },
-  "tab_size": 4,
+  "tab_size": 2,
+  "hard_tabs": false,
   "telemetry": {
     "diagnostics": false,
-    "metrics": false
+    "metrics": false,
   },
   "vim_mode": true,
-  "relative_line_numbers": true,
+  "relative_line_numbers": "enabled",
   "scrollbar": {
-    "show": "never"
+    "show": "never",
   },
   "tab_bar": {
     "show": true,
-    "show_nav_history_buttons": false
+    "show_nav_history_buttons": false,
   },
   "tabs": {
     "file_icons": true,
-    "git_status": true
+    "git_status": true,
   },
   // Indentation, rainbow indentation
   "indent_guides": {
     "enabled": true,
-    "coloring": "indent_aware"
+    "coloring": "indent_aware",
   },
   // Use zed commit editor
   "terminal": {
     "env": {
-      "EDITOR": "zed --wait"
+      "EDITOR": "zed --wait",
     },
-    "font_size": 16,
-    "font_family": "BlexMono Nerd Font Mono",
+    "font_size": 18,
+    "font_family": "Dank Mono",
     "detect_venv": {
       "on": {
         // Default directories to search for virtual environments, relative
@@ -199,24 +302,23 @@
         // in your project's settings, rather than globally.
         "directories": [".venv", "venv"],
         // Can also be `csh`, `fish`, and `nushell`
-        "activate_script": "default"
-      }
+        "activate_script": "default",
+      },
     },
-    "button": false
+    "button": false,
   },
   "toolbar": {
-    "title": false,
-    "quick_actions": false
+    "quick_actions": false,
   },
   // NOTE: Zen mode, refer https://github.com/zed-industries/zed/issues/4382 when it's resolved
   "centered_layout": {
     "left_padding": 0.15,
-    "right_padding": 0.15
+    "right_padding": 0.15,
   },
   // File syntax highlighting
   "file_types": {
     "Dockerfile": ["Dockerfile", "Dockerfile.*"],
-    "JSON": ["json", "jsonc", "*.code-snippets"]
+    "JSON": ["json", "jsonc", "*.code-snippets"],
   },
   "file_scan_exclusions": [
     "**/.git",
@@ -238,60 +340,95 @@
     "**/__pycache__",
     "**/.ropeproject",
     "**/.pytest_cache",
-    "**/.ruff_cache"
+    "**/.ruff_cache",
   ],
   "file_scan_inclusions": [".env"],
   // Move all panel to the right
   "project_panel": {
     "button": false,
     "default_width": 300,
-    "dock": "left",
     "file_icons": true,
     "folder_icons": true,
     "git_status": true,
     "scrollbar": {
-      "show": "never"
-    }
+      "show": "never",
+    },
   },
   "outline_panel": {
     "dock": "right",
-    "button": false
+    "button": false,
   },
   "collaboration_panel": {
     "dock": "left",
-    "button": false
+    "button": false,
   },
-  "chat_panel": {
-    "dock": "right"
+  "ui_font_size": 18.0,
+  "buffer_font_size": 18.0,
+  "buffer_font_family": "Dank Mono",
+  "buffer_font_features": {
+    "calt": true,
+    "liga": true,
   },
-  "ui_font_size": 16,
-  "buffer_font_size": 16,
-  "buffer_font_family": "BlexMono Nerd Font Mono",
-  "ui_font_family": "BlexMono Nerd Font Mono",
+  "ui_font_family": "Dank Mono",
   "autosave": "on_focus_change",
   "theme": {
     "mode": "dark",
-    "light": "One Light",
-    "dark": "Catppuccin Mocha"
+    "light": "Catppuccin Mocha",
+    "dark": "Catppuccin Mocha",
   },
   "search": {
     "whole_word": false,
     "case_sensitive": true,
     "include_ignored": false,
-    "regex": false
+    "regex": false,
   },
-  "projects_online_by_default": false,
   "preferred_line_length": 120,
+  "format_on_save": "on",
   "features": {
-    "edit_prediction_provider": "zed"
+    "edit_prediction_provider": "zed",
   },
-  "formatter": {
-    "language_server": {
-      "name": "biome"
-    }
+  "auto_install_extensions": {
+    "astro": true,
+    "catppuccin": true,
+    "catppuccin-icons": true,
+    "color-highlight": true,
+    "csv": true,
+    "django-snippets": true,
+    "docker-compose": true,
+    "dockerfile": true,
+    "fastapi-snippets": true,
+    "flask-snippets": true,
+    "github-actions": true,
+    "gleam": true,
+    "go-snippets": true,
+    "graphql": true,
+    "html": true,
+    "http": true,
+    "javascript-snippets": true,
+    "lua": true,
+    "make": true,
+    "mdx": true,
+    "mermaid": true,
+    "nextjs-react-snippets": true,
+    "prisma": true,
+    "proto": true,
+    "python-requirements": true,
+    "python-snippets": true,
+    "rainbow-csv": true,
+    "react-snippets": true,
+    "react-snippets-es7": true,
+    "react-typescript-snippets": true,
+    "ruby": true,
+    "sql": true,
+    "svelte": true,
+    "svelte-snippets": true,
+    "swift": true,
+    "terraform": true,
+    "toml": true,
+    "typescript-snippets": true,
+    "vitest-snippets": true,
+    "vue": true,
+    "vue-snippets": true,
+    "zig": true,
   },
-  "code_actions_on_format": {
-    "source.fixAll.biome": true,
-    "source.organizeImports.biome": true
-  }
 }

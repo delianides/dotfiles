@@ -1,15 +1,5 @@
 return {
   {
-    "saghen/blink.cmp",
-    specs = { "Kaiser-Yang/blink-cmp-avante" },
-    opts = {
-      sources = {
-        default = { "avante" },
-        providers = { avante = { module = "blink-cmp-avante", name = "Avante" } },
-      },
-    },
-  },
-  {
     "yetone/avante.nvim",
     opts = {
       provider = "claude",

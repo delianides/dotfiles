@@ -3,19 +3,17 @@
   sshCommand = "ssh -i ~/.ssh/id_gitlab_work.pub"
 
 [gitlab]
-  user = "delianides-tg"
+  user = ""
 
 [user]
 	name = "Drew Delianides"
-	email = "adelianides@traeger.com"
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5VtVOc5gmCRldLyUZBlF0U8v7XLrjNC0WCzy9KHneL
 
-[gpg]
-  format = ssh
-
-[gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-
-[commit]
-  gpgsign = true
+; [gpg]
+;   format = ssh
+;
+; [gpg "ssh"]
+;   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+;
+; [commit]
+;   gpgsign = true
 

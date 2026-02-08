@@ -1,26 +1,8 @@
-local Util = require("lazyvim.util")
-
 return {
-  -- git conflict
   {
     "akinsho/git-conflict.nvim",
     event = "BufReadPre",
     config = true,
-  },
-  -- {
-  --   "sindrets/diffview.nvim",
-  --   lazy = true,
-  --   cmd = "DiffviewOpen",
-  -- },
-  {
-    "lewis6991/gitsigns.nvim",
-    opts = {
-      current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-    },
-  },
-  {
-    "Bekaboo/dropbar.nvim",
-    enabled = vim.version().minor > 9,
   },
   {
     "christoomey/vim-tmux-navigator",
@@ -40,23 +22,6 @@ return {
     cmd = "HighlightColorsToggle",
     opts = { enable_tailwind = true, enable_named_colors = true },
     enable = false,
-  },
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    opts = {
-      close_if_last_window = true,
-      hide_root_node = true,
-      popup_border_style = "rounded",
-      enable_git_status = true,
-      enable_diagnostics = true,
-      window = { position = "right", mappings = { ["l"] = "open", ["o"] = "open" } },
-      filesystem = {
-        filtered_items = { never_show = { ".git", ".ds_store" } },
-        follow_current_file = true,
-        use_libuv_file_watcher = true,
-      },
-      source_selector = { winbar = true },
-    },
   },
   {
     "TimUntersberger/neogit",

@@ -1,6 +1,6 @@
 {
-  "editor.fontSize": 15.5,
-  "editor.lineHeight": 24,
+  "editor.fontSize": 20,
+  "editor.lineHeight": 26,
   "editor.tabSize": 2,
   "editor.cursorStyle": "line",
   "editor.cursorWidth": 3,
@@ -17,18 +17,20 @@
   "editor.parameterHints.enabled": false,
   "editor.formatOnSave": true,
   "[javascript]": {
-    "editor.formatOnSave": false
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
   "[typescript]": {
-    "editor.formatOnSave": false,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "workbench.settings.editor": "json",
   "workbench.tips.enabled": false,
   "workbench.startupEditor": "none",
+  "workbench.layoutControl.enabled": false,
   "workbench.editor.tabSizing": "shrink",
-  "workbench.sideBar.location": "left",
-  "workbench.editor.tabCloseButton": "off",
+  "workbench.editor.revealIfOpen": true,
+  "workbench.sideBar.location": "right",
   "workbench.editor.showTabs": "multiple",
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "explorer.confirmDelete": false,
@@ -39,7 +41,7 @@
   "eslint.alwaysShowStatus": true,
   "window.title": "${dirty} ${activeEditorMedium}${separator}${rootName}",
   "emmet.includeLanguages": {
-    "javascript": "javascriptreact"
+    "javascript": "javascriptreact",
   },
   "extensions.ignoreRecommendations": true,
   "files.exclude": {
@@ -48,48 +50,49 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "**/.next": true
+    "**/.next": true,
   },
   "vim.leader": "<space>",
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<C-s>"],
+      "commands": ["workbench.action.files.save"],
+    },
+    {
+      "before": ["leader", "<space>"],
+      "commands": ["workbench.action.quickOpen"],
+    },
+    {
+      "before": ["leader", "f", "r"],
+      "commands": ["workbench.action.openRecent"],
+    },
+    {
+      "before": ["leader", "f", "n"],
+      "commands": ["workbench.action.files.newUntitledFile"],
+    },
+    {
+      "before": ["leader", "e"],
+      "commands": ["workbench.action.toggleSidebarVisibility"],
+    },
+  ],
   "vim.insertModeKeyBindings": [
     {
       "before": ["j", "j"],
-      "after": ["<Esc>"]
-    }
-  ],
-  "vim.visualModeKeyBindings": [
-    {
-      "before": ["J"],
-      "after": ["5", "j"]
+      "after": ["<Esc>"],
     },
-    {
-      "before": ["K"],
-      "after": ["5", "k"]
-    }
   ],
   "vim.normalModeKeyBindings": [
+    // {
+    //   "before": ["<leader>", "<space>"],
+    //   "commands": ["workbench.action.showCommands"],
+    //   "silent": true,
+    // },
     {
-      "before": ["J"],
-      "after": ["5", "j"]
+      "before": ["<C-c>"],
+      "commands": ["workbench.action.closePan"],
+      "when": "inCommandPalette",
+      "silent": true,
     },
-    {
-      "before": ["K"],
-      "after": ["5", "k"]
-    }
-  ],
-  "vim.visualModeKeyBindingsNonRecursive": [
-    {
-      "before": ["p"],
-      "after": ["p", "g", "v", "y"]
-    },
-    {
-      "before": [">"],
-      "commands": ["editor.action.indentLines"]
-    },
-    {
-      "before": ["<"],
-      "commands": ["editor.action.outdentLines"]
-    }
   ],
   "vim.useSystemClipboard": true,
   "vim.useCtrlKeys": true,
@@ -98,37 +101,58 @@
   "explorer.autoReveal": false,
   "vim.disableExtension": false,
   "git.enableSmartCommit": true,
-  "typescript.updateImportsOnFileMove.enabled": "always",
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "go.useLanguageServer": true,
   "go.formatTool": "goimports",
   "vsicons.dontShowNewVersionMessage": true,
-  "terraform.languageServer": {
-    "enabled": true
-  },
   "pgFormatter.keywordCase": "uppercase",
   "pgFormatter.commaBreak": true,
   "settingsSync.ignoredExtensions": [],
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
-  "projectManager.git.baseFolders": ["~/Code"],
-  "tabnine.experimentalAutoImports": true,
   "editor.suggestSelection": "first",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "editor.fontFamily": "'SauceCodePro Nerd Font Mono', monospace",
+  "editor.fontFamily": "'Dank Mono', 'Fira Code', Menlo, Monaco, 'Courier New', monospace",
+  "terminal.integrated.fontFamily": "'Dank Mono', 'Fira Code', Menlo, Monaco, 'Courier New', monospace",
+  "terminal.integrated.fontLigatures.enabled": true,
   "terminal.integrated.env.osx": {
-    "FIG_NEW_SESSION": "1"
+    "FIG_NEW_SESSION": "1",
   },
   "security.workspace.trust.untrustedFiles": "open",
   "workbench.editor.tabActionCloseVisibility": false,
   "window.confirmSaveUntitledWorkspace": false,
   "python.analysis.typeCheckingMode": "standard",
   "workbench.colorTheme": "Catppuccin Mocha",
-  "vs-kubernetes": {
-    "vs-kubernetes.minikube-show-information-expiration": "2025-09-23T15:21:55.096Z"
+  "diffEditor.codeLens": true,
+  "aws.cloudformation.telemetry.enabled": true,
+  "claudeCode.preferredLocation": "panel",
+  "totalTypeScript.hideAllTips": true,
+  "totalTypeScript.hideBasicTips": true,
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1,
   },
-  "diffEditor.codeLens": true
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "vim.statusBarColorControl": true,
+  "vim.statusBarColors.normal": ["#8FBCBB", "#434C5E"],
+  "vim.statusBarColors.insert": "#BF616A",
+  "vim.statusBarColors.visual": "#B48EAD",
+  "vim.statusBarColors.visualline": "#B48EAD",
+  "vim.statusBarColors.visualblock": "#A3BE8C",
+  "vim.statusBarColors.replace": "#D08770",
+  "vim.statusBarColors.commandlineinprogress": "#007ACC",
+  "vim.statusBarColors.searchinprogressmode": "#007ACC",
+  "vim.statusBarColors.easymotionmode": "#007ACC",
+  "vim.statusBarColors.easymotioninputmode": "#007ACC",
+  "vim.statusBarColors.surroundinputmode": "#007ACC",
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#8FBCBB",
+    "statusBar.noFolderBackground": "#8FBCBB",
+    "statusBar.debuggingBackground": "#8FBCBB",
+    "statusBar.foreground": "#434C5E",
+    "statusBar.debuggingForeground": "#434C5E"
+  },
 }

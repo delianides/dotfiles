@@ -161,5 +161,10 @@ bindkey -M viins '^O' sesh-sessions
 
 zicompinit
 
-# export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/drewdelianides/.lmstudio/bin"
+# End of LM Studio CLI section
 

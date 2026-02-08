@@ -20,11 +20,6 @@ vim.g.maplocalleader = " "
 -- quick escape
 map("i", "jj", "<ESC>", opts)
 
-map("n", "J", "5j", opts)
-map("n", "K", "5k", opts)
-map("v", "J", "5j", opts)
-map("v", "K", "5k", opts)
-
 map("n", "<Tab>", ":BufferLineCycleNext<CR>", opts)
 map("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", opts)
 

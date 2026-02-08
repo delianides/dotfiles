@@ -3,5 +3,8 @@ vercel
 npm-check-updates
 aws-cdk
 @anthropic-ai/claude-code
+happy-coder
 wrangler
 mcp-hub
+pnpm@latest-10
+prettier
