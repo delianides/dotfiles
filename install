@@ -4,8 +4,6 @@
 
 set -eo pipefail
 
-mkdir -p ~/Code
-
 color() {
   local colornumber="$1"
   shift
@@ -25,6 +23,8 @@ info() {
 error() {
   red "!! $*"
 }
+
+install_dir="$(cd "$(dirname "$0")" && pwd)"
 
 stay_awake_while() {
   caffeinate -dims "$@"
@@ -58,13 +58,13 @@ fi
 
 info "Installing Homebrew packages..."
 brew install mas 2>/dev/null
-quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile"
-quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.casks" || true
+quietly_brew_bundle "$install_dir/Brewfile"
+quietly_brew_bundle "$install_dir/Brewfile.casks" || true
 
 app_store_id=$(mas account || true)
 desired_app_store_id="apple@drew.delianides.com"
 if [[ "$app_store_id" == "$desired_app_store_id" ]]; then
-  quietly_brew_bundle "$HOME/Code/dotfiles/Brewfile.mas"
+  quietly_brew_bundle "$install_dir/Brewfile.mas"
 else
   if mas account &>/dev/null; then
     error "You are signed in to the App Store as $app_store_id."
@@ -113,14 +113,6 @@ declare -a languages=(
 for language in "${languages[@]}"; do
   add_or_update_asdf_plugin "$language"
 done
-
-# # Installs to ~/.terminfo
-# echo "Installing italics-capable terminfo files..."
-# if ! [[ -r ~/.terminfo/61/alacritty ]]; then
-# 	alacritty_terminfo=$(mktemp)
-# 	stay_awake_while curl -o "$alacritty_terminfo" https://raw.githubusercontent.com/jwilm/alacritty/master/extra/alacritty.info
-# 	tic -xe alacritty,alacritty-direct "$alacritty_terminfo"
-# fi
 
 info "Success!"
 yellow "== Post-install instructions =="
