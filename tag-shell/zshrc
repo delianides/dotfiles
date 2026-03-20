@@ -76,6 +76,7 @@ eval "$(starship init zsh)"
 
 # Sources
 [[ -f "$HOME/.localrc" ]] && source "$HOME/.localrc"
+source "$HOME/.config/zsh/git.plugin.zsh"
 source "$HOME/.aliases"
 
 # Sesh/tmux integration (skip in IDEs and non-terminal environments)
