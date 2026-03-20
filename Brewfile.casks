@@ -4,6 +4,8 @@ cask_args appdir: '/Applications'
 
 cask 'ghostty'
 cask 'wezterm'
+cask 'cmux'
+cask 'conductor'
 
 cask 'claude-code'
 cask 'visual-studio-code'
@@ -15,7 +17,6 @@ cask 'google-chrome'
 
 cask '1password'
 cask '1password-cli'
-cask 'docker'
 cask 'docker-desktop'
 cask 'figma'
 cask 'blip'
@@ -31,6 +32,9 @@ cask 'font-jetbrains-mono-nerd-font'
 cask 'lm-studio'
 cask 'ollama-app'
 cask 'insomnia'
+cask 'fantastical'
+cask 'handy'
+cask 'soundsource'
 cask 'logi-options+'
 cask 'ngrok'
 cask 'notion'
@@ -41,6 +45,5 @@ cask 'raycast'
 cask 'slack'
 cask 'zoom'
 cask 'spotify'
-
-# cask "vlc"
-# cask "discord"
+cask "vlc"
+cask "discord"

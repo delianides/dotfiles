@@ -1,0 +1,41 @@
+alias qq="cd . && source ~/.zshrc"
+alias reload!='RELOAD=1 source ~/.zshrc'
+alias diff="colordiff -u"
+alias pn="pnpm"
+
+alias k='kubectl --kubeconfig $HOME/.kubeconfig-integrations-developer'
+
+alias tmux="tmux -2"
+alias ssh='TERM=xterm-256color ssh'
+alias vi='$VISUAL'
+alias vim='$VISUAL'
+alias rm="trash"
+alias cat="bat"
+alias mkdir="mkdir -p"
+
+# eza
+alias l="eza -abghHlS --git --group-directories-first"
+alias ls="eza"
+alias ll="eza -alh"
+alias tree="eza --tree"
+
+# Navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+# Git
+alias gs='git status -sb'
+alias ga='git add'
+alias gaa='git add --all'
+alias gc='git commit -v'
+alias gcm='git commit -m'
+alias gco='git checkout'
+alias glog='git log --oneline --decorate --graph'
+
+# Misc
+alias dig="dig +noall +answer +multiline"
+alias grep='grep --color=auto'
+alias sed="sed -E"
+alias crontab="VISUAL=vim crontab"

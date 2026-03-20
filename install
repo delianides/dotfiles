@@ -2,7 +2,7 @@
 # vim: tw=0
 # from https://github.com/gabebw/dotfiles/blob/main/install.sh
 
-set -eo
+set -eo pipefail
 
 color() {
   local colornumber="$1"
@@ -81,11 +81,13 @@ info "Linking dotfiles into ~..."
 # Before `rcup` runs, there is no ~/.rcrc, so we must tell `rcup` where to look.
 # We need the rcrc because it tells `rcup` to ignore thousands of useless Vim
 # backup files that slow it down significantly.
-export RCRC=rcrc
-stay_awake_while rcup -d .
+export RCRC="$install_dir/rcrc"
+stay_awake_while rcup -d "$install_dir"
+
+info "Applying macOS settings..."
+sh "$install_dir/system/macos"
 
 info "Installing ASDF language version manager..."
-alias install_asdf_plugin=add_or_update_asdf_plugin
 add_or_update_asdf_plugin() {
   local name="$1"
   local url="$2"
@@ -103,7 +105,11 @@ for language in "${languages[@]}"; do
   add_or_update_asdf_plugin "$language"
 done
 
+info "Installing language versions from .tool-versions..."
+stay_awake_while asdf install
+
 info "Success!"
 yellow "== Post-install instructions =="
 yellow "1. Remap Caps Lock to CTRL in the Keyboard prefpane"
-yellow "2. Make sure to install TMUX plugins: prefix+I"
+yellow "2. Install TMUX plugins: prefix+I"
+yellow "3. Install Dank Mono font manually"
