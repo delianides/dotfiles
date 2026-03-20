@@ -1,5 +1,0 @@
-#!/bin/bash
-
-dcu(){
-  docker-compose up "$@"
-}

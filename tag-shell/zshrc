@@ -1,0 +1,99 @@
+# LS_COLORS
+export LS_COLORS="$(vivid generate molokai)"
+
+# Completions
+BREW_PREFIX="/opt/homebrew"
+FPATH="$BREW_PREFIX/share/zsh-completions:$FPATH"
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*:descriptions' format '-- %d --'
+zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
+zstyle ':completion:*:processes' command 'ps -au$USER'
+zstyle ':completion:complete:*:options' sort false
+
+# fzf-tab (must be after compinit, before other plugins)
+source "$BREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
+
+# fzf shell integration
+source <(fzf --zsh)
+
+# Vi mode
+ZVM_INIT_MODE=sourcing
+ZVM_VI_ESCAPE_BINDKEY=jj
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
+source "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+
+# Autosuggestions
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+# Syntax highlighting (must be near end)
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+source "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# History substring search (must be after syntax highlighting)
+source "$BREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+
+# Shell options
+setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt NO_BG_NICE
+setopt NO_HUP
+setopt NO_LIST_BEEP
+setopt LOCAL_OPTIONS
+setopt LOCAL_TRAPS
+setopt PROMPT_SUBST
+setopt EXTENDED_GLOB
+setopt AUTOPUSHD
+unsetopt AUTO_CD
+
+# Environment
+export VISUAL="nvim"
+export MANPAGER="bat --plain"
+
+# Zoxide
+if [[ "$CLAUDECODE" != "1" ]]; then
+  eval "$(zoxide init --cmd cd zsh)"
+fi
+
+# Starship prompt
+eval "$(starship init zsh)"
+
+# Sources
+[[ -f "$HOME/.localrc" ]] && source "$HOME/.localrc"
+source "$HOME/.aliases"
+
+# Sesh/tmux integration (skip in IDEs and non-terminal environments)
+if [[ -z "$TERM_PROGRAM" || "$TERM_PROGRAM" =~ ^(ghostty|WezTerm|alacritty|kitty|iTerm\.app|tmux|Apple_Terminal)$ ]]; then
+  function sesh-sessions() {
+    {
+      exec </dev/tty
+      exec <&1
+      local session
+      session=$(sesh list | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
+      zle reset-prompt > /dev/null 2>&1 || true
+      [[ -z "$session" ]] && return
+      sesh connect $session
+    }
+  }
+
+  zle     -N            sesh-sessions
+  bindkey -M emacs '^O' sesh-sessions
+  bindkey -M vicmd '^O' sesh-sessions
+  bindkey -M viins '^O' sesh-sessions
+fi

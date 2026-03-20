@@ -1,6 +1,0 @@
-#!/bin/bash
-
-if _not_in_tmux; then
-  tat
-fi
-

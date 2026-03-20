@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(brew info:*)",
+      "Bash(gh api:*)"
+    ]
+  }
+}
