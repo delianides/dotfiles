@@ -26,6 +26,9 @@ source "$BREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
 # fzf shell integration
 source <(fzf --zsh)
 
+# direnv shell integration
+eval "$(direnv hook zsh)"
+
 # Vi mode
 ZVM_INIT_MODE=sourcing
 ZVM_VI_ESCAPE_BINDKEY=jj
