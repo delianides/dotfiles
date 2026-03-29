@@ -6,9 +6,9 @@ BREW_PREFIX="/opt/homebrew"
 FPATH="$BREW_PREFIX/share/zsh-completions:$FPATH"
 autoload -Uz compinit
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-  compinit
+  compinit -i
 else
-  compinit -C
+  compinit -i -C
 fi
 
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
