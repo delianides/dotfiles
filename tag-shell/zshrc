@@ -1,9 +1,12 @@
 # LS_COLORS
 export LS_COLORS="$(vivid generate molokai)"
 
+# asdf version manager
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
 # Completions
 BREW_PREFIX="/opt/homebrew"
-FPATH="$BREW_PREFIX/share/zsh-completions:$FPATH"
+FPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/completions:$BREW_PREFIX/share/zsh-completions:$FPATH"
 autoload -Uz compinit
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
   compinit -i
@@ -74,7 +77,10 @@ if [[ "$CLAUDECODE" != "1" ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
 
-# Starship prompt
+# Starship prompt — clear stale widget before init to prevent recursion (starship/starship#3418)
+if [[ "${widgets[zle-keymap-select]#user:}" == starship_zle-keymap-select* ]]; then
+  zle -N zle-keymap-select ""
+fi
 eval "$(starship init zsh)"
 
 # Sources
