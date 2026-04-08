@@ -40,6 +40,7 @@ source "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
 
 # Autosuggestions
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # Syntax highlighting (must be near end)
@@ -107,3 +108,5 @@ if [[ -z "$TERM_PROGRAM" || "$TERM_PROGRAM" =~ ^(ghostty|WezTerm|alacritty|kitty
   bindkey -M vicmd '^O' sesh-sessions
   bindkey -M viins '^O' sesh-sessions
 fi
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
