@@ -7,7 +7,6 @@ cask 'wezterm'
 cask 'cmux'
 cask 'conductor'
 
-cask 'claude-code'
 cask 'visual-studio-code'
 cask 'zed'
 

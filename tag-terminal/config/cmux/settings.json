@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux-settings.schema.json",
+  "schemaVersion": 1,
+
+  "automation": {
+    "claudeBinaryPath": "$HOME/.local/bin/claude"
+  },
+
+  "shortcuts": {
+    "bindings": {
+      "splitRight": "ctrl+|",
+      "splitDown": "ctrl+\"",
+      "focusLeft": "ctrl+h",
+      "focusDown": "ctrl+j",
+      "focusUp": "ctrl+k",
+      "focusRight": "ctrl+l",
+      "toggleSplitZoom": "ctrl+z",
+      "goToWorkspace": "ctrl+o",
+      "nextSurface": "ctrl+n",
+      "prevSurface": "ctrl+p"
+    }
+  }
+}

@@ -108,6 +108,9 @@ done
 info "Installing language versions from .tool-versions..."
 stay_awake_while asdf install
 
+info "Installing Claude Code..."
+curl -fsSL https://cli.claude.ai/install.sh | sh
+
 info "Success!"
 yellow "== Post-install instructions =="
 yellow "1. Remap Caps Lock to CTRL in the Keyboard prefpane"

@@ -23,6 +23,10 @@ GitHub Actions runs on push/PR (`.github/workflows/dotfiles.yml`):
 
 When editing Neovim Lua files, ensure they pass both luacheck and StyLua formatting.
 
+## Rules
+
+- Never use absolute paths in config files. Use `$HOME` or `~` instead.
+
 ## Architecture
 
 ### RCM Tag System
