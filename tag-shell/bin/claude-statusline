@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# claude-statusline — custom statusline for Claude Code.
+# Reads a JSON payload on stdin and prints a single-line status to stdout.
+set -euo pipefail
+
+json=$(cat)
+
+# Degrade gracefully on malformed stdin rather than exiting with no output
+# and leaving Claude Code's statusline blank.
+if ! jq -e . <<<"$json" >/dev/null 2>&1; then
+  printf 'statusline error\n'
+  exit 0
+fi
+
+# Segments will be built here and joined at the end.
+segs=()
+
+readonly C_RESET=$'\e[0m'
+readonly C_GREEN=$'\e[32m'
+readonly C_YELLOW=$'\e[33m'
+readonly C_RED=$'\e[31m'
+readonly C_DIM=$'\e[90m'
+
+readonly SEP=' • '
+
+# color_pct "<int>" -> colored "NN%"; empty or "null" -> dim "--%"
+color_pct() {
+  local v="${1:-}"
+  if [[ -z "$v" || "$v" == "null" ]]; then
+    printf '%s--%%%s' "$C_DIM" "$C_RESET"
+    return
+  fi
+  v=${v%.*}  # strip decimals if any
+  local color
+  if (( v < 60 )); then
+    color=$C_GREEN
+  elif (( v < 85 )); then
+    color=$C_YELLOW
+  else
+    color=$C_RED
+  fi
+  printf '%s%d%%%s' "$color" "$v" "$C_RESET"
+}
+
+# "Claude Opus 4.6"        -> "Opus"
+# "Claude Sonnet 4.5"      -> "Sonnet"
+# "GPT-4"                  -> "GPT-4"
+# ""                       -> ""
+short_model() {
+  local full="${1:-}"
+  local rest="${full#Claude }"   # strip "Claude " prefix if present, else no-op
+  printf '%s' "${rest%% *}"      # take first space-delimited token
+}
+
+model_raw=$(jq -r '.model.display_name // empty' <<<"$json")
+model_short=$(short_model "$model_raw")
+[[ -n "$model_short" ]] && segs+=("$model_short")
+
+ctx=$(jq -r '.context_window.used_percentage // empty' <<<"$json")
+segs+=("$(color_pct "$ctx")")
+
+fivehr=$(jq -r '.rate_limits.five_hour.used_percentage // empty' <<<"$json")
+weekly=$(jq -r '.rate_limits.seven_day.used_percentage // empty' <<<"$json")
+segs+=("$(color_pct "$fivehr")")
+segs+=("$(color_pct "$weekly")")
+
+cwd=$(jq -r '.workspace.current_dir // empty' <<<"$json")
+: "${cwd:=$PWD}"
+
+git_root=""
+if [[ -d "$cwd" ]]; then
+  git_root=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null || true)
+fi
+
+if [[ -n "$git_root" ]]; then
+  repo_name=$(basename "$git_root")
+else
+  repo_name=$(basename "$cwd")
+fi
+segs+=("$repo_name")
+
+if [[ -n "$git_root" ]]; then
+  branch=$(git -C "$cwd" symbolic-ref --short HEAD 2>/dev/null \
+           || git -C "$cwd" rev-parse --short HEAD 2>/dev/null \
+           || true)
+  if [[ -n "$branch" ]]; then
+    segs+=("$branch")
+  fi
+fi
+
+if [[ -n "$git_root" ]]; then
+  # numstat is locale-independent and binary-safe (binary files report "- -")
+  numstat=$(git -C "$cwd" diff --numstat HEAD 2>/dev/null || true)
+  if [[ -n "$numstat" ]]; then
+    read -r added removed < <(awk '
+      $1 ~ /^[0-9]+$/ { a += $1 }
+      $2 ~ /^[0-9]+$/ { r += $2 }
+      END { printf "%d %d\n", a+0, r+0 }
+    ' <<<"$numstat")
+    if (( added > 0 || removed > 0 )); then
+      segs+=("(${C_GREEN}+${added}${C_RESET} ${C_RED}-${removed}${C_RESET})")
+    fi
+  fi
+fi
+
+# Join segments with " • " and print exactly one line.
+# 0x1f (ASCII unit separator) is used as IFS because it cannot appear in any
+# segment value, guaranteeing clean splits with no risk of field collision.
+(IFS=$'\x1f'; joined="${segs[*]}"; printf '%s\n' "${joined//$'\x1f'/$SEP}")
