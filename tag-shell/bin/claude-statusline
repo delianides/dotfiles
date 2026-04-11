@@ -60,8 +60,30 @@ ctx=$(jq -r '.context_window.used_percentage // empty' <<<"$json")
 segs+=("$(color_pct "$ctx")")
 
 fivehr=$(jq -r '.rate_limits.five_hour.used_percentage // empty' <<<"$json")
+fivehr_reset=$(jq -r '.rate_limits.five_hour.resets_at // empty' <<<"$json")
 weekly=$(jq -r '.rate_limits.seven_day.used_percentage // empty' <<<"$json")
-segs+=("$(color_pct "$fivehr")")
+
+# Format seconds-until-reset as "(Nh Mm)" or "(Mm)" when under an hour.
+fmt_remaining() {
+  local secs=$1
+  local h=$(( secs / 3600 ))
+  local m=$(( (secs % 3600) / 60 ))
+  if (( h > 0 )); then
+    printf '(%dh %dm)' "$h" "$m"
+  else
+    printf '(%dm)' "$m"
+  fi
+}
+
+fivehr_seg=$(color_pct "$fivehr")
+if [[ -n "$fivehr_reset" && "$fivehr_reset" != "null" ]]; then
+  fivehr_reset=${fivehr_reset%.*}  # strip any fractional seconds
+  remaining=$(( fivehr_reset - $(date +%s) ))
+  if (( remaining > 0 )); then
+    fivehr_seg+=" $(fmt_remaining "$remaining")"
+  fi
+fi
+segs+=("$fivehr_seg")
 segs+=("$(color_pct "$weekly")")
 
 cwd=$(jq -r '.workspace.current_dir // empty' <<<"$json")
