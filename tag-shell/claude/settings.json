@@ -1,0 +1,52 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__pencil",
+      "Grep",
+      "Read",
+      "Glob",
+      "WebSearch",
+      "Edit(*.md)",
+      "Bash(sed:*)",
+      "Bash(cat:*)",
+      "Bash(fd:*)",
+      "Bash(which:*)",
+      "Bash(ls:*)"
+    ]
+  },
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "cmux-claude-code@local": true,
+    "worktrunk@worktrunk": true,
+    "superpowers@claude-plugins-official": true,
+    "obsidian@obsidian-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
+    },
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
+    },
+    "obsidian-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kepano/obsidian-skills"
+      }
+    }
+  },
+  "voiceEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
+  "statusLine": {
+    "type": "command",
+    "command": "~/.bin/claude-statusline",
+    "padding": 0
+  }
+}
+
