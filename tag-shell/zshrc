@@ -29,6 +29,11 @@ source "$BREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
 # fzf shell integration
 source <(fzf --zsh)
 
+# Re-apply fzf keybindings after zsh-vi-mode init (otherwise vi-mode clobbers Ctrl-R)
+function zvm_after_init() {
+  source <(fzf --zsh)
+}
+
 # direnv shell integration
 eval "$(direnv hook zsh)"
 
