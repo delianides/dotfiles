@@ -49,9 +49,10 @@
 [diff]
   colorMoved = default
 [merge]
-  conflictStyle = diff3
+  conflictStyle = zdiff3
 [delta]
   navigate = true
+  dark = true
 [init]
   defaultBranch = main
 
