@@ -1,5 +1,29 @@
 [commit.generation]
 command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
 
-[post-start]
-cmux-workspace = "command -v cmux >/dev/null 2>&1 && cmux new-workspace --cwd {{ worktree_path }} --name {{ branch }} || true"
+[pre-start]
+tmux = """
+S={{ branch | sanitize }}
+W={{ worktree_path }}
+
+# Window 1 "edit": left 2/3 claude, right 1/3 split into top/bottom
+tmux new-session -d -s "$S" -c "$W" -n edit
+tmux split-window -h -t "$S:edit" -c "$W" -p 33
+tmux split-window -v -t "$S:edit.1" -c "$W" -p 50
+tmux send-keys -t "$S:edit.0" 'claude' Enter
+
+# Window 2 "shell": single pane for project-hook instructions
+tmux new-window -t "$S:" -c "$W" -n shell
+
+tmux select-window -t "$S:edit"
+tmux select-pane -t "$S:edit.0"
+
+if [ -n "$TMUX" ]; then
+  tmux switch-client -t "$S"
+else
+  echo "Session '$S' created. Run: tmux attach -t $S"
+fi
+"""
+
+[pre-remove]
+tmux = "tmux kill-session -t {{ branch | sanitize }} 2>/dev/null || true"
