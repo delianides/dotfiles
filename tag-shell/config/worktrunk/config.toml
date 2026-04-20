@@ -3,8 +3,14 @@ command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence 
 
 [pre-start]
 tmux = """
+set -e
 S={{ branch | sanitize }}
 W={{ worktree_path }}
+
+if tmux has-session -t "=$S" 2>/dev/null; then
+  echo "worktrunk pre-start: session '$S' already exists; aborting" >&2
+  exit 1
+fi
 
 # Window 1 "edit": left 2/3 claude, right 1/3 split into top/bottom
 tmux new-session -d -s "$S" -c "$W" -n edit
@@ -13,17 +19,17 @@ tmux split-window -v -t "$S:edit.1" -c "$W" -p 50
 tmux send-keys -t "$S:edit.0" 'claude' Enter
 
 # Window 2 "shell": single pane for project-hook instructions
-tmux new-window -t "$S:" -c "$W" -n shell
+tmux new-window -t "=$S:" -c "$W" -n shell
 
 tmux select-window -t "$S:edit"
 tmux select-pane -t "$S:edit.0"
 
 if [ -n "$TMUX" ]; then
-  tmux switch-client -t "$S"
+  tmux switch-client -t "=$S"
 else
-  echo "Session '$S' created. Run: tmux attach -t $S"
+  echo "Session '$S' created. Run: tmux attach -t =$S"
 fi
 """
 
 [pre-remove]
-tmux = "tmux kill-session -t {{ branch | sanitize }} 2>/dev/null || true"
+tmux = "tmux kill-session -t ={{ branch | sanitize }} 2>/dev/null || true"
