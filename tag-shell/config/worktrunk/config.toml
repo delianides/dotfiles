@@ -33,3 +33,7 @@ fi
 
 [pre-remove]
 tmux = "tmux kill-session -t ={{ branch | sanitize }} 2>/dev/null || true"
+
+[projects."github.com/canary-technologies-corp/canary"]
+aliases.setup-canary = "make -C '{{ worktree_path }}' worktree-setup-current ROOT_WORKTREE_PATH='{{ repo_path }}'"
+pre-start.setup = "tmux send-keys -t '={{ branch | sanitize }}:shell' 'wt step setup-canary' Enter"
