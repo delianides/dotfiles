@@ -1,5 +1,6 @@
 .DS_Store
 *.lock.json
 *.mdb
-tag-zed/config/zed/conversations/*
+.claude/worktrees
+
 

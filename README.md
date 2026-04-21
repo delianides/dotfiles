@@ -1,12 +1,12 @@
-dotfiles [![Test & Lint Dotfiles](https://github.com/delianides/dotfiles/actions/workflows/dotfiles.yml/badge.svg)](https://github.com/delianides/dotfiles/actions/workflows/dotfiles.yml)
-========
+# dotfiles [![Test & Lint Dotfiles](https://github.com/delianides/dotfiles/actions/workflows/dotfiles.yml/badge.svg)](https://github.com/delianides/dotfiles/actions/workflows/dotfiles.yml)
 
 Welcome to my dotfiles! The files here are a pretty minimal setup for easily
 running Docker, Tmux, and Vim. I'm currently using
 [RCM](https://github.com/thoughtbot/rcm) from thoughtbot to manage everything.
 
-Installation
-------------
+DFSD
+
+## Installation
 
 ```bash
 
@@ -23,8 +23,7 @@ This script installs the following:
   - ...lots more
 - Also runs `.macos` which sets up plist configurations for MacOS
 
-Usage
------
+## Usage
 
 Reposting usage instructions here:
 
@@ -37,8 +36,7 @@ Reposting usage instructions here:
 - `lsrc` shows you all your dotfiles and where they would be symlinked
   to. It is used by `rcup` but is provided for your own use, too.
 
-Inspiration
------------
+## Inspiration
 
 - [Zach Holman](https://github.com/holman/dotfiles)
 - [Mike Hartington](https://github.com/mhartington/dotfiles)
