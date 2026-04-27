@@ -1,0 +1,100 @@
+# Python — pyright for type-checking, ruff for lint + format
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
+
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "basic"
+autoImportCompletions = true
+diagnosticMode = "openFilesOnly"
+
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+[[language]]
+name = "python"
+language-servers = ["pyright", "ruff"]
+auto-format = true
+formatter = { command = "ruff", args = ["format", "--stdin-filename", "file.py", "-"] }
+
+# Rust — rust-analyzer (helix default)
+[[language]]
+name = "rust"
+auto-format = true
+
+[language-server.rust-analyzer.config]
+checkOnSave = true
+check.command = "clippy"
+cargo.features = "all"
+
+[language-server.rust-analyzer.config.inlayHints]
+bindingModeHints.enable = false
+closingBraceHints.minLines = 10
+closureReturnTypeHints.enable = "with_block"
+discriminantHints.enable = "fieldless"
+lifetimeElisionHints.enable = "skip_trivial"
+typeHints.hideClosureInitialization = false
+
+# Go — gopls
+[[language]]
+name = "go"
+auto-format = true
+formatter = { command = "goimports" }
+
+[language-server.gopls.config.hints]
+assignVariableTypes = true
+compositeLiteralFields = true
+compositeLiteralTypes = true
+constantValues = true
+functionTypeParameters = true
+parameterNames = true
+rangeVariableTypes = true
+
+[language-server.gopls.config]
+usePlaceholders = true
+staticcheck = true
+gofumpt = true
+
+# TypeScript / JavaScript — typescript-language-server
+[language-server.typescript-language-server.config.inlayHints]
+includeInlayEnumMemberValueHints = true
+includeInlayFunctionLikeReturnTypeHints = true
+includeInlayFunctionParameterTypeHints = true
+includeInlayParameterNameHints = "all"
+includeInlayParameterNameHintsWhenArgumentMatchesName = true
+includeInlayPropertyDeclarationTypeHints = true
+includeInlayVariableTypeHints = true
+
+[[language]]
+name = "typescript"
+language-servers = ["typescript-language-server"]
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+
+[[language]]
+name = "tsx"
+language-servers = ["typescript-language-server"]
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+
+[[language]]
+name = "javascript"
+language-servers = ["typescript-language-server"]
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+
+[[language]]
+name = "jsx"
+language-servers = ["typescript-language-server"]
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "javascript"] }
+
+# Ruby — ruby-lsp
+[language-server.ruby-lsp]
+command = "ruby-lsp"
+
+[[language]]
+name = "ruby"
+language-servers = ["ruby-lsp"]
+auto-format = true

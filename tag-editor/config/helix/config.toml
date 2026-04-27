@@ -1,0 +1,59 @@
+theme = "catppuccin_mocha"
+
+[editor]
+line-number = "relative"
+mouse = false
+bufferline = "multiple"
+color-modes = true
+cursorline = true
+auto-format = true
+auto-save = true
+completion-trigger-len = 1
+true-color = true
+end-of-line-diagnostics = "hint"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "file-modification-indicator", "read-only-indicator"]
+center = []
+right = ["diagnostics", "selections", "register", "position", "file-encoding", "file-type"]
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
+
+[editor.indent-guides]
+render = true
+character = "╎"
+
+[editor.inline-diagnostics]
+cursor-line = "warning"
+
+[editor.soft-wrap]
+enable = true
+
+[editor.whitespace.render]
+space = "none"
+tab = "all"
+nbsp = "all"
+newline = "none"
+
+[keys.insert]
+j = { j = "normal_mode" }
+
+[keys.normal]
+C-c = "normal_mode"
+V = ["extend_to_line_bounds", "select_mode"]
+d = { d = ["extend_to_line_bounds", "delete_selection"], t = "delete_char_forward" }
+c = { c = ["extend_to_line_bounds", "change_selection"] }
+y = { y = ["extend_to_line_bounds", "yank"] }
+
+[keys.select]
+V = ["extend_to_line_bounds"]
