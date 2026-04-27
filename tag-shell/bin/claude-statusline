@@ -59,6 +59,15 @@ model_short=$(short_model "$model_raw")
 ctx=$(jq -r '.context_window.used_percentage // empty' <<<"$json")
 segs+=("$(color_pct "$ctx")")
 
+# Session-wide output-token throughput: total_output_tokens / total_api_duration.
+# Per-turn timing is not exposed, so this is an average since session start.
+out_tokens=$(jq -r '.context_window.total_output_tokens // empty' <<<"$json")
+api_ms=$(jq -r '.cost.total_api_duration_ms // empty' <<<"$json")
+if [[ -n "$out_tokens" && "$out_tokens" != "0" && -n "$api_ms" && "$api_ms" != "0" ]]; then
+  tps=$(awk -v t="$out_tokens" -v ms="$api_ms" 'BEGIN { printf "%.1f", t * 1000 / ms }')
+  segs+=("${tps} tok/s")
+fi
+
 fivehr=$(jq -r '.rate_limits.five_hour.used_percentage // empty' <<<"$json")
 fivehr_reset=$(jq -r '.rate_limits.five_hour.resets_at // empty' <<<"$json")
 weekly=$(jq -r '.rate_limits.seven_day.used_percentage // empty' <<<"$json")

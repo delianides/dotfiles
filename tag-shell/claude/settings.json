@@ -103,7 +103,9 @@
       }
     }
   },
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "editorMode": "vim"
 }
