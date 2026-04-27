@@ -7,6 +7,9 @@
 // custom settings, run `zed: open default settings` from the
 // command palette
 {
+  "git_panel": {
+    "dock": "right"
+  },
   "agent_servers": {
     "claude": {
       "default_model": "sonnet",
@@ -48,6 +51,7 @@
     "button": false,
   },
   "agent": {
+    "dock": "left",
     "default_profile": "ask",
   },
   "show_edit_predictions": true,
@@ -346,6 +350,7 @@
   "file_scan_inclusions": [".env"],
   // Move all panel to the right
   "project_panel": {
+    "dock": "right",
     "button": false,
     "default_width": 300,
     "file_icons": true,
@@ -360,7 +365,7 @@
     "button": false,
   },
   "collaboration_panel": {
-    "dock": "left",
+    "dock": "right",
     "button": false,
   },
   "ui_font_size": 18.0,
