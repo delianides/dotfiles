@@ -1,0 +1,16 @@
+themes {
+    summer-pop {
+        fg "#5b5c57"
+        bg "#33342e" 
+        black "#33342e"
+        red "#FF1E8E"
+        // green "#8EFF1E"
+        green "#5b5c57"
+        yellow "#FFFB00"
+        blue "#1E8EFF"
+        magenta "#E500E5"
+        cyan "#00E5E5"
+        white "#E5E5E5"
+        orange "#D08770"
+    }
+}

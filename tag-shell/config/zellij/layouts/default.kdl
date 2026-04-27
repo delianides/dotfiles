@@ -1,0 +1,24 @@
+
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="file:~/.config/zellij/plugins/zjstatus.wasm" {
+                format_left  "#[fg=#e0def4,bold] [{session}] {mode} {tabs}"
+                format_right "{datetime}"
+
+                tab_normal "{name} {sync_indicator}{fullscreen_indicator}{floating_indicator}"
+                tab_active "#[fg=#D08770,bold]{name} {sync_indicator}{fullscreen_indicator}{floating_indicator}"
+
+                tab_sync_indicator "s "
+                tab_fullscreen_indicator "* "
+                tab_floating_indicator "^ "
+    
+                datetime "#[fg=#e0def4] {format} "
+                datetime_format "%A, %d %b %Y %H:%M"
+                datetime_timezone "America/Montevideo"
+            }
+        }
+    }
+}
+theme "rose-pine-moon"
