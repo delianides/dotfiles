@@ -1,47 +1,83 @@
 # dotfiles [![Test & Lint Dotfiles](https://github.com/delianides/dotfiles/actions/workflows/dotfiles.yml/badge.svg)](https://github.com/delianides/dotfiles/actions/workflows/dotfiles.yml)
 
-Welcome to my dotfiles! The files here are a pretty minimal setup for easily
-running Docker, Tmux, and Vim. I'm currently using
-[RCM](https://github.com/thoughtbot/rcm) from thoughtbot to manage everything.
-
-DFSD
+My personal macOS dotfiles, managed with [RCM](https://github.com/thoughtbot/rcm). Sets up a full development environment — shell, editors, terminals, and CLI tools — with a single `./install`.
 
 ## Installation
 
+Clone into `~/.dotfiles` and run the installer:
+
 ```bash
-
+git clone https://github.com/delianides/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 ./install
-
 ```
 
-This script installs the following:
+The installer will:
 
-- Homebrew with applications defined in the `Brewfile`
-  - Tmux
-  - Vim/Neovim
-  - Alcritty
-  - ...lots more
-- Also runs `.macos` which sets up plist configurations for MacOS
+1. Install Xcode command-line tools (if missing).
+2. Install Homebrew, then run `Brewfile`, `Brewfile.casks`, and `Brewfile.mas`.
+3. Switch the login shell to `zsh`.
+4. Symlink dotfiles into `$HOME` via `rcup`.
+5. Apply macOS system defaults from `system/macos`.
+6. Install [asdf](https://asdf-vm.com/) language plugins (bun, node, python, ruby, rust, go) and the versions in `.tool-versions`.
+7. Install [Claude Code](https://docs.claude.com/claude-code).
+
+After install: remap Caps Lock to Control in System Settings, install tmux plugins with `prefix + I`, and install any non-Homebrew fonts you want manually.
 
 ## Usage
 
-Reposting usage instructions here:
+RCM commands (these are the day-to-day workflow):
 
-- `rcup` is the main program. It is used to install and update dotfiles,
-  with support for tags, host-specific files, and multiple source
-  directories.
-- `rcdn` is the opposite of `rcup`.
-- `mkrc` is for introducing a dotfile into your dotfiles directory, with
-  support for tags and multiple source directories.
-- `lsrc` shows you all your dotfiles and where they would be symlinked
-  to. It is used by `rcup` but is provided for your own use, too.
+| Command | What it does |
+|---|---|
+| `rcup -d .` | (Re)link all dotfiles into `$HOME`, respecting `rcrc` |
+| `rcdn` | Remove all symlinks |
+| `mkrc <file>` | Move a file into the dotfiles repo and replace it with a symlink. Use `-t <tag>` to scope to a tag |
+| `lsrc` | Show every dotfile and where it links to |
 
-## Inspiration
+Shell helpers:
 
-- [Zach Holman](https://github.com/holman/dotfiles)
-- [Mike Hartington](https://github.com/mhartington/dotfiles)
-- [Nick Nisi](https://github.com/nicknisi/dotfiles)
-- [Chris Toomey](https://github.com/christoomey/dotfiles)
-- [TJ DeVries](https://github.com/tjdevries/config_manager)
-- [The Primegen](https://github.com/theprimegen/.dotfiles)
-- [Folke](https://github.com/folke/dot)
+- `qq` or `reload!` — reload the current zsh session.
+
+## Layout
+
+Each `tag-*` directory is an [RCM tag](https://github.com/thoughtbot/rcm). The active tags (`shell editor terminal`, set in `rcrc`) tell `rcup` which directories to link. Files inside are symlinked into `$HOME` with the tag prefix stripped — `tag-shell/zshrc` becomes `~/.zshrc`, `tag-editor/config/nvim/` becomes `~/.config/nvim/`, and so on.
+
+### `tag-shell` — shell, git, and CLI tooling
+
+- **Zsh** — `zshenv`, `zshrc`, `aliases`. Plugins are sourced from Homebrew (no plugin manager).
+- **Starship** prompt — config lives under `tag-terminal/config/starship.toml`.
+- **Git** — `gitconfig` with [delta](https://github.com/dandavison/delta) as the pager and 1Password SSH commit signing. Conditional includes pick the right identity based on the working directory (`~/Work/`, `~/Github/`, `~/Gitlab/`).
+- **asdf** — `asdfrc`, `tool-versions`, `default-*` package lists per language.
+- **tmux** — `config/tmux/tmux.conf`, paired with [sesh](https://github.com/joshmedeski/sesh) for session management.
+- **Other tools** — `config/direnv/`, `config/zellij/`, `config/worktrunk/`, plus a `bin/` directory of custom scripts.
+- **Claude Code** — `claude/` holds settings and hooks.
+
+### `tag-editor` — editors
+
+- **Neovim** — [LazyVim](https://www.lazyvim.org/)-based config in `config/nvim/`. Plugin specs live in `lua/plugins/`, with extras and config split out into `lua/plugins/extras/` and `lua/config/`.
+- **Helix** — `config/helix/`.
+- **Zed** — `config/zed/` (settings and keybindings).
+- **JetBrains IDEs** — `ideavimrc` for IdeaVim.
+
+### `tag-terminal` — terminal emulators and prompt
+
+- **Ghostty** — `config/ghostty/config`.
+- **WezTerm** — `config/wezterm/wezterm.lua`.
+- **cmux** — `config/cmux/` for the [cmux](https://github.com/cmux-app/cmux) terminal multiplexer.
+- **Starship** — `config/starship.toml`.
+
+## Brewfiles
+
+Homebrew installs are split into three files:
+
+- `Brewfile` — taps and CLI formulae (neovim, helix, ripgrep, fzf, gh, lazygit, kubernetes tooling, etc.).
+- `Brewfile.casks` — GUI apps (Ghostty, WezTerm, Zed, Raycast, 1Password, Obsidian, Slack, Docker, fonts, …).
+- `Brewfile.mas` — Mac App Store apps (installed via [`mas`](https://github.com/mas-cli/mas)).
+
+## CI
+
+`.github/workflows/dotfiles.yml` lints Lua on every push and PR:
+
+- **luacheck** — static analysis for Neovim Lua.
+- **StyLua** — formatting check (`stylua --check .`).
