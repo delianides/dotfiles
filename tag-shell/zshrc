@@ -1,5 +1,25 @@
-# LS_COLORS
-export LS_COLORS="$(vivid generate molokai)"
+# LS_COLORS (cached — regenerate with: vivid generate molokai > ~/.cache/ls_colors)
+[[ -s ~/.cache/ls_colors ]] || { mkdir -p ~/.cache && vivid generate molokai > ~/.cache/ls_colors; }
+export LS_COLORS="$(<~/.cache/ls_colors)"
+
+# Cached eval helper: stores `<bin> <args...>` output under ~/.cache/zsh-evals/
+# and re-runs only when the binary is newer than the cached file.
+# To force-refresh: rm -rf ~/.cache/zsh-evals
+_cache_eval() {
+  local key=$1; shift
+  local cache_dir="$HOME/.cache/zsh-evals"
+  local cache="$cache_dir/$key.zsh"
+  local bin_path
+  bin_path=${commands[$1]}
+  if [[ -z "$bin_path" ]]; then
+    return 1
+  fi
+  if [[ ! -s "$cache" || "$bin_path" -nt "$cache" ]]; then
+    [[ -d "$cache_dir" ]] || mkdir -p "$cache_dir"
+    "$@" > "$cache.tmp" 2>/dev/null && mv "$cache.tmp" "$cache" || { rm -f "$cache.tmp"; return 1; }
+  fi
+  source "$cache"
+}
 
 # asdf version manager
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
@@ -27,15 +47,15 @@ zstyle ':completion:complete:*:options' sort false
 source "$BREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
 
 # fzf shell integration
-source <(fzf --zsh)
+_cache_eval fzf fzf --zsh
 
 # Re-apply fzf keybindings after zsh-vi-mode init (otherwise vi-mode clobbers Ctrl-R)
 function zvm_after_init() {
-  source <(fzf --zsh)
+  _cache_eval fzf fzf --zsh
 }
 
 # direnv shell integration
-eval "$(direnv hook zsh)"
+_cache_eval direnv direnv hook zsh
 
 # Vi mode
 ZVM_INIT_MODE=sourcing
@@ -80,14 +100,14 @@ export MANPAGER="bat --plain"
 
 # Zoxide
 if [[ "$CLAUDECODE" != "1" ]]; then
-  eval "$(zoxide init --cmd cd zsh)"
+  _cache_eval zoxide zoxide init --cmd cd zsh
 fi
 
 # Starship prompt — clear stale widget before init to prevent recursion (starship/starship#3418)
 if [[ "${widgets[zle-keymap-select]#user:}" == starship_zle-keymap-select* ]]; then
   zle -N zle-keymap-select ""
 fi
-eval "$(starship init zsh)"
+_cache_eval starship starship init zsh
 
 # Sources
 [[ -f "$HOME/.localrc" ]] && source "$HOME/.localrc"
@@ -114,6 +134,6 @@ if [[ -z "$TERM_PROGRAM" || "$TERM_PROGRAM" =~ ^(ghostty|WezTerm|alacritty|kitty
   bindkey -M viins '^O' sesh-sessions
 fi
 
-if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+_cache_eval wt wt config shell init zsh
 
 export PATH="$BREW_PREFIX/opt/macos-trash/bin:$PATH"
