@@ -81,7 +81,18 @@
     "worktrunk@worktrunk": true,
     "superpowers@claude-plugins-official": true,
     "obsidian@obsidian-skills": true,
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "ai@canary-plugins": true,
+    "backend@canary-plugins": true,
+    "core@canary-plugins": true,
+    "dx@canary-plugins": true,
+    "factory@canary-plugins": true,
+    "mcp@canary-plugins": true,
+    "orbkit@canary-plugins": true,
+    "pms-gateway@canary-plugins": true,
+    "testing@canary-plugins": true,
+    "triage@canary-plugins": true
   },
   "extraKnownMarketplaces": {
     "worktrunk": {
@@ -105,7 +116,7 @@
   },
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
+  "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "editorMode": "vim"
+  "voiceEnabled": true
 }

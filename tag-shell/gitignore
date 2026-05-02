@@ -6,3 +6,5 @@ ldconfig.yml
 .worktrees
 .config
 .working
+.graphifyignore
+graphify-out
