@@ -96,6 +96,7 @@ unsetopt AUTO_CD
 
 # Environment
 export VISUAL="nvim"
+export EDITOR=$VISUAL
 export MANPAGER="bat --plain"
 
 # Zoxide

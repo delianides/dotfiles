@@ -116,7 +116,9 @@
   },
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
+  "voiceEnabled": true,
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "theme": "dark-daltonized",
+  "agentPushNotifEnabled": true
 }
