@@ -1,19 +1,22 @@
-layout cwd="~/Work/canary" {
-    tab name="pms-gateway" split_direction="vertical" hide_floating_panes=true cwd="backend/pms-gateway" {
-        pane {
-            edit "."
-            name "helix"
+layout {
+    tab name="dev" split_direction="vertical" {
+        pane command="claude" {
+            name "claude"
         }
-
-        floating_panes {
+        pane split_direction="horizontal" {
+            pane command="yazi" {
+                name "files"
+            }
             pane {
-                cwd "backend/pms-gateway"
-                name "terminal"
-                height "50%"
-                width "70%"
-                y "25%"
-                x "15%"
-            }        
+                name "shell"
+            }
+        }
+    }
+
+    tab name="setup" {
+        pane command="wt" {
+            args "step" "setup-canary"
+            name "setup"
         }
     }
 
@@ -30,10 +33,10 @@ layout cwd="~/Work/canary" {
                 tab_sync_indicator "s "
                 tab_fullscreen_indicator "* "
                 tab_floating_indicator "^ "
-    
+
                 datetime "#[fg=#e0def4] {format} "
                 datetime_format "%A, %d %b %Y %H:%M"
-                datetime_timezone "America/Montevideo"
+                datetime_timezone "America/New_York"
             }
         }
     }

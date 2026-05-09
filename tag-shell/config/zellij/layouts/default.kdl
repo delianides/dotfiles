@@ -16,7 +16,7 @@ layout {
     
                 datetime "#[fg=#e0def4] {format} "
                 datetime_format "%A, %d %b %Y %H:%M"
-                datetime_timezone "America/Montevideo"
+                datetime_timezone "America/New_York"
             }
         }
     }

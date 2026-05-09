@@ -1,0 +1,33 @@
+{
+  "direction": "vertical",
+  "split": 0.7,
+  "children": [
+    {
+      "pane": {
+        "surfaces": [
+          {
+            "type": "terminal",
+            "name": "claude",
+            "command": "claude",
+            "focus": true
+          },
+          {
+            "type": "terminal",
+            "name": "setup",
+            "command": "wt step setup-canary"
+          }
+        ]
+      }
+    },
+    {
+      "pane": {
+        "surfaces": [
+          {
+            "type": "terminal",
+            "name": "shell"
+          }
+        ]
+      }
+    }
+  ]
+}

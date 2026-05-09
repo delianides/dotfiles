@@ -49,9 +49,11 @@ source "$BREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
 # fzf shell integration
 _cache_eval fzf fzf --zsh
 
-# Re-apply fzf keybindings after zsh-vi-mode init (otherwise vi-mode clobbers Ctrl-R)
+# Re-apply fzf keybindings after zsh-vi-mode init (otherwise vi-mode clobbers Ctrl-R in viins).
+# Source the cache directly — `${commands[...]}` lookups inside zvm_after_init come back empty,
+# so going through _cache_eval here silently no-ops.
 function zvm_after_init() {
-  _cache_eval fzf fzf --zsh
+  [[ -s "$HOME/.cache/zsh-evals/fzf.zsh" ]] && source "$HOME/.cache/zsh-evals/fzf.zsh"
 }
 
 # direnv shell integration

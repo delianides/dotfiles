@@ -3,39 +3,20 @@ worktree-path = ".worktrees/{{ branch | sanitize }}"
 [commit.generation]
 command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
 
-[pre-start]
-tmux = """
-set -e
-S={{ branch | sanitize }}
-W={{ worktree_path }}
-
-if tmux has-session -t "=$S" 2>/dev/null; then
-  echo "worktrunk pre-start: session '$S' already exists; aborting" >&2
-  exit 1
-fi
-
-# Window 1 "edit": left 2/3 claude, right 1/3 split into top/bottom
-tmux new-session -d -s "$S" -c "$W" -n edit
-tmux split-window -h -t "$S:edit" -c "$W" -p 33
-tmux split-window -v -t "$S:edit.1" -c "$W" -p 50
-tmux send-keys -t "$S:edit.0" 'claude' Enter
-
-# Window 2 "shell": single pane for project-hook instructions
-tmux new-window -t "=$S:" -c "$W" -n shell
-
-tmux select-window -t "$S:edit"
-tmux select-pane -t "$S:edit.0"
-
-if [ -n "$TMUX" ]; then
-  tmux switch-client -t "=$S"
-else
-  echo "Session '$S' created. Run: tmux attach -t =$S"
-fi
-"""
-
 [pre-remove]
-tmux = "tmux kill-session -t ={{ branch | sanitize }} 2>/dev/null || true"
+# Close the worktree's workspace/session in whichever multiplexer is active.
+# wt-mux focuses the pinned workspace at cmux index 0 (MAIN by convention)
+# before closing so cmux doesn't auto-select a random workspace.
+#
+# Tries both name shapes:
+#   1. Sanitized branch (default for `wsc <branch>`).
+#   2. Ticket id extracted from the branch (e.g. drew/pms-8176-foo -> PMS-8176)
+#      to cover the `wsc <TICKET-ID>` flow.
+mux = """
+wt-mux close --name '{{ branch | sanitize }}' || true
+T=$(printf '%s' '{{ branch }}' | grep -oE '[a-z]+-[0-9]+' | head -1 | tr 'a-z' 'A-Z')
+[ -n "$T" ] && wt-mux close --name "$T" || true
+"""
 
 [projects."github.com/canary-technologies-corp/canary"]
 aliases.setup-canary = "make -C '{{ worktree_path }}' worktree-setup-current ROOT_WORKTREE_PATH='{{ repo_path }}'"
-pre-start.setup = "tmux send-keys -t '={{ branch | sanitize }}:shell' 'wt step setup-canary' Enter"

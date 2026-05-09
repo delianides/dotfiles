@@ -8,3 +8,5 @@ ldconfig.yml
 .working
 .graphifyignore
 graphify-out
+# Subspace agent artifacts (auto-added by Subspace)
+AGENTS.override.md

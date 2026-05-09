@@ -103,6 +103,13 @@ brew 'yt-dlp'
 brew 'pipx'
 brew 'openjdk'
 
+# yazi + optional dependencies (https://yazi-rs.github.io/docs/installation/#homebrew)
+brew 'yazi'
+brew 'sevenzip'
+brew 'poppler'
+brew 'resvg'
+brew 'imagemagick'
+
 # Language servers + formatters (helix, zed, nvim)
 brew 'pyright'
 brew 'ruff'
