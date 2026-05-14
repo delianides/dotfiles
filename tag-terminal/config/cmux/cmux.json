@@ -1,0 +1,182 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "schemaVersion": 1,
+
+  "automation": {
+    "claudeBinaryPath": "$HOME/.local/bin/claude"
+  },
+
+  "shortcuts": {
+    "bindings": {
+      "focusLeft": "ctrl+h",
+      "focusDown": "ctrl+j",
+      "focusUp": "ctrl+k",
+      "focusRight": "ctrl+l",
+      "toggleSplitZoom": "ctrl+z",
+      "goToWorkspace": "ctrl+o",
+      "nextSurface": "ctrl+n",
+      "prevSurface": "ctrl+p"
+    }
+  },
+  "actions": {
+    "claude": {
+      "type": "command",
+      "title": "Claude Code",
+      "command": "claude --dangerously-skip-permissions",
+      "target": "newTabInCurrentPane",
+      "shortcut": "cmd+shift+c",
+      "icon": { "type": "image", "path": "~/.config/cmux/icons/claude.svg" }
+    },
+    "codex": {
+      "type": "command",
+      "title": "Codex",
+      "command": "codex",
+      "target": "newTabInCurrentPane",
+      "icon": { "type": "image", "path": "~/.config/cmux/icons/codex.svg" }
+    },
+    "opencode": {
+      "type": "command",
+      "title": "OpenCode",
+      "command": "opencode",
+      "target": "newTabInCurrentPane",
+      "icon": { "type": "image", "path": "~/.config/cmux/icons/opencode.svg" }
+    },
+    "default-layout": {
+      "type": "workspaceCommand",
+      "commandName": "Workspace",
+      "title": "New workspace",
+      "subtitle": "claude + stack",
+      "keywords": ["layout", "split", "stack", "default"],
+      "palette": true
+    },
+    "new-worktree": {
+      "type": "workspaceCommand",
+      "commandName": "New Worktree",
+      "title": "New Worktree",
+      "subtitle": "wt-<sha> + claude",
+      "keywords": ["worktree", "wt", "new", "branch", "claude"],
+      "palette": true
+    }
+  },
+
+  "commands": [
+    {
+      "name": "New Worktree",
+      "description": "Create a worktrunk worktree (wt-<sha>) and start Claude and Codex inside it",
+      "keywords": ["worktree", "wt"],
+      "workspace": {
+        "name": "New Worktree",
+        "cwd": ".",
+        "layout": {
+          "direction": "horizontal",
+          "split": 0.38,
+          "children": [
+            {
+              "pane": {
+                "surfaces": [
+                  {
+                    "type": "terminal",
+                    "name": "claude",
+                    "command": "set -eu; slug=wt-$(git rev-parse --short HEAD); exec wt switch --create \"$slug\" -x claude -- --dangerously-skip-permissions",
+                    "focus": true
+                  }
+                ]
+              }
+            },
+            {
+              "direction": "vertical",
+              "split": 0.5,
+              "children": [
+                {
+                  "pane": {
+                    "surfaces": [
+                      {
+                        "type": "terminal",
+                        "name": "top",
+                        "command": "slug=wt-$(git rev-parse --short HEAD); echo \"Waiting for $slug...\"; while ! git worktree list 2>/dev/null | grep -qF \"[$slug]\"; do sleep 0.2; done; exec wt switch \"$slug\" -x \"${SHELL:-/bin/zsh}\" -- -l"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "pane": {
+                    "surfaces": [
+                      {
+                        "type": "terminal",
+                        "name": "bottom",
+                        "command": "slug=wt-$(git rev-parse --short HEAD); echo \"Waiting for $slug...\"; while ! git worktree list 2>/dev/null | grep -qF \"[$slug]\"; do sleep 0.2; done; exec wt switch \"$slug\" -x \"${SHELL:-/bin/zsh}\" -- -l"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Workspace",
+      "description": "Left pane (2/3), right column split top/bottom",
+      "keywords": ["layout", "split", "stack"],
+      "workspace": {
+        "name": "Workspace",
+        "cwd": "~/Work",
+        "layout": {
+          "direction": "horizontal",
+          "split": 0.667,
+          "children": [
+            {
+              "pane": {
+                "surfaces": [
+                  {
+                    "type": "terminal",
+                    "name": "claude",
+                    "command": "claude",
+                    "focus": true
+                  }
+                ]
+              }
+            },
+            {
+              "direction": "vertical",
+              "split": 0.5,
+              "children": [
+                {
+                  "pane": {
+                    "surfaces": [{ "type": "terminal", "name": "top" }]
+                  }
+                },
+                {
+                  "pane": {
+                    "surfaces": [{ "type": "terminal", "name": "bottom" }]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "ui": {
+    "surfaceTabBar": {
+      "buttons": [
+        { "id": "newTerminal", "builtin": "cmux.newTerminal" },
+        { "id": "splitRight", "builtin": "cmux.splitRight" },
+        { "id": "splitDown", "builtin": "cmux.splitDown" },
+        { "id": "claude", "action": "claude" },
+        { "id": "codex", "action": "codex" },
+        { "id": "opencode", "action": "opencode" }
+      ]
+    },
+    "newWorkspace": {
+      "action": "default-layout",
+      "contextMenu": [
+        { "action": "default-layout", "title": "New Workspace (claude + stack)" },
+        { "action": "new-worktree", "title": "New Worktree (claude)" },
+        { "type": "separator" }
+      ]
+    }
+  }
+}

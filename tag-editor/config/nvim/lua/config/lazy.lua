@@ -12,9 +12,13 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 require("lazy").setup({
   spec = {
     -- import LazyVim plugins
-    { "LazyVim/LazyVim", opts = {
-      colorscheme = "catppuccin",
-    }, import = "lazyvim.plugins" },
+    {
+      "LazyVim/LazyVim",
+      opts = {
+        colorscheme = "catppuccin",
+      },
+      import = "lazyvim.plugins",
+    },
 
     -- import/override with your plugins
     { import = "plugins" },
