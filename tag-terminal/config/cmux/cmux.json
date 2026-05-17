@@ -41,6 +41,13 @@
       "target": "newTabInCurrentPane",
       "icon": { "type": "image", "path": "~/.config/cmux/icons/opencode.svg" }
     },
+    "pi": {
+      "type": "command",
+      "title": "Pi",
+      "command": "pi",
+      "target": "newTabInCurrentPane",
+      "icon": { "type": "image", "path": "~/.config/cmux/icons/pi.svg" }
+    },
     "default-layout": {
       "type": "workspaceCommand",
       "commandName": "Workspace",
@@ -48,73 +55,10 @@
       "subtitle": "claude + stack",
       "keywords": ["layout", "split", "stack", "default"],
       "palette": true
-    },
-    "new-worktree": {
-      "type": "workspaceCommand",
-      "commandName": "New Worktree",
-      "title": "New Worktree",
-      "subtitle": "wt-<sha> + claude",
-      "keywords": ["worktree", "wt", "new", "branch", "claude"],
-      "palette": true
     }
   },
 
   "commands": [
-    {
-      "name": "New Worktree",
-      "description": "Create a worktrunk worktree (wt-<sha>) and start Claude and Codex inside it",
-      "keywords": ["worktree", "wt"],
-      "workspace": {
-        "name": "New Worktree",
-        "cwd": ".",
-        "layout": {
-          "direction": "horizontal",
-          "split": 0.38,
-          "children": [
-            {
-              "pane": {
-                "surfaces": [
-                  {
-                    "type": "terminal",
-                    "name": "claude",
-                    "command": "set -eu; slug=wt-$(git rev-parse --short HEAD); exec wt switch --create \"$slug\" -x claude -- --dangerously-skip-permissions",
-                    "focus": true
-                  }
-                ]
-              }
-            },
-            {
-              "direction": "vertical",
-              "split": 0.5,
-              "children": [
-                {
-                  "pane": {
-                    "surfaces": [
-                      {
-                        "type": "terminal",
-                        "name": "top",
-                        "command": "slug=wt-$(git rev-parse --short HEAD); echo \"Waiting for $slug...\"; while ! git worktree list 2>/dev/null | grep -qF \"[$slug]\"; do sleep 0.2; done; exec wt switch \"$slug\" -x \"${SHELL:-/bin/zsh}\" -- -l"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "pane": {
-                    "surfaces": [
-                      {
-                        "type": "terminal",
-                        "name": "bottom",
-                        "command": "slug=wt-$(git rev-parse --short HEAD); echo \"Waiting for $slug...\"; while ! git worktree list 2>/dev/null | grep -qF \"[$slug]\"; do sleep 0.2; done; exec wt switch \"$slug\" -x \"${SHELL:-/bin/zsh}\" -- -l"
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      }
-    },
     {
       "name": "Workspace",
       "description": "Left pane (2/3), right column split top/bottom",
@@ -167,14 +111,14 @@
         { "id": "splitDown", "builtin": "cmux.splitDown" },
         { "id": "claude", "action": "claude" },
         { "id": "codex", "action": "codex" },
-        { "id": "opencode", "action": "opencode" }
+        { "id": "opencode", "action": "opencode" },
+        { "id": "pi", "action": "pi" }
       ]
     },
     "newWorkspace": {
       "action": "default-layout",
       "contextMenu": [
         { "action": "default-layout", "title": "New Workspace (claude + stack)" },
-        { "action": "new-worktree", "title": "New Worktree (claude)" },
         { "type": "separator" }
       ]
     }

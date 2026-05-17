@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# cmux-cd-all: broadcast `cd <dir>` to every terminal surface in the current
+# cmux workspace, so they all switch to the same directory.
+#
+# Usage: cmux-cd-all [DIR]   (DIR defaults to $PWD)
+#
+# cmux has no synchronize-panes, but `cmux send` can inject text into a single
+# surface. This loops over `cmux list-panels` and sends a `cd` to each.
+
+set -uo pipefail
+
+# Fail fast if not running inside a cmux surface. CMUX_WORKSPACE_ID is
+# auto-set in cmux terminals; absent everywhere else.
+if [ -z "${CMUX_WORKSPACE_ID:-}" ]; then
+  echo "cmux-cd-all: not inside a cmux session" >&2
+  exit 1
+fi
+
+dir=${1:-$PWD}
+if ! dir=$(cd "$dir" 2>/dev/null && pwd); then
+  echo "cmux-cd-all: not a directory: ${1:-$PWD}" >&2
+  exit 1
+fi
+
+# Single-quote the path for the remote shell, escaping any embedded quotes.
+quoted="'${dir//\'/\'\\\'\'}'"
+
+count=0
+while IFS= read -r ref; do
+  [ -n "$ref" ] || continue
+  cmux send --surface "$ref" "cd $quoted\n" >/dev/null 2>&1 && count=$((count + 1))
+done < <(cmux --json list-panels 2>/dev/null \
+  | jq -r '.surfaces[]? | select(.type == "terminal") | .ref')
+
+echo "cmux-cd-all: sent 'cd $dir' to $count surface(s)"

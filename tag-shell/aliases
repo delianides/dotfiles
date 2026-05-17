@@ -31,8 +31,17 @@ alias grep='grep --color=auto'
 alias sed="sed -E"
 alias crontab="VISUAL=vim crontab"
 
-# worktrunk: create a worktree and attach to its tmux session
+# Broadcast `cd <dir>` to every terminal surface in the current cmux workspace
+# (cmux has no synchronize-panes). Defaults to $PWD.
+alias cdall="cmux-cd-all"
+
+# worktrunk: switch worktrees. `wsc` creates the worktree (running hooks) and
+# attaches to the tmux session its pre-start hook spawns. `*n` variants pass
+# --no-hooks, so they skip the tmux/direnv setup (and don't attach).
+alias ws='wt switch'
 alias wsc='wt switch --create -x "tmux attach -t {{ branch | sanitize }}"'
+alias wsn='wt switch --no-hooks'
+alias wscn='wt switch --create --no-hooks'
 
 # Look up a Linear ticket via the Linear MCP server and print its git branch
 # name. Uses claude haiku in -p mode.
