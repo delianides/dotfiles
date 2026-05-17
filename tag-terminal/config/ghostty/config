@@ -15,3 +15,10 @@ macos-option-as-alt = true
 scrollback-limit = 1000000
 
 window-save-state = always
+
+keybind = cmd+h=goto_split:left
+keybind = cmd+j=goto_split:bottom
+keybind = cmd+k=goto_split:top
+keybind = cmd+l=goto_split:right
+keybind = cmd+shift+k=clear_screen
+keybind = cmd+enter=toggle_split_zoom
