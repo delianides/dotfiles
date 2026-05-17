@@ -4,7 +4,6 @@ tags
 .DS_Store
 ldconfig.yml
 .worktrees
-.config
 .working
 .graphifyignore
 graphify-out

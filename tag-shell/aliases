@@ -31,82 +31,8 @@ alias grep='grep --color=auto'
 alias sed="sed -E"
 alias crontab="VISUAL=vim crontab"
 
-# worktrunk worktree commands. Backend (cmux or zellij) is auto-detected by
-# wt-mux based on whether the cmux daemon is running.
-#
-# Usage:
-#   wsc <branch>      # create worktree; open workspace named after sanitized branch
-#   wsc <TICKET-ID>   # resolve ticket -> branch via lbn; workspace named after ticket
-#   ws  <branch>|<TICKET-ID>   # same, switch without --create
-#
-# wt-mux handles all backend differences: layouts (KDL for zellij, JSON for
-# cmux from ~/.config/cmux/layouts/), name truncation for zellij's 24-char
-# socket-path limit, and lookup-or-create semantics.
-_wt_is_ticket() { [[ "$1" =~ ^[A-Z]+-[0-9]+$ ]]; }
-
-ws() {
-  if _wt_is_ticket "$1"; then
-    local ticket="$1"; shift
-    local branch; branch="$(lbn "$ticket")" || return
-    wt switch --no-cd "$branch" "$@" -x "wt-mux open --name '$ticket' --cwd '{{ worktree_path }}'"
-  else
-    wt switch --no-cd "$@" -x "wt-mux open --name '{{ branch | sanitize }}' --cwd '{{ worktree_path }}'"
-  fi
-}
-
-# Fuzzy-pick an existing workspace/session OR a zoxide-known directory and open
-# it. Backend-agnostic via wt-mux.
-# - [session] entries select the existing workspace/session.
-# - [dir]     entries cd into the directory and open a workspace/session named
-#             after the dir's basename, creating it if needed.
-# - ctrl-n    create a workspace/session in the current cwd named after the
-#             typed query.
-zs() {
-  local sessions dirs out key query selection
-  sessions=$(wt-mux list 2>/dev/null)
-  dirs=$(zoxide query -l 2>/dev/null)
-
-  out=$(
-    {
-      [ -n "$sessions" ] && printf '%s\n' "$sessions" | sed 's/^/[session] /'
-      [ -n "$dirs" ]     && printf '%s\n' "$dirs"     | sed 's/^/[dir]     /'
-    } | fzf --prompt="$(wt-mux backend)> " --height=40% --reverse \
-            --print-query --expect=ctrl-n \
-            --header='enter=open · ctrl-n=new workspace with typed name'
-  ) || return
-
-  key=$(sed -n 1p <<<"$out")
-  query=$(sed -n 2p <<<"$out")
-  selection=$(sed -n 3p <<<"$out")
-
-  if [[ "$key" == "ctrl-n" && -n "$query" ]]; then
-    wt-mux open --name "$query" --cwd "$PWD"
-    return
-  fi
-
-  [ -z "$selection" ] && return
-
-  case "$selection" in
-    "[session] "*)
-      wt-mux open --name "${selection#'[session] '}" --cwd "$PWD"
-      ;;
-    "[dir]     "*)
-      local dir="${selection#'[dir]     '}"
-      cd "$dir" || return
-      wt-mux open --name "${dir:t}" --cwd "$dir"
-      ;;
-  esac
-}
-
-wsc() {
-  if _wt_is_ticket "$1"; then
-    local ticket="$1"; shift
-    local branch; branch="$(lbn "$ticket")" || return
-    wt switch --create --no-cd "$branch" "$@" -x "wt-mux open --name '$ticket' --cwd '{{ worktree_path }}'"
-  else
-    wt switch --create --no-cd "$@" -x "wt-mux open --name '{{ branch | sanitize }}' --cwd '{{ worktree_path }}'"
-  fi
-}
+# worktrunk: create a worktree and attach to its tmux session
+alias wsc='wt switch --create -x "tmux attach -t {{ branch | sanitize }}"'
 
 # Look up a Linear ticket via the Linear MCP server and print its git branch
 # name. Uses claude haiku in -p mode.
