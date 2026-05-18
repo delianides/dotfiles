@@ -35,13 +35,49 @@ alias crontab="VISUAL=vim crontab"
 # (cmux has no synchronize-panes). Defaults to $PWD.
 alias cdall="cmux-cd-all"
 
-# worktrunk: switch worktrees. `wsc` creates the worktree (running hooks) and
-# attaches to the tmux session its pre-start hook spawns. `*n` variants pass
-# --no-hooks, so they skip the tmux/direnv setup (and don't attach).
+# worktrunk: switch worktrees. `*n` variants pass --no-hooks, so they skip
+# the tmux/direnv pre-start setup.
 alias ws='wt switch'
-alias wsc='wt switch --create -x "tmux attach -t {{ branch | sanitize }}"'
 alias wsn='wt switch --no-hooks'
 alias wscn='wt switch --create --no-hooks'
+
+# worktrunk agent-handoff: create a worktree and launch Claude in it, inside a
+# fresh multiplexer session (worktrunk.dev/tips-patterns/#agent-handoffs).
+# An optional 2nd arg is passed to Claude as an initial task prompt.
+#   wsc feature/testing-improvements              # cmux workspace
+#   wst feature/testing-improvements 'Fix tests'  # tmux session
+#   wsz feature/testing-improvements              # zellij pane (run from zellij)
+wsc() {
+  [ -n "$1" ] || { echo "Usage: wsc <branch> [task prompt]" >&2; return 1; }
+  local cmd="wt switch --create $1 -x claude"
+  [ -n "${2:-}" ] && cmd="$cmd -- '$2'"
+  cmux new-workspace --name "$1" --focus true --command "$cmd"
+}
+
+wst() {
+  [ -n "$1" ] || { echo "Usage: wst <branch> [task prompt]" >&2; return 1; }
+  local cmd="wt switch --create $1 -x claude"
+  [ -n "${2:-}" ] && cmd="$cmd -- '$2'"
+  # Session name matches `{{ branch | sanitize }}`, so the pre-start tmux hook
+  # finds this session already exists and skips re-creating it.
+  local session=${1//\//-}; session=${session//\\/-}
+  tmux new-session -d -s "$session" "$cmd"
+  if [ -n "${TMUX:-}" ]; then
+    tmux switch-client -t "$session"
+  else
+    tmux attach -t "$session"
+  fi
+}
+
+wsz() {
+  [ -n "$1" ] || { echo "Usage: wsz <branch> [task prompt]" >&2; return 1; }
+  [ -n "${ZELLIJ:-}" ] || { echo "wsz: not inside a zellij session" >&2; return 1; }
+  if [ -n "${2:-}" ]; then
+    zellij run -- wt switch --create "$1" -x claude -- "$2"
+  else
+    zellij run -- wt switch --create "$1" -x claude
+  fi
+}
 
 # Look up a Linear ticket via the Linear MCP server and print its git branch
 # name. Uses claude haiku in -p mode.
