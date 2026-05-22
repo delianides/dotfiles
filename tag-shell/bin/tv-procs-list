@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Source command for the `processes` television cable.
+# Emits "PID  CWD  USER  ETIME  COMMAND" rows, with $HOME collapsed to ~.
+# cwd comes from `lsof -d cwd` per pid (macOS has no /proc).
+set -euo pipefail
+
+pattern="${1:-.}"
+
+ps -axww -o pid=,user=,etime=,command= \
+  | grep -i -- "$pattern" \
+  | grep -v "tv-procs-list" \
+  | grep -v "grep -i" \
+  | while IFS= read -r line; do
+      pid=$(awk '{print $1}' <<<"$line")
+      cwd=$(lsof -a -p "$pid" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p' | head -1)
+      cwd="${cwd:-?}"
+      cwd="${cwd/#$HOME/\~}"
+      rest=$(awk '{$1=""; sub(/^ +/,""); print}' <<<"$line")
+      printf '%-7s  %-60s  %s\n' "$pid" "$cwd" "$rest"
+    done

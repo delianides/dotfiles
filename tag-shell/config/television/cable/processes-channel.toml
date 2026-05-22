@@ -1,0 +1,13 @@
+[metadata]
+name = "processes"
+description = "Pick processes to signal"
+
+[source]
+command = "tv-procs-list"
+
+[preview]
+command = "pid=$(awk '{print $1}' <<<{}); ps -o pid,ppid,user,etime,command -p $pid 2>/dev/null; echo; echo '--- open files (head) ---'; lsof -p $pid 2>/dev/null | head -20"
+
+[ui]
+preview_panel = { size = 50, scrollbar = true }
+input_bar.prompt = "ps ❯ "

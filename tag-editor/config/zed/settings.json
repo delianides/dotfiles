@@ -8,10 +8,11 @@
 // command palette
 {
   "git_panel": {
-    "dock": "right"
+    "dock": "right",
   },
   "agent_servers": {
-    "claude": {
+    "claude-acp": {
+      "type": "registry",
       "default_model": "sonnet",
     },
   },
@@ -298,7 +299,7 @@
     "env": {
       "EDITOR": "zed --wait",
     },
-    "font_size": 18,
+    "font_size": 16,
     "font_family": "Dank Mono",
     "detect_venv": {
       "on": {
@@ -368,8 +369,8 @@
     "dock": "right",
     "button": false,
   },
-  "ui_font_size": 18.0,
-  "buffer_font_size": 18.0,
+  "ui_font_size": 16.0,
+  "buffer_font_size": 16.0,
   "buffer_font_family": "Dank Mono",
   "buffer_font_features": {
     "calt": true,

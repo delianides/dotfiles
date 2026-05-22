@@ -9,3 +9,4 @@ ldconfig.yml
 graphify-out
 # Subspace agent artifacts (auto-added by Subspace)
 AGENTS.override.md
+.cmux/

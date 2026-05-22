@@ -1,29 +1,32 @@
-worktree-path = "$HOME/.worktrees/{{ branch | sanitize }}"
+worktree-path = "~/worktrees/{{ repo }}/{{ branch | sanitize }}"
 
 # Broadcast the destination worktree path to every terminal surface in the
 # current cmux workspace, so all panes follow on every `wt switch`. Runs in
 # the background; cmux-cd-all is a no-op (|| true) when cmux isn't running.
-post-switch = "cmux-cd-all '{{ worktree_path }}' || true"
+# post-switch = "cmux-cd-all '{{ worktree_path }}' || true"
+
+[switch]
+cd = false
 
 [commit.generation]
 command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
 
-# Spawn a detached tmux session per worktree, named after the branch.
-# Idempotent — `has-session` short-circuits when the session already exists.
-# No-op outside tmux ($TMUX unset). Attach via the `wsc` shell alias.
+
 [[pre-start]]
-tmux = """
-[ -n "$TMUX" ] || exit 0
-S={{ branch | sanitize }}
-W={{ worktree_path }}
-if tmux has-session -t "$S" 2>/dev/null; then
-  echo "✓ tmux session '$S' already exists"
-  exit 0
-fi
-tmux new-session -d -s "$S" -c "$W" -n dev
-tmux split-window -h -t "$S:dev" -c "$W"
-tmux select-pane -t "$S:dev.0"
-echo "✓ tmux session '$S' — attach with: tmux attach -t $S"
+cmux = """
+cmux new-workspace \
+  --name {{ repo | sanitize }}/{{ branch | sanitize }} \
+  --cwd {{ worktree_path }} \
+  --focus true \
+  --layout '{"direction":"vertical","split":0.7,"children":[{"pane":{"surfaces":[{"type":"terminal","name":"claude","command":"claude"}]}},{"pane":{"surfaces":[{"type":"terminal","name":"shell"}]}}]}'
+"""
+
+[[pre-switch]]
+cmux = """
+WS=$(cmux --json list-workspaces 2>/dev/null \\
+  | jq -r --arg t '{{ repo | sanitize }}/{{ branch | sanitize }}' \\
+      '.workspaces[] | select(.title == $t) | .ref' | head -1)
+[ -n "$WS" ] && cmux select-workspace --workspace "$WS" || true
 """
 
 # Trust the new worktree's .envrc so direnv loads it. No-op if there's no
@@ -31,9 +34,14 @@ echo "✓ tmux session '$S' — attach with: tmux attach -t $S"
 [[pre-start]]
 direnv = 'test -f "{{ worktree_path }}/.envrc" && direnv allow "{{ worktree_path }}" || true'
 
-# Clean up the tmux session when its worktree is removed. No-op outside tmux.
 [pre-remove]
-tmux = '[ -z "$TMUX" ] || tmux kill-session -t {{ branch | sanitize }} 2>/dev/null || true'
+cmux = """
+WS=$(cmux --json list-workspaces 2>/dev/null \\
+  | jq -r --arg t '{{ repo | sanitize }}/{{ branch | sanitize }}' \\
+      '.workspaces[] | select(.title == $t) | .ref' | head -1)
+[ -n "$WS" ] && cmux close-workspace --workspace "$WS" || true
+"""
 
-[projects."github.com/canary-technologies-corp/canary"]
-aliases.setup-canary = "make -C '{{ worktree_path }}' worktree-setup-current ROOT_WORKTREE_PATH='{{ repo_path }}'"
+# Canary-specific: on-demand alias (invoke with `wt gateway`)
+[projects."github.com/canary-technologies-corp/canary".aliases]
+gateway = "cd {{worktree_path }}/backend/pms-gateway && make setup"

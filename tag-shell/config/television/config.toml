@@ -1,0 +1,7 @@
+[application]
+default_channel = "files"
+
+[ui]
+ui_scale = 100
+input_bar.prompt = "❯ "
+preview_panel = { size = 60, scrollbar = true }

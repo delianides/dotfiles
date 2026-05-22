@@ -106,11 +106,32 @@ if [[ "$CLAUDECODE" != "1" ]]; then
   _cache_eval zoxide zoxide init --cmd cd zsh
 fi
 
-# Starship prompt — clear stale widget before init to prevent recursion (starship/starship#3418)
-if [[ "${widgets[zle-keymap-select]#user:}" == starship_zle-keymap-select* ]]; then
-  zle -N zle-keymap-select ""
-fi
-_cache_eval starship starship init zsh
+# Pure prompt (zsh-native, no per-prompt subprocess)
+autoload -Uz promptinit && promptinit
+PURE_PROMPT_SYMBOL='❯'
+PURE_PROMPT_VICMD_SYMBOL='❮'
+PURE_CMD_MAX_EXEC_TIME=5
+zstyle :prompt:pure:git:stash show yes
+zstyle :prompt:pure:virtualenv color yellow
+# Pure reuses one psvar slot for both venv and nix-shell, and IN_NIX_SHELL
+# wins — which hides the venv whenever you're in nix shell. We render the
+# nix indicator on the right (see _dotfiles_prompt_extras), so disable
+# pure's nix display and let its venv path show through.
+zstyle :prompt:pure:environment:nix-shell show no
+prompt pure
+
+# Extra prompt segments: nix shell indicator. Pure does not use RPROMPT,
+# so we own it. Always overwrite (do not append — extra precmd fires would
+# accumulate segments).
+autoload -Uz add-zsh-hook
+_dotfiles_prompt_extras() {
+  if [[ -n "$IN_NIX_SHELL" ]]; then
+    RPROMPT="%F{cyan}❄%f"
+  else
+    RPROMPT=""
+  fi
+}
+add-zsh-hook precmd _dotfiles_prompt_extras
 
 # Sources
 [[ -f "$HOME/.localrc" ]] && source "$HOME/.localrc"
@@ -124,7 +145,7 @@ if [[ -z "$TERM_PROGRAM" || "$TERM_PROGRAM" =~ ^(ghostty|WezTerm|alacritty|kitty
       exec </dev/tty
       exec <&1
       local session
-      session=$(sesh list | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
+      session=$(tv sesh)
       zle reset-prompt > /dev/null 2>&1 || true
       [[ -z "$session" ]] && return
       sesh connect $session

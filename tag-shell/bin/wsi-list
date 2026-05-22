@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+# wsi-list — emit aligned columns of git worktrees for the wsi fzf picker.
+# Columns: branch  age  uncommitted  ahead/behind  short_sha  message
+#
+# Uses raw git directly (worktree list --porcelain + per-worktree git log /
+# status / rev-list) rather than `wt list --format json`. worktrunk's list
+# command is ~1.5s in repos with many branches and can spike to 10s+ when it
+# decides to fetch — this script stays under 300ms regardless.
+#
+# Default sort: oldest commit first (ascending) — you're more likely to remove
+# stale worktrees than fresh ones, so deletion candidates land at the top
+# where the cursor starts. Sort state persists in ~/.cache/wsi-sort. Flags:
+#   --asc / --default  → force ascending, write state
+#   --desc / -r        → force descending, write state
+#   --toggle           → flip the persisted state
+#   (no flag)          → use whatever state is on disk (default: asc)
+#
+# Branches listed in ~/.cache/wsi-pending are hidden (instant-removal UX while
+# `wt remove` runs in the background). Pending file is self-pruned each
+# invocation.
+set -euo pipefail
+
+sort_file="$HOME/.cache/wsi-sort"
+pending="$HOME/.cache/wsi-pending"
+mkdir -p "$(dirname "$sort_file")"
+touch "$sort_file" "$pending"
+
+current_sort=$(<"$sort_file")
+[[ -n "$current_sort" ]] || current_sort="asc"
+
+case "${1:-}" in
+  --asc|--default)  current_sort="asc" ;;
+  --desc|-r|--reverse) current_sort="desc" ;;
+  --toggle)
+    if [[ "$current_sort" == "asc" ]]; then
+      current_sort="desc"
+    else
+      current_sort="asc"
+    fi
+    ;;
+esac
+printf '%s\n' "$current_sort" > "$sort_file"
+
+# Resolve the default branch so we can hide it from the list.
+default_branch=""
+if remote_head=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null); then
+  default_branch=${remote_head#origin/}
+fi
+
+# Parse `git worktree list --porcelain` into branch<TAB>path lines.
+# Detached worktrees (no branch line) are dropped — they have no name to
+# show in the picker and can't be `wt switch`ed to by branch.
+worktrees=$(git worktree list --porcelain 2>/dev/null | awk '
+  /^worktree / { path = substr($0, 10); branch = ""; next }
+  /^branch refs\/heads\// { branch = substr($0, 19) }
+  /^$/ {
+    if (branch != "" && path != "") print branch "\t" path
+    path = ""; branch = ""
+  }
+  END {
+    if (branch != "" && path != "") print branch "\t" path
+  }
+')
+
+# Per-worktree: 1 log + 1 status + 1 rev-list. In a big monorepo `git status`
+# alone is ~300ms (canary scale), so we fan out one subshell per worktree and
+# collect via tempfile. Wall clock becomes ~max(per-row) instead of sum.
+_wsi_row() {
+  local branch="$1" path="$2" now="$3"
+  local info short_sha ts msg changes diffcol ab ahead behind abcol d age
+
+  info=$(git -C "$path" log -1 --format='%h%x09%ct%x09%s' 2>/dev/null || echo "·	0	")
+  IFS=$'\t' read -r short_sha ts msg <<< "$info"
+
+  # --untracked-files=no skips enumerating untracked files which is 5-6x
+  # cheaper in a large monorepo. For the picker we only care about modified
+  # tracked files (real "uncommitted changes"), not stray .DS_Store etc.
+  changes=$(git -C "$path" status --porcelain --untracked-files=no 2>/dev/null | wc -l | tr -d ' ')
+  if [[ "$changes" -gt 0 ]]; then diffcol="±${changes}"; else diffcol="·"; fi
+
+  if ab=$(git -C "$path" rev-list --left-right --count "$branch"...@{upstream} 2>/dev/null); then
+    IFS=$'\t' read -r ahead behind <<< "$ab"
+    if [[ "$ahead" -gt 0 || "$behind" -gt 0 ]]; then abcol="↑${ahead}↓${behind}"; else abcol="·"; fi
+  else
+    abcol="·"
+  fi
+
+  d=$(( now - ts ))
+  if   (( d < 60 ));         then age="${d}s"
+  elif (( d < 3600 ));       then age="$((d/60))m"
+  elif (( d < 86400 ));      then age="$((d/3600))h"
+  elif (( d < 86400*30 ));   then age="$((d/86400))d"
+  elif (( d < 86400*365 ));  then age="$((d/86400/30))mo"
+  else                            age="$((d/86400/365))y"
+  fi
+
+  msg=${msg:0:60}
+
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$ts" "$branch" "$age" "$diffcol" "$abcol" "$short_sha" "$msg"
+}
+
+now=$(date +%s)
+rows_file=$(mktemp)
+trap 'rm -f "$rows_file"' EXIT
+
+while IFS=$'\t' read -r branch path; do
+  [[ -z "$branch" || -z "$path" ]] && continue
+  [[ "$branch" == "$default_branch" ]] && continue
+  grep -qxF "$branch" "$pending" && continue
+  _wsi_row "$branch" "$path" "$now" >> "$rows_file" &
+done <<< "$worktrees"
+wait
+
+rows=$(<"$rows_file")
+
+# Prune pending: drop entries for branches that no longer exist as worktrees.
+# Compares against the parsed worktree branch list, not anything dynamic.
+if [[ -s "$pending" ]]; then
+  existing=$(awk -F'\t' '{print $1}' <<< "$worktrees" | sort -u)
+  comm -12 <(sort -u "$pending") <(printf '%s\n' "$existing") > "$pending.tmp" || true
+  mv "$pending.tmp" "$pending"
+fi
+
+# Sort by timestamp (column 1), then strip the timestamp column. Direction
+# flips via the persisted sort state.
+sort_flag="-n"
+[[ "$current_sort" == "desc" ]] && sort_flag="-nr"
+
+printf '%s' "$rows" \
+  | sort $sort_flag -t$'\t' -k1,1 \
+  | cut -f2- \
+  | column -t -s "$(printf '\t')"

@@ -18,28 +18,6 @@
     ],
     "defaultMode": "auto"
   },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "mcp__linear__save_issue",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/cmux-linear-workspace.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "mcp__linear__get_issue",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/cmux-linear-workspace.sh"
-          }
-        ]
-      }
-    ]
-  },
   "statusLine": {
     "type": "command",
     "command": "~/.bin/claude-statusline",
@@ -62,7 +40,8 @@
     "orbkit@canary-plugins": true,
     "pms-gateway@canary-plugins": true,
     "testing@canary-plugins": true,
-    "triage@canary-plugins": true
+    "triage@canary-plugins": true,
+    "investigate@canary-plugins": true
   },
   "extraKnownMarketplaces": {
     "worktrunk": {
@@ -85,6 +64,7 @@
     }
   },
   "effortLevel": "high",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark-daltonized",
   "editorMode": "vim",
@@ -92,4 +72,3 @@
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
 }
-

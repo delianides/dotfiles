@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# wsi-rm BRANCH [-D]
+# Helper for the wsi fzf picker. Marks BRANCH as pending (so wsi-list hides
+# it immediately) and fires `wt remove` fully detached so the caller returns
+# without waiting for cleanup. Pair with `+reload(wsi-list)` in fzf to make
+# the row disappear instantly.
+set -euo pipefail
+
+branch="${1:?usage: wsi-rm BRANCH [-D]}"
+force=()
+[[ "${2:-}" == "-D" ]] && force=(-D)
+
+pending="$HOME/.cache/wsi-pending"
+mkdir -p "$(dirname "$pending")"
+printf '%s\n' "$branch" >> "$pending"
+
+# Fully detach: nohup + & + redirect all stdio + disown. The keybind returns
+# the instant this script exits; wt continues to clean up off-thread.
+nohup wt --yes remove "${force[@]}" "$branch" </dev/null >/dev/null 2>&1 &
+disown

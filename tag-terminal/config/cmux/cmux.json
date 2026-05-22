@@ -12,10 +12,9 @@
       "focusDown": "ctrl+j",
       "focusUp": "ctrl+k",
       "focusRight": "ctrl+l",
-      "toggleSplitZoom": "ctrl+z",
-      "goToWorkspace": "ctrl+o",
-      "nextSurface": "ctrl+n",
-      "prevSurface": "ctrl+p"
+      "nextSurface": ["ctrl+a", "n"],
+      "prevSurface": ["ctrl+a", "p"],
+      "goToWorkspace": "ctrl+o"
     }
   },
   "actions": {
@@ -24,13 +23,13 @@
       "title": "Claude Code",
       "command": "claude --dangerously-skip-permissions",
       "target": "newTabInCurrentPane",
-      "shortcut": "cmd+shift+c",
+      "shortcut": ["ctrl+a", "shift+a"],
       "icon": { "type": "image", "path": "~/.config/cmux/icons/claude.svg" }
     },
     "codex": {
       "type": "command",
       "title": "Codex",
-      "command": "codex",
+      "command": "codex --dangerously-bypass-approvals-and-sandbox",
       "target": "newTabInCurrentPane",
       "icon": { "type": "image", "path": "~/.config/cmux/icons/codex.svg" }
     },
@@ -50,24 +49,33 @@
     },
     "default-layout": {
       "type": "workspaceCommand",
-      "commandName": "Workspace",
-      "title": "New workspace",
-      "subtitle": "claude + stack",
+      "commandName": "New Workspace",
+      "title": "New Workspace",
+      "subtitle": "claude top / terminal bottom",
       "keywords": ["layout", "split", "stack", "default"],
+      "palette": true
+    },
+    "canary-thread": {
+      "type": "workspaceCommand",
+      "commandName": "New Canary Thread",
+      "title": "New Canary Thread",
+      "subtitle": "Canary Specific Thread",
+      "keywords": ["canary", "worktree", "wt", "pms-gateway", "agents"],
+      "icon": { "type": "symbol", "name": "folder.badge.plus" },
       "palette": true
     }
   },
 
   "commands": [
     {
-      "name": "Workspace",
-      "description": "Left pane (2/3), right column split top/bottom",
+      "name": "New Workspace",
+      "description": "Top pane claude, bottom pane terminal",
       "keywords": ["layout", "split", "stack"],
       "workspace": {
         "name": "Workspace",
         "cwd": "~/Work",
         "layout": {
-          "direction": "horizontal",
+          "direction": "vertical",
           "split": 0.667,
           "children": [
             {
@@ -83,20 +91,41 @@
               }
             },
             {
-              "direction": "vertical",
-              "split": 0.5,
-              "children": [
-                {
-                  "pane": {
-                    "surfaces": [{ "type": "terminal", "name": "top" }]
+              "pane": {
+                "surfaces": [{ "type": "terminal", "name": "bottom" }]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Canary Thread",
+      "description": "Top pane claude, bottom pane terminal",
+      "keywords": ["layout", "split", "stack"],
+      "workspace": {
+        "name": "Workspace",
+        "cwd": "~/Work/canary",
+        "layout": {
+          "direction": "vertical",
+          "split": 0.667,
+          "children": [
+            {
+              "pane": {
+                "surfaces": [
+                  {
+                    "type": "terminal",
+                    "name": "claude",
+                    "command": "claude",
+                    "focus": true
                   }
-                },
-                {
-                  "pane": {
-                    "surfaces": [{ "type": "terminal", "name": "bottom" }]
-                  }
-                }
-              ]
+                ]
+              }
+            },
+            {
+              "pane": {
+                "surfaces": [{ "type": "terminal", "name": "bottom" }]
+              }
             }
           ]
         }
@@ -118,8 +147,15 @@
     "newWorkspace": {
       "action": "default-layout",
       "contextMenu": [
-        { "action": "default-layout", "title": "New Workspace (claude + stack)" },
-        { "type": "separator" }
+        {
+          "action": "default-layout",
+          "title": "New Workspace"
+        },
+        { "type": "separator" },
+        {
+          "action": "canary-thread",
+          "title": "New Canary Thread"
+        }
       ]
     }
   }

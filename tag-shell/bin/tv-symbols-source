@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Source command for the `symbols` television cable.
+# Finds definition-style lines across the current directory using ripgrep and
+# emits vimgrep-style output (file:line:col:text) so the wrapper can jump $EDITOR
+# to the exact location.
+set -euo pipefail
+
+# Match common definition keywords across mainstream languages.
+# Intentionally inclusive — false positives are fine; missed definitions are not.
+pattern='^[[:space:]]*(?:(?:export|default|public|private|protected|static|async|pub|final|abstract)[[:space:]]+)*(?:fn|def|function|class|struct|enum|interface|trait|type|impl|namespace|module|mod|package|sub)[[:space:]]+[A-Za-z_][A-Za-z0-9_]*'
+
+rg --vimgrep --pcre2 --hidden --no-messages \
+   --glob '!.git' \
+   --glob '!node_modules' \
+   --glob '!target' \
+   --glob '!dist' \
+   --glob '!build' \
+   --glob '!.venv' \
+   "$pattern" "${1:-.}"

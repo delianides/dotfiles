@@ -39,44 +39,54 @@ alias cdall="cmux-cd-all"
 # the tmux/direnv pre-start setup.
 alias ws='wt switch'
 alias wsn='wt switch --no-hooks'
+alias wsc='wt switch --create'
 alias wscn='wt switch --create --no-hooks'
 
-# worktrunk agent-handoff: create a worktree and launch Claude in it, inside a
-# fresh multiplexer session (worktrunk.dev/tips-patterns/#agent-handoffs).
-# An optional 2nd arg is passed to Claude as an initial task prompt.
-#   wsc feature/testing-improvements              # cmux workspace
-#   wst feature/testing-improvements 'Fix tests'  # tmux session
-#   wsz feature/testing-improvements              # zellij pane (run from zellij)
-wsc() {
-  [ -n "$1" ] || { echo "Usage: wsc <branch> [task prompt]" >&2; return 1; }
-  local cmd="wt switch --create $1 -x claude"
-  [ -n "${2:-}" ] && cmd="$cmd -- '$2'"
-  cmux new-workspace --name "$1" --focus true --command "$cmd"
+# Interactive worktree picker via the `worktrees` television cable.
+# Picks a worktree and `wt switch`es to it. Removal moved to plain `wt remove`
+# (or use the `wsi-rm` helper directly) — tv cables select, they don't act.
+wsi() {
+  local picked branch
+  picked=$(tv worktrees) || return
+  branch=${picked%% *}
+  [ -n "$branch" ] && wt switch "$branch"
 }
 
-wst() {
-  [ -n "$1" ] || { echo "Usage: wst <branch> [task prompt]" >&2; return 1; }
-  local cmd="wt switch --create $1 -x claude"
-  [ -n "${2:-}" ] && cmd="$cmd -- '$2'"
-  # Session name matches `{{ branch | sanitize }}`, so the pre-start tmux hook
-  # finds this session already exists and skips re-creating it.
-  local session=${1//\//-}; session=${session//\\/-}
-  tmux new-session -d -s "$session" "$cmd"
-  if [ -n "${TMUX:-}" ]; then
-    tmux switch-client -t "$session"
-  else
-    tmux attach -t "$session"
-  fi
+# Interactive process killer via the `processes` television cable.
+# Type to filter inside tv; pass -9 / -KILL to send SIGKILL instead of SIGTERM.
+pskill() {
+  local sig="TERM" arg
+  for arg in "$@"; do
+    case "$arg" in
+      -9|-KILL|-kill) sig="KILL" ;;
+      -*) sig="${arg#-}" ;;
+    esac
+  done
+  local picked pids
+  picked=$(tv processes) || return
+  pids=$(printf '%s\n' "$picked" | awk '{print $1}')
+  [ -z "$pids" ] && return
+  echo "Sending SIG$sig to:"
+  printf '%s\n' "$picked" | awk '{printf "  pid=%s  cwd=%s\n", $1, $2}'
+  # shellcheck disable=SC2086
+  kill -s "$sig" $pids
 }
 
-wsz() {
-  [ -n "$1" ] || { echo "Usage: wsz <branch> [task prompt]" >&2; return 1; }
-  [ -n "${ZELLIJ:-}" ] || { echo "wsz: not inside a zellij session" >&2; return 1; }
-  if [ -n "${2:-}" ]; then
-    zellij run -- wt switch --create "$1" -x claude -- "$2"
-  else
-    zellij run -- wt switch --create "$1" -x claude
-  fi
+# Interactive symbol jump via the `symbols` television cable.
+# rg emits file:line:col:text; open the selection in $VISUAL / $EDITOR at line.
+tvs() {
+  local sel file line editor
+  sel=$(tv symbols) || return
+  [ -z "$sel" ] && return
+  file=${sel%%:*}
+  line=$(printf '%s\n' "$sel" | cut -d: -f2)
+  editor=${VISUAL:-${EDITOR:-nvim}}
+  case "$editor" in
+    *nvim*|*vim*) "$editor" "+$line" "$file" ;;
+    *zed*)        "$editor" "$file:$line" ;;
+    *code*)       "$editor" --goto "$file:$line" ;;
+    *)            "$editor" "+$line" "$file" ;;
+  esac
 }
 
 # Look up a Linear ticket via the Linear MCP server and print its git branch

@@ -1,0 +1,13 @@
+[metadata]
+name = "symbols"
+description = "Search code symbols (functions, classes, types) and jump to definition"
+
+[source]
+command = "tv-symbols-source"
+
+[preview]
+command = "file=$(echo {} | cut -d: -f1); line=$(echo {} | cut -d: -f2); bat --color=always --style=numbers --highlight-line $line --line-range $((line>10 ? line-10 : 1)):$((line+30)) $file 2>/dev/null"
+
+[ui]
+preview_panel = { size = 65, scrollbar = true }
+input_bar.prompt = "sym ❯ "
