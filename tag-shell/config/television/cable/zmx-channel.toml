@@ -1,0 +1,28 @@
+[metadata]
+name = "zmx"
+description = "Attach to or kill zmx persistent sessions"
+requirements = [ "zmx",]
+
+[source]
+command = "zmx list --short"
+
+[preview]
+command = "zmx history '{}' 2>/dev/null"
+
+[ui]
+preview_panel = { size = 60, scrollbar = true }
+input_bar.prompt = "zmx ❯ "
+
+[keybindings]
+enter = "actions:attach"
+ctrl-d = [ "actions:kill", "reload_source",]
+
+[actions.attach]
+description = "Attach to the selected session"
+command = "zmx attach '{}'"
+mode = "execute"
+
+[actions.kill]
+description = "Kill the selected session (press Ctrl+D to reload)"
+command = "zmx kill '{}' --force"
+mode = "fork"

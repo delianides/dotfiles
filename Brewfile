@@ -2,16 +2,18 @@
 #
 
 tap 'derailed/k9s'
-tap 'github/gh'
-tap 'jesseduffield/lazygit'
 tap 'teamookla/speedtest'
 tap 'achannarasappa/tap'
 tap 'jaxxstorm/tap'
 tap 'hashicorp/tap'
 tap 'cargo-lambda/cargo-lambda'
+tab 'neurosnap/tap'
+
+
 
 brew 'asdf'
 brew 'mas'
+brew 'mise'
 
 brew 'act'
 brew 'actionlint'
@@ -83,6 +85,7 @@ brew 'terraform-docs'
 brew 'television'
 brew 'tldr'
 brew 'tmux'
+brew 'zmx'
 brew 'unzip'
 brew 'vault'
 brew 'vim'

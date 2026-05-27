@@ -16,9 +16,31 @@ scrollback-limit = 1000000
 
 window-save-state = always
 
-keybind = cmd+h=goto_split:left
-keybind = cmd+j=goto_split:bottom
-keybind = cmd+k=goto_split:top
-keybind = cmd+l=goto_split:right
+# Window / pane / tab management — matched to the cmux scheme (cmux.json) so the
+# same keys drive panes/surfaces in cmux and native splits/tabs in standalone
+# Ghostty. cmux owns declarative workspace layouts; only keybindings live here.
+
+# Splits / panes
+# Vim-style focus movement — ctrl+hjkl (cmux focusLeft/Down/Up/Right).
+keybind = ctrl+h=goto_split:left
+keybind = ctrl+j=goto_split:down
+keybind = ctrl+k=goto_split:up
+keybind = ctrl+l=goto_split:right
+# Create splits (cmux splitRight / splitDown).
+keybind = cmd+d=new_split:right
+keybind = cmd+shift+d=new_split:down
+# Zoom the focused split (cmux toggleSplitZoom).
+keybind = cmd+shift+enter=toggle_split_zoom
+
+# Tabs (cmux surfaces)
+# New tab (cmux newSurface); ctrl+a leader for next/prev (cmux nextSurface /
+# prevSurface). cmd+1..8 jump to a tab and cmd+9 → last tab are Ghostty defaults.
+keybind = cmd+t=new_tab
+keybind = ctrl+a>n=next_tab
+keybind = ctrl+a>p=previous_tab
+
+# Windows
+keybind = cmd+n=new_window
+
+# Misc
 keybind = cmd+shift+k=clear_screen
-keybind = cmd+enter=toggle_split_zoom

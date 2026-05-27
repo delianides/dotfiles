@@ -1,23 +1,39 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
+# Performance: starship forks a subprocess per prompt, and the git modules
+# scan the worktree. Raise the module timeout so big repos (e.g. ~/Work/canary)
+# don't blank out the git segment with a "timed out" warning. scan_timeout is
+# left at its 30ms default — bumping it slows every prompt.
+command_timeout = 1000
+
+# Single line: everything on one row, prompt character inline at the end
+# (no $line_break before $character). Each module carries its own trailing
+# space, so exactly one space lands between segments and before the character.
 format = """
+${env_var.ZMX_SESSION}\
 $username\
 $hostname\
 $directory\
-$direnv \
+$direnv\
 $git_branch\
 $git_state\
 $git_status\
-$bun \
+$bun\
 $nodejs\
 $python\
 $rust\
 $ruby\
 $zig\
 $golang\
-$cmd_duration\
-$line_break\
 $character"""
+
+# zmx persistent-session indicator. env_var modules render nothing (and emit no
+# trailing space) when the variable is unset, so this only appears inside a zmx
+# session. See https://zmx.sh.
+[env_var.ZMX_SESSION]
+variable = "ZMX_SESSION"
+format = "[\\[$env_value\\]]($style) "
+style = "bold green"
 
 [directory]
 style = "blue"
@@ -27,11 +43,13 @@ success_symbol = "[❯](purple)"
 error_symbol = "[❯](red)"
 
 [git_branch]
-format = "[$branch]($style)"
+format = "[$branch]($style) "
 style = "bright-black"
 
 [git_status]
-format = "[[(◦$all_status)]($style) ($ahead_behind)](27)"
+# Each conditional group carries its own trailing space, so the segment never
+# glues into the next module (e.g. node version) when ahead/behind shows.
+format = "[(◦$all_status )]($style)[($ahead_behind )](27)"
 style = "yellow"
 ahead = "⇡${count}"
 diverged = "⇕⇡${ahead_count}⇣${behind_count}"
@@ -48,15 +66,38 @@ stashed = "≡"
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bright-black"
 
-[cmd_duration]
-format = "[$duration]($style) "
-style = "yellow"
-
+# Language versions are wrapped in literal [brackets] (escaped \[ \]) and carry
+# a trailing space. The outer (...) is a conditional group, so the brackets and
+# space only render when $version is non-empty — never an empty [].
+# version_format = "${raw}" drops Starship's default "v" prefix.
+# Modules without a `style` key use Starship's default color.
 [python]
-format = "[$version]($style) "
+format = "([\\[$version\\]]($style) )"
+version_format = "${raw}"
 style = "bright-yellow"
 python_binary = "python"
 
 [nodejs]
-format = "[$version]($style) "
+format = "([\\[$version\\]]($style) )"
+version_format = "${raw}"
 style = "bright-green"
+
+[bun]
+format = "([\\[$version\\]]($style) )"
+version_format = "${raw}"
+
+[rust]
+format = "([\\[$version\\]]($style) )"
+version_format = "${raw}"
+
+[ruby]
+format = "([\\[$version\\]]($style) )"
+version_format = "${raw}"
+
+[zig]
+format = "([\\[$version\\]]($style) )"
+version_format = "${raw}"
+
+[golang]
+format = "([\\[$version\\]]($style) )"
+version_format = "${raw}"
