@@ -48,5 +48,5 @@ cask 'raycast'
 cask 'slack'
 cask 'zoom'
 cask 'spotify'
-cask "vlc"
-cask "discord"
+cask 'vlc'
+cask 'discord'
