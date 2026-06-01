@@ -12,22 +12,17 @@ cd = false
 command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
 
 
+# Create the cmux workspace for a brand-new worktree, blocking at creation
+# time so the layout is up before the switch returns.
 [[pre-start]]
-cmux = """
-cmux new-workspace \
-  --name {{ repo | sanitize }}/{{ branch | sanitize }} \
-  --cwd {{ worktree_path }} \
-  --focus true \
-  --layout '{"direction":"vertical","split":0.7,"children":[{"pane":{"surfaces":[{"type":"terminal","name":"claude","command":"claude"}]}},{"pane":{"surfaces":[{"type":"terminal","name":"shell"}]}}]}'
-"""
+cmux = "cmux-ensure-workspace {{ repo | sanitize }}/{{ branch | sanitize }} {{ worktree_path }}"
 
-[[pre-switch]]
-cmux = """
-WS=$(cmux --json list-workspaces 2>/dev/null \\
-  | jq -r --arg t '{{ repo | sanitize }}/{{ branch | sanitize }}' \\
-      '.workspaces[] | select(.title == $t) | .ref' | head -1)
-[ -n "$WS" ] && cmux select-workspace --workspace "$WS" || true
-"""
+# On any switch (including into an existing worktree), select the matching cmux
+# workspace, or create it if the worktree exists but its workspace is gone.
+# post-switch runs after branch resolution, so shortcuts like `-`, `@`, `pr:N`
+# resolve to the real branch name before we compute the workspace title.
+[[post-switch]]
+cmux = "cmux-ensure-workspace {{ repo | sanitize }}/{{ branch | sanitize }} {{ worktree_path }}"
 
 # Trust the new worktree's .envrc so direnv loads it. No-op if there's no
 # .envrc in the worktree.

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# cmux-ensure-workspace — select the cmux workspace matching a title, or create
+# it (claude + shell split) if none exists. Claude runs inside a persistent zmx
+# session named "<name>.claude" so it survives the workspace being closed.
+# Shared by worktrunk's pre-start hook (create path) and post-switch hook
+# (switch path) so both always land you in a workspace. No-op when cmux is
+# absent. Requires zmx for the claude pane (already a hard dependency, see trg).
+#
+# Usage: cmux-ensure-workspace <name> <cwd>
+
+set -euo pipefail
+
+name="${1:?usage: cmux-ensure-workspace <name> <cwd>}"
+cwd="${2:?usage: cmux-ensure-workspace <name> <cwd>}"
+
+# Bail quietly if the cmux CLI isn't on PATH.
+command -v cmux >/dev/null 2>&1 || exit 0
+
+# Find an existing workspace whose title matches. `first(... ) // empty` avoids
+# piping through `head`, which would SIGPIPE under `set -o pipefail` and falsely
+# blank out a real match.
+ws=$(cmux --json list-workspaces 2>/dev/null |
+  jq -r --arg t "$name" 'first(.workspaces[] | select(.title == $t) | .ref) // empty') || ws=""
+
+if [ -n "$ws" ]; then
+  cmux select-workspace --workspace "$ws"
+else
+  # Run Claude inside a persistent zmx session so it survives the cmux workspace
+  # being closed and restored. zmx appends ZMX_SESSION_PREFIX directly onto the
+  # session name with no separator, so the trailing "." here yields a session
+  # named "<prefix>.claude". The prefix is the workspace name with every
+  # non-alphanumeric character folded to a hyphen, keeping it zmx-safe.
+  zmx_prefix="${name//[^a-zA-Z0-9-]/-}"
+  claude_cmd="ZMX_SESSION_PREFIX='${zmx_prefix}.' zmx attach claude claude"
+
+  # Build the layout with jq so the embedded command is JSON-escaped correctly.
+  layout=$(jq -nc --arg cmd "$claude_cmd" '{
+    direction: "vertical",
+    split: 0.7,
+    children: [
+      { pane: { surfaces: [ { type: "terminal", name: "claude", command: $cmd } ] } },
+      { pane: { surfaces: [ { type: "terminal", name: "shell" } ] } }
+    ]
+  }')
+
+  cmux new-workspace \
+    --name "$name" \
+    --cwd "$cwd" \
+    --focus true \
+    --layout "$layout"
+fi
