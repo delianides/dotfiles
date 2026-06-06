@@ -8,7 +8,7 @@
 // command palette
 {
   "git_panel": {
-    "dock": "right",
+    "dock": "left",
   },
   "agent_servers": {
     "claude-acp": {
@@ -52,7 +52,7 @@
     "button": false,
   },
   "agent": {
-    "dock": "left",
+    "dock": "right",
     "default_profile": "ask",
   },
   "show_edit_predictions": true,
@@ -351,7 +351,7 @@
   "file_scan_inclusions": [".env"],
   // Move all panel to the right
   "project_panel": {
-    "dock": "right",
+    "dock": "left",
     "button": false,
     "default_width": 300,
     "file_icons": true,
@@ -362,11 +362,11 @@
     },
   },
   "outline_panel": {
-    "dock": "right",
+    "dock": "left",
     "button": false,
   },
   "collaboration_panel": {
-    "dock": "right",
+    "dock": "left",
     "button": false,
   },
   "ui_font_size": 16.0,

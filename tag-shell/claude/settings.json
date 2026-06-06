@@ -20,7 +20,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "~/.bin/claude-statusline",
+    "command": "wt list statusline --format=claude-code",
     "padding": 0
   },
   "enabledPlugins": {
