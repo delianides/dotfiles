@@ -136,6 +136,7 @@ brew 'lazygit'
 brew 'zellij'
 brew 'teleport'
 brew 'worktrunk'
+brew 'zig'
 
 # Node-based CLIs (formerly asdf default-npm-packages, now Homebrew formulae)
 brew 'vercel-cli'
