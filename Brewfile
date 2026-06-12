@@ -6,6 +6,8 @@ tap 'jaxxstorm/tap'
 tap 'hashicorp/tap'
 tap 'cargo-lambda/cargo-lambda'
 tap 'neurosnap/tap'
+tap 'raine/workmux'
+tap 'delianides/git-rt'
 
 
 
@@ -128,6 +130,16 @@ brew 'gopls'
 brew 'ruby-lsp'
 brew 'typescript-language-server'
 brew 'prettier'
+brew 'luacheck'
+brew 'stylua'
+
+# Workflow & dev CLIs
+brew 'lazygit'
+brew 'zellij'
+brew 'teleport'
+brew 'worktrunk'
+brew 'raine/workmux/workmux', trusted: true
+brew 'delianides/git-rt/perch', trusted: true
 
 # Node-based CLIs (formerly asdf default-npm-packages, now Homebrew formulae)
 brew 'vercel-cli'
