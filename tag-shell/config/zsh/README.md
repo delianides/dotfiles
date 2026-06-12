@@ -26,7 +26,6 @@ There is no plugin manager — every plugin is a Homebrew package and is `source
 - **zoxide** — replaces `cd`. Skipped under Claude Code (`$CLAUDECODE == 1`).
 - **direnv** — auto-loads `.envrc` per directory.
 - **vivid** — generates `LS_COLORS` once, cached at `~/.cache/ls_colors`. To regenerate: `vivid generate molokai > ~/.cache/ls_colors`.
-- **asdf** — shims on PATH, completions on FPATH.
 - **worktrunk** — `wt config shell init zsh` is sourced for shell helpers.
 - **macos-trash** — `rm` is aliased to `trash`.
 

@@ -1,7 +1,6 @@
 tag-zsh/
 tag-tmux/
 tag-terminal/
-tag-asdf/
 tag-code/
 tag-git/
 tag-vim/config/nvim/plugin/packer_compiled.lua

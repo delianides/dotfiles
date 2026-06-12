@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+# cmux-workspace — manage the cmux workspace for a worktree.
+#
+#   create <name> <cwd> [session]   Select the workspace titled <name>, or
+#                         create it (claude + shell split) if none exists.
+#                         Claude runs in a persistent zmx session named
+#                         "<session>.claude" so it survives the workspace being
+#                         closed/restored.
+#   remove <name> [session]   Close the workspace titled <name> and kill its
+#                         zmx session.
+#
+# <session> is the zmx session base name (".claude" is appended). When omitted
+# it falls back to <name> with non-alphanumerics folded to hyphens. The
+# worktrunk hooks pass `{{ branch | codename(2) }}` — a short, deterministic
+# friendly name — so the zmx socket path stays under the OS length limit even
+# for long branch names. create and remove must pass the SAME value so the
+# session lines up.
+#
+# Wired to worktrunk: `create` from the pre-start (create) and post-switch
+# (switch) hooks so both always land you in a workspace; `remove` from the
+# pre-remove hook. No-op when cmux is absent. Requires zmx for the claude pane
+# (already a hard dependency, see trg).
+#
+# Repo-grouped (create only): the new workspace joins the sidebar group named
+# after the repo (the part of <name> before "/"). If that group doesn't exist
+# yet it's created from the new workspace (cmux adds a fresh anchor for it).
+# Independent of where the command was invoked from.
+#
+# Usage: cmux-workspace create <name> <cwd> [session]
+#        cmux-workspace remove <name> [session]
+
+set -euo pipefail
+
+verb="${1:?usage: cmux-workspace <create|remove> ...}"
+
+# Bail quietly if the cmux CLI isn't on PATH.
+command -v cmux >/dev/null 2>&1 || exit 0
+
+# Silence the "<cmd> is now an alias for ..." legacy-command notices (stderr).
+export CMUX_QUIET=1
+
+case "$verb" in
+  remove)
+    # Teardown: close the workspace titled <name> and kill its zmx session. The
+    # session name uses the SAME derivation as the create path, so they line up.
+    name="${2:?usage: cmux-workspace remove <name> [session]}"
+    session="${3:-${name//[^a-zA-Z0-9-]/-}}"
+    ws=$(cmux --json list-workspaces 2>/dev/null |
+      jq -r --arg t "$name" 'first(.workspaces[]? | select(.title == $t) | .ref) // empty') || ws=""
+    [ -n "$ws" ] && cmux close-workspace --workspace "$ws" || true
+    zmx kill "${session}.claude" --force 2>/dev/null || true
+    exit 0
+    ;;
+  create)
+    name="${2:?usage: cmux-workspace create <name> <cwd> [session]}"
+    cwd="${3:?usage: cmux-workspace create <name> <cwd> [session]}"
+    session="${4:-${name//[^a-zA-Z0-9-]/-}}"
+    ;;
+  *)
+    echo "cmux-workspace: unknown verb '$verb' (expected: create|remove)" >&2
+    exit 2
+    ;;
+esac
+
+# --- create/ensure path ---
+
+# Target the sidebar group named after the repo (the part of <name> before the
+# first "/"). Capture its ref + member refs if it already exists; both stay
+# empty otherwise (we create the group after making the workspace, below).
+repo="${name%%/*}"
+group=$( { cmux workspace-group list --json 2>/dev/null || true; } |
+  jq -c --arg n "$repo" \
+    'first(.groups[]? | select((.name | ascii_downcase) == ($n | ascii_downcase))) // empty' 2>/dev/null) || group=""
+group_ref=""
+members_json="[]"
+if [ -n "$group" ]; then
+  group_ref=$(jq -r '.ref' <<<"$group")
+  members_json=$(jq -c '.member_workspace_refs // []' <<<"$group")
+fi
+
+# Find an existing workspace whose title matches. When the repo group exists,
+# scope the match to its members so a same-named workspace elsewhere doesn't
+# shadow it. `first(...) // empty` avoids piping through `head`, which would
+# SIGPIPE under `set -o pipefail` and falsely blank out a real match.
+if [ -n "$group_ref" ]; then
+  ws=$(cmux --json list-workspaces 2>/dev/null |
+    jq -r --arg t "$name" --argjson m "$members_json" \
+      'first(.workspaces[]? | select(.title == $t) | .ref | select($m | index(.))) // empty') || ws=""
+else
+  ws=$(cmux --json list-workspaces 2>/dev/null |
+    jq -r --arg t "$name" 'first(.workspaces[]? | select(.title == $t) | .ref) // empty') || ws=""
+fi
+
+if [ -n "$ws" ]; then
+  cmux select-workspace --workspace "$ws"
+else
+  # Run Claude inside a persistent zmx session so it survives the cmux workspace
+  # being closed and restored. zmx appends ZMX_SESSION_PREFIX directly onto the
+  # session name with no separator, so the trailing "." here yields a session
+  # named "<session>.claude".
+  claude_cmd="ZMX_SESSION_PREFIX='${session}.' zmx attach claude claude"
+
+  # Build the layout with jq so the embedded command is JSON-escaped correctly.
+  layout=$(jq -nc --arg cmd "$claude_cmd" '{
+    direction: "vertical",
+    split: 0.7,
+    children: [
+      { pane: { surfaces: [ { type: "terminal", name: "claude", command: $cmd } ] } },
+      { pane: { surfaces: [ { type: "terminal", name: "shell" } ] } }
+    ]
+  }')
+
+  # `new-workspace` prints "OK <ref>"; capture the ref so we can group it below.
+  new_ws=$(cmux new-workspace \
+    --name "$name" \
+    --cwd "$cwd" \
+    --focus true \
+    --layout "$layout" | awk '/^OK /{print $2; exit}') || new_ws=""
+
+  # Group the new workspace under the repo-named group. If that group already
+  # exists, just add to it; otherwise create it from this workspace (cmux adds a
+  # fresh blank anchor for the new group).
+  if [ -n "$new_ws" ]; then
+    if [ -n "$group_ref" ]; then
+      cmux workspace-group add --group "$group_ref" --workspace "$new_ws" || true
+    else
+      cmux workspace-group create --name "$repo" --from "$new_ws" || true
+    fi
+  fi
+fi

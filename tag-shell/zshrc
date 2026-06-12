@@ -21,12 +21,9 @@ _cache_eval() {
   source "$cache"
 }
 
-# asdf version manager
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-
 # Completions
 BREW_PREFIX="/opt/homebrew"
-FPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/completions:$BREW_PREFIX/share/zsh-completions:$FPATH"
+FPATH="$BREW_PREFIX/share/zsh-completions:$FPATH"
 autoload -Uz compinit
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
   compinit -i

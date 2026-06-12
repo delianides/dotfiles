@@ -7,11 +7,10 @@ tap 'achannarasappa/tap'
 tap 'jaxxstorm/tap'
 tap 'hashicorp/tap'
 tap 'cargo-lambda/cargo-lambda'
-tab 'neurosnap/tap'
+tap 'neurosnap/tap'
 
 
 
-brew 'asdf'
 brew 'mas'
 brew 'mise'
 
@@ -108,6 +107,15 @@ brew 'yt-dlp'
 brew 'pipx'
 brew 'openjdk'
 
+# Language runtimes — managed by Homebrew (migrated off asdf).
+# 'python' and 'openjdk' above are runtimes managed here too.
+brew 'node'
+brew 'uv'
+brew 'rust' # provides cargo + rustc
+brew 'go'
+brew 'bun'
+brew 'lua'
+
 # yazi + optional dependencies (https://yazi-rs.github.io/docs/installation/#homebrew)
 brew 'yazi'
 brew 'sevenzip'
@@ -123,3 +131,22 @@ brew 'gopls'
 brew 'ruby-lsp'
 brew 'typescript-language-server'
 brew 'prettier'
+
+# Node-based CLIs (formerly asdf default-npm-packages, now Homebrew formulae)
+brew 'vercel-cli'
+brew 'npm-check-updates'
+brew 'aws-cdk'
+brew 'happy-coder'
+brew 'cloudflare-wrangler'
+brew 'pnpm'
+
+# Language ecosystem globals (Homebrew 6.0 `brew bundle` extensions).
+# Replaces asdf's default-*-packages files. `brew bundle cleanup` prunes
+# anything installed globally that isn't listed here (it asks first).
+
+# uv tools — global Python CLIs (uv tool install; needs a CLI entry point).
+uv 'gflabel'
+
+# npm globals  — e.g. npm 'some-cli' (installed via the 'node' formula above)
+# cargo crates — e.g. cargo 'cargo-edit'
+# go packages  — e.g. go 'github.com/jesseduffield/lazygit'

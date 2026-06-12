@@ -12,8 +12,12 @@ opt.expandtab = true
 vim.g.maplocalleader = " "
 vim.g.mapleader = " "
 
-vim.g.python_host_prog = "/Users/adelianides/.asdf/shims/python"
-vim.g.python3_host_prog = "/Users/adelianides/.asdf/shims/python"
+-- Remote-plugin host providers are unused on this LazyVim setup; disable them
+-- to skip the missing-provider checkhealth warnings.
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
 
 -- LSP Server to use for Python.
 vim.g.lazyvim_python_lsp = "pyright"

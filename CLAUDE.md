@@ -8,7 +8,7 @@ Personal dotfiles managed with [RCM](https://github.com/thoughtbot/rcm) (thought
 
 ## Key Commands
 
-- **Full install**: `./install` — installs Homebrew, Brewfile packages, links dotfiles, sets up asdf plugins
+- **Full install**: `./install` — installs Homebrew, Brewfile packages (incl. language runtimes), links dotfiles, applies macOS defaults
 - **Link dotfiles**: `rcup -d .` (uses `rcrc` for config — excludes, tags, undotted dirs)
 - **Unlink dotfiles**: `rcdn`
 - **Add a new dotfile**: `mkrc <file>` (with `-t <tag>` for tag-specific)
@@ -43,20 +43,25 @@ Active tags: `shell editor terminal`
 ### Homebrew
 
 Split across three Brewfiles:
-- `Brewfile` — taps and CLI formulae
+- `Brewfile` — taps, CLI formulae, language runtimes, and global package entries
 - `Brewfile.casks` — GUI applications
 - `Brewfile.mas` — Mac App Store apps
 
+Language runtimes (node, bun, lua, python, rust, go, uv, openjdk) and their global
+packages are managed entirely by Homebrew — there is no asdf or mise version manager.
+`Brewfile` uses `brew bundle` ecosystem extensions (Homebrew 6.0+) to declare globals
+inline alongside formulae: `npm "…"`, `uv "…"`, `cargo "…"`, `go "…"`. Add a global by
+editing `Brewfile`, not a separate package-list file.
+
 ### tag-shell
 
-Consolidates zsh, git, asdf, and tmux configs:
+Consolidates zsh, git, and tmux configs:
 - `zshenv` — environment variables, Homebrew shell env, PATH setup
 - `zshrc` — zsh plugins (sourced from Homebrew), shell options, Starship prompt, sesh/tmux integration
 - `aliases` — shell aliases (eza, bat, trash, etc.)
 - `bin/` — custom scripts added to PATH
 - `gitconfig` — uses delta as pager, 1Password SSH signing for commits, conditional includes for work/personal profiles based on directory (`~/Work/`, `~/Github/`, `~/Gitlab/`)
 - `gitignore` — global gitignore
-- `asdfrc`, `tool-versions`, `default-*` — asdf version manager config and default packages
 - `config/tmux/tmux.conf` — tmux configuration
 
 ### tag-editor

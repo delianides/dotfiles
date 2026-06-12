@@ -15,12 +15,11 @@ cd ~/.dotfiles
 The installer will:
 
 1. Install Xcode command-line tools (if missing).
-2. Install Homebrew, then run `Brewfile`, `Brewfile.casks`, and `Brewfile.mas`.
+2. Install Homebrew, then run `Brewfile`, `Brewfile.casks`, and `Brewfile.mas` — this also installs the language runtimes (node, bun, lua, python, rust, go, uv, openjdk) and global CLIs.
 3. Switch the login shell to `zsh`.
 4. Symlink dotfiles into `$HOME` via `rcup`.
 5. Apply macOS system defaults from `system/macos`.
-6. Install [asdf](https://asdf-vm.com/) language plugins (bun, node, python, ruby, rust, go) and the versions in `.tool-versions`.
-7. Install [Claude Code](https://docs.claude.com/claude-code).
+6. Install [Claude Code](https://docs.claude.com/claude-code).
 
 After install: remap Caps Lock to Control in System Settings, install tmux plugins with `prefix + I`, and install any non-Homebrew fonts you want manually.
 
@@ -48,7 +47,6 @@ Each `tag-*` directory is an [RCM tag](https://github.com/thoughtbot/rcm). The a
 - **Zsh** — `zshenv`, `zshrc`, `aliases`. Plugins are sourced from Homebrew (no plugin manager).
 - **Starship** prompt — config lives under `tag-terminal/config/starship.toml`.
 - **Git** — `gitconfig` with [delta](https://github.com/dandavison/delta) as the pager and 1Password SSH commit signing. Conditional includes pick the right identity based on the working directory (`~/Work/`, `~/Github/`, `~/Gitlab/`).
-- **asdf** — `asdfrc`, `tool-versions`, `default-*` package lists per language.
 - **tmux** — `config/tmux/tmux.conf`, paired with [sesh](https://github.com/joshmedeski/sesh) for session management.
 - **Other tools** — `config/direnv/`, `config/zellij/`, `config/worktrunk/`, plus a `bin/` directory of custom scripts.
 - **Claude Code** — `claude/` holds settings and hooks.
@@ -71,9 +69,11 @@ Each `tag-*` directory is an [RCM tag](https://github.com/thoughtbot/rcm). The a
 
 Homebrew installs are split into three files:
 
-- `Brewfile` — taps and CLI formulae (neovim, helix, ripgrep, fzf, gh, lazygit, kubernetes tooling, etc.).
+- `Brewfile` — taps, CLI formulae, **language runtimes** (node, bun, lua, python, rust, go, uv, openjdk), and global package entries.
 - `Brewfile.casks` — GUI apps (Ghostty, WezTerm, Zed, Raycast, 1Password, Obsidian, Slack, Docker, fonts, …).
 - `Brewfile.mas` — Mac App Store apps (installed via [`mas`](https://github.com/mas-cli/mas)).
+
+Language runtimes and their global packages are managed entirely by Homebrew (no asdf/mise). `Brewfile` uses [`brew bundle`](https://docs.brew.sh/Brew-Bundle-and-Brewfile) ecosystem extensions (Homebrew 6.0+) to declare globals alongside formulae — `npm "…"`, `uv "…"`, `cargo "…"`, `go "…"`. `brew bundle cleanup` prunes globals not listed.
 
 ## CI
 
