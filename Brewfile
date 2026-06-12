@@ -1,9 +1,7 @@
 # vim:ft=ruby:
 #
 
-tap 'derailed/k9s'
 tap 'teamookla/speedtest'
-tap 'achannarasappa/tap'
 tap 'jaxxstorm/tap'
 tap 'hashicorp/tap'
 tap 'cargo-lambda/cargo-lambda'
@@ -34,7 +32,7 @@ brew 'autoenv'
 brew 'direnv'
 brew 'avrdude'
 brew 'clipper', restart_service: true
-brew 'speedtest', force: true
+brew 'teamookla/speedtest/speedtest', force: true, trusted: true
 brew 'colordiff'
 brew 'curl'
 brew 'dfu-programmer'
@@ -79,14 +77,14 @@ brew 'ssh-copy-id'
 brew 'pure'
 brew 'starship'
 brew 'streamlink'
-brew 'terraform'
+brew 'hashicorp/tap/terraform', trusted: true
 brew 'terraform-docs'
 brew 'television'
 brew 'tldr'
 brew 'tmux'
-brew 'zmx'
+brew 'neurosnap/tap/zmx', trusted: true
 brew 'unzip'
-brew 'vault'
+brew 'hashicorp/tap/vault', trusted: true
 brew 'vim'
 brew 'watch'
 brew 'watchman'
@@ -98,7 +96,6 @@ brew 'zsh-completions'
 brew 'zsh-vi-mode'
 brew 'zsh-history-substring-search'
 brew 'vivid'
-brew 'derailed/k9s/k9s'
 brew 'tree'
 brew 'atomicparsley'
 brew 'opencode'
