@@ -44,3 +44,6 @@ keybind = cmd+n=new_window
 
 # Misc
 keybind = cmd+shift+k=clear_screen
+
+keybind = global:cmd+;=toggle_quick_terminal
+
