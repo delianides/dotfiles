@@ -121,7 +121,7 @@ brew 'resvg'
 brew 'imagemagick'
 
 # Language servers + formatters (helix, zed, nvim)
-brew 'pyright'
+brew 'pyrefly'
 brew 'ruff'
 brew 'rust-analyzer'
 brew 'gopls'

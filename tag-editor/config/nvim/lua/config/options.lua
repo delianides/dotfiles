@@ -20,7 +20,7 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 
 -- LSP Server to use for Python.
-vim.g.lazyvim_python_lsp = "pyright"
+vim.g.lazyvim_python_lsp = "pyrefly"
 vim.g.lazyvim_python_ruff = "ruff"
 
 vim.g.lazyvim_mini_snippets_in_completion = true

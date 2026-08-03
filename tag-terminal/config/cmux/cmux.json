@@ -21,7 +21,7 @@
     "claude": {
       "type": "command",
       "title": "Claude Code",
-      "command": "claude --dangerously-skip-permissions",
+      "command": "claude",
       "target": "newTabInCurrentPane",
       "shortcut": ["ctrl+a", "shift+a"],
       "icon": { "type": "image", "path": "~/.config/cmux/icons/claude.svg" }
@@ -33,20 +33,6 @@
       "target": "newTabInCurrentPane",
       "icon": { "type": "image", "path": "~/.config/cmux/icons/codex.svg" }
     },
-    "opencode": {
-      "type": "command",
-      "title": "OpenCode",
-      "command": "opencode",
-      "target": "newTabInCurrentPane",
-      "icon": { "type": "image", "path": "~/.config/cmux/icons/opencode.svg" }
-    },
-    "pi": {
-      "type": "command",
-      "title": "Pi",
-      "command": "pi",
-      "target": "newTabInCurrentPane",
-      "icon": { "type": "image", "path": "~/.config/cmux/icons/pi.svg" }
-    },
     "default-layout": {
       "type": "workspaceCommand",
       "commandName": "New Workspace",
@@ -57,15 +43,14 @@
     },
     "canary-thread": {
       "type": "workspaceCommand",
-      "commandName": "New Canary Thread",
-      "title": "New Canary Thread",
-      "subtitle": "Canary Specific Thread",
+      "commandName": "Canary Workspace",
+      "title": "Canary Workspace",
+      "subtitle": "New Canary Workspace",
       "keywords": ["canary", "worktree", "wt", "pms-gateway", "agents"],
       "icon": { "type": "symbol", "name": "folder.badge.plus" },
       "palette": true
     }
   },
-
   "commands": [
     {
       "name": "New Workspace",
@@ -100,7 +85,7 @@
       }
     },
     {
-      "name": "New Canary Thread",
+      "name": "Canary Workspace",
       "description": "Top pane claude, bottom pane terminal",
       "keywords": ["layout", "split", "stack"],
       "workspace": {
@@ -139,9 +124,7 @@
         { "id": "splitRight", "builtin": "cmux.splitRight" },
         { "id": "splitDown", "builtin": "cmux.splitDown" },
         { "id": "claude", "action": "claude" },
-        { "id": "codex", "action": "codex" },
-        { "id": "opencode", "action": "opencode" },
-        { "id": "pi", "action": "pi" }
+        { "id": "codex", "action": "codex" }
       ]
     },
     "newWorkspace": {
@@ -153,8 +136,8 @@
         },
         { "type": "separator" },
         {
-          "action": "canary-thread",
-          "title": "New Canary Thread"
+          "action": "canary-workspace",
+          "title": "Canary Workspace"
         }
       ]
     }
