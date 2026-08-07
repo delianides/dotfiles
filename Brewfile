@@ -119,6 +119,7 @@ brew 'sevenzip'
 brew 'poppler'
 brew 'resvg'
 brew 'imagemagick'
+brew 'ripgrep-all' # backs the `fr rga` binding in config/yazi/keymap.toml
 
 # Language servers + formatters (helix, zed, nvim)
 brew 'pyrefly'

@@ -24,3 +24,9 @@ ignore = {
   "631",  -- max_line_length
   "212/_.*",  -- unused argument, for vars with "_" prefix
 }
+
+-- Yazi injects its own globals into plugin and init scripts. Scoped to the yazi
+-- config so a typo in the Neovim configs is still caught.
+files["tag-terminal/config/yazi"] = {
+  globals = { "ya", "cx", "ui", "th", "rt", "ps", "fs", "Command", "Url" },
+}

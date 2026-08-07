@@ -84,6 +84,11 @@ info "Linking dotfiles into ~..."
 export RCRC="$install_dir/rcrc"
 stay_awake_while rcup -d "$install_dir"
 
+info "Installing yazi plugins..."
+# Reads the now-linked ~/.config/yazi/package.toml; plugins themselves live in
+# ~/.config/yazi/plugins and are deliberately not tracked in this repo.
+ya pkg install
+
 info "Applying macOS settings..."
 sh "$install_dir/system/macos"
 

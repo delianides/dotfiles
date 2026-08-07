@@ -1,0 +1,6 @@
+#:schema https://yazi-rs.github.io/schemas/theme.json
+
+# Matches the Ghostty theme in tag-terminal/config/ghostty/config.
+[flavor]
+dark  = "catppuccin-mocha"
+light = "catppuccin-latte"

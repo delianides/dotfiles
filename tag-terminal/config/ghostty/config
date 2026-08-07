@@ -16,28 +16,27 @@ scrollback-limit = 1000000
 
 window-save-state = always
 
-# Window / pane / tab management — matched to the cmux scheme (cmux.json) so the
-# same keys drive panes/surfaces in cmux and native splits/tabs in standalone
-# Ghostty. cmux owns declarative workspace layouts; only keybindings live here.
+# Window / pane / tab management — cmd-based so nothing competes with the
+# multiplexer. cmux owns declarative workspace layouts; only keybindings here.
+#
+# IMPORTANT: ctrl+a and ctrl+hjkl are deliberately left unbound so they reach
+# the multiplexer (herdr's prefix is ctrl+a; ctrl+hjkl is nvim-aware pane
+# navigation). Ghostty consumes bound keys before the terminal program sees
+# them, and `performable:` does not reliably fall through on macOS
+# (ghostty-org/ghostty#9283, #5552), so unbinding is the only working fix.
 
 # Splits / panes
-# Vim-style focus movement — ctrl+hjkl (cmux focusLeft/Down/Up/Right).
-keybind = ctrl+h=goto_split:left
-keybind = ctrl+j=goto_split:down
-keybind = ctrl+k=goto_split:up
-keybind = ctrl+l=goto_split:right
-# Create splits (cmux splitRight / splitDown).
+# Create splits (cmux splitRight / splitDown). Ghostty's own split navigation
+# stays on the cmd+alt+arrow and cmd+[ / cmd+] defaults.
 keybind = cmd+d=new_split:right
 keybind = cmd+shift+d=new_split:down
 # Zoom the focused split (cmux toggleSplitZoom).
 keybind = cmd+shift+enter=toggle_split_zoom
 
 # Tabs (cmux surfaces)
-# New tab (cmux newSurface); ctrl+a leader for next/prev (cmux nextSurface /
-# prevSurface). cmd+1..8 jump to a tab and cmd+9 → last tab are Ghostty defaults.
+# New tab (cmux newSurface). cmd+shift+[ / cmd+shift+] cycle tabs, cmd+1..8
+# jump to a tab, and cmd+9 → last tab are all Ghostty defaults.
 keybind = cmd+t=new_tab
-keybind = ctrl+a>n=next_tab
-keybind = ctrl+a>p=previous_tab
 
 # Windows
 keybind = cmd+n=new_window

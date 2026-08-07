@@ -1,3 +1,14 @@
+-- herdr is not one of smart-splits' built-in backends; the local implementation
+-- lives in lua/smart-splits/mux/herdr.lua. Only select it when we're actually in
+-- a herdr pane, so tmux/wezterm/kitty auto-detection still works elsewhere.
+local function herdr_backend()
+  local pane_id = vim.env.HERDR_PANE_ID
+  if pane_id and #pane_id > 0 then
+    return "herdr"
+  end
+  return nil
+end
+
 return {
   {
     "mrjones2014/smart-splits.nvim",
@@ -34,6 +45,7 @@ return {
     },
     opts = {
       at_edge = "stop",
+      multiplexer_integration = herdr_backend(),
     },
   },
   {

@@ -1,0 +1,74 @@
+#:schema https://yazi-rs.github.io/schemas/keymap.json
+
+# `prepend_keymap` wins over the presets, so anything not listed here keeps its
+# default binding. Defaults worth remembering:
+#   f  filter          /  find in cwd     n / N  next / prev match
+#   z  fzf jump        Z  zoxide jump     <C-s>  cancel search
+#
+# The search keys below are repo-wide: `repo-root` cds to the git root first,
+# then hands off to the real search. Prefix any of them with `\` to search only
+# the directory you're standing in. Outside a repo both behave the same.
+
+# --- Search ---------------------------------------------------------------
+
+[[mgr.prepend_keymap]]
+on   = "<C-g>"
+run  = "plugin repo-root -- fr rg"
+desc = "Grep repo contents (fzf + bat preview)"
+
+[[mgr.prepend_keymap]]
+on   = [ "\\", "<C-g>" ]
+run  = "plugin fr rg"
+desc = "Grep contents under the cwd (fzf + bat preview)"
+
+[[mgr.prepend_keymap]]
+on   = "<C-p>"
+run  = "plugin repo-root -- fr rga"
+desc = "Grep repo PDFs, docs, and archives (rga)"
+
+[[mgr.prepend_keymap]]
+on   = [ "\\", "<C-p>" ]
+run  = "plugin fr rga"
+desc = "Grep PDFs, docs, and archives under the cwd (rga)"
+
+[[mgr.prepend_keymap]]
+on   = "s"
+run  = "plugin repo-root -- search fd"
+desc = "Search repo filenames (fd)"
+
+[[mgr.prepend_keymap]]
+on   = [ "\\", "s" ]
+run  = "search --via=fd"
+desc = "Search filenames under the cwd (fd)"
+
+[[mgr.prepend_keymap]]
+on   = "S"
+run  = "plugin repo-root -- search rg"
+desc = "Search repo contents (rg)"
+
+[[mgr.prepend_keymap]]
+on   = [ "\\", "S" ]
+run  = "search --via=rg"
+desc = "Search contents under the cwd (rg)"
+
+[[mgr.prepend_keymap]]
+on   = "F"
+run  = "plugin smart-filter"
+desc = "Filter, entering directories as they narrow to one match"
+
+# --- Navigation -----------------------------------------------------------
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "r" ]
+run  = "plugin repo-root"
+desc = "Go to the git repository root"
+
+[[mgr.prepend_keymap]]
+on   = "l"
+run  = "plugin smart-enter"
+desc = "Enter the child directory, or open the file"
+
+[[mgr.prepend_keymap]]
+on   = "<Right>"
+run  = "plugin smart-enter"
+desc = "Enter the child directory, or open the file"
