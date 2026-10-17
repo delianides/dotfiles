@@ -1,0 +1,117 @@
+#!/usr/bin/env zsh
+# Directional pane focus for cmux.
+#
+# cmux has no directional focus command -- `focus-pane` takes a pane ref. What
+# it does expose is `list-panes --json`, where every pane carries a pixel_frame
+# (x/y/width/height in points, y growing downwards). So the neighbour is worked
+# out here from that geometry.
+#
+# The Neovim side runs the same algorithm in
+# tag-editor/config/nvim/lua/smart-splits-backend-cmux.lua; keep the two in step.
+# Between them, Ctrl-hjkl walks Neovim windows and cmux panes as one space:
+# Neovim owns the key inside a terminal pane and calls cmux at its edge, this
+# script gives the shell prompt the same keys. cmux leaves ctrl+hjkl alone and
+# binds its own focus actions to cmd+ctrl+hjkl in cmux.json, for panes where
+# neither applies (Claude Code, browsers).
+#
+# Usage:
+#   cmux-nav focus <left|right|up|down>   focus that pane; exit 1 if there is none
+#   cmux-nav edge <left|right|up|down>    exit 0 when no pane lies that way
+#   cmux-nav current                      print the focused pane ref
+#
+# Only ever considers panes with a real frame: cmux reports zeros for a
+# workspace that is not on screen, and a zero frame must not produce a match.
+
+emulate -L zsh
+set -o pipefail
+
+readonly TOUCH_TOLERANCE=4 # points of slack for the divider between panes
+
+cmux_bin=${CMUX_BIN_PATH:-${CMUX_BUNDLED_CLI_PATH:-cmux}}
+
+die() {
+  print -ru2 -- "cmux-nav: $1"
+  exit 2
+}
+
+usage() {
+  print -ru2 -- "usage: cmux-nav <focus|edge> <left|right|up|down> | cmux-nav current"
+  exit 2
+}
+
+panes_json() {
+  [[ -n $CMUX_WORKSPACE_ID ]] || return 1
+  CMUX_QUIET=1 "$cmux_bin" list-panes --json --workspace "$CMUX_WORKSPACE_ID" 2>/dev/null
+}
+
+# Print the ref of the pane $1 of the focused one, or nothing.
+neighbour() {
+  local direction=$1 json
+  json=$(panes_json) || return 1
+  [[ -n $json ]] || return 1
+
+  print -r -- "$json" | jq -r --arg d "$direction" --argjson tol "$TOUCH_TOLERANCE" '
+    def frame: .pixel_frame;
+    def right: frame.x + frame.width;
+    def bottom: frame.y + frame.height;
+
+    [.panes[] | select(frame.width > 0 and frame.height > 0)] as $panes
+    | ($panes | map(select(.focused)) | first) as $me
+    | if $me == null then empty
+      else
+        $panes
+        | map(select(.ref != $me.ref))
+        | map({
+            ref: .ref,
+            gap: (
+              if   $d == "right" then .pixel_frame.x - ($me | right)
+              elif $d == "left"  then $me.pixel_frame.x - (. | right)
+              elif $d == "down"  then .pixel_frame.y - ($me | bottom)
+              else                    $me.pixel_frame.y - (. | bottom)
+              end
+            ),
+            # How much of the shared border the two panes actually have in common.
+            overlap: (
+              if $d == "right" or $d == "left" then
+                ([(. | bottom), ($me | bottom)] | min) - ([.pixel_frame.y, $me.pixel_frame.y] | max)
+              else
+                ([(. | right), ($me | right)] | min) - ([.pixel_frame.x, $me.pixel_frame.x] | max)
+              end
+            )
+          })
+        # gap >= -tol keeps panes starting at (or a hair before) our edge;
+        # overlap > 0 keeps only panes that share that edge at all.
+        | map(select(.gap >= (-$tol) and .overlap > 0))
+        # Nearest wins; among equally near panes, the best aligned one.
+        | sort_by(.gap, -.overlap)
+        | first
+        | if . == null then empty else .ref end
+      end
+  ' 2>/dev/null
+}
+
+(( $# >= 1 )) || usage
+command -v jq >/dev/null 2>&1 || die "jq is required"
+
+case $1 in
+  current)
+    json=$(panes_json) || exit 1
+    print -r -- "$json" | jq -r '.panes[] | select(.focused) | .ref' 2>/dev/null
+    ;;
+
+  edge)
+    (( $# == 2 )) || usage
+    [[ -z $(neighbour "$2") ]]
+    ;;
+
+  focus)
+    (( $# == 2 )) || usage
+    target=$(neighbour "$2")
+    [[ -n $target ]] || exit 1
+    CMUX_QUIET=1 "$cmux_bin" focus-pane --pane "$target" --workspace "$CMUX_WORKSPACE_ID" >/dev/null 2>&1
+    ;;
+
+  *)
+    usage
+    ;;
+esac

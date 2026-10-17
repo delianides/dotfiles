@@ -1,0 +1,63 @@
+#!/usr/bin/env zsh
+# Cycle focus through every surface (tab) in the current cmux workspace, across
+# splits, wrapping at the ends.
+#
+# cmux's own shortcuts each cover half of this: nextSurface cycles the tabs of
+# the focused pane only, and focusNextPane hops between panes but lands on
+# whatever tab each one already shows. Here every pane's tabs are laid end to
+# end in cmux's pane order, so with two splits of two tabs each the four
+# surfaces come round in turn: pane 1 tab 1, pane 1 tab 2, pane 2 tab 1, ...
+#
+# Usage:
+#   cmux-cycle [next|prev]   focus the next (default) or previous surface
+#
+# Meant to be bound to a global hotkey (cmux actions can only type commands
+# into a terminal, not run one in the background), so it does not rely on
+# CMUX_WORKSPACE_ID: without it, cmux answers for the workspace on screen.
+
+emulate -L zsh
+set -o pipefail
+
+cmux_bin=${CMUX_BIN_PATH:-${CMUX_BUNDLED_CLI_PATH:-}}
+if [[ -z $cmux_bin ]]; then
+  # Hotkey launchers run with a bare PATH, so fall back to the app bundle.
+  cmux_bin=$(command -v cmux 2>/dev/null) || cmux_bin=/Applications/cmux.app/Contents/Resources/bin/cmux
+fi
+
+die() {
+  print -ru2 -- "cmux-cycle: $1"
+  exit 2
+}
+
+case ${1:-next} in
+  next) step=1 ;;
+  prev) step=-1 ;;
+  *)
+    print -ru2 -- "usage: cmux-cycle [next|prev]"
+    exit 2
+    ;;
+esac
+
+command -v jq >/dev/null 2>&1 || [[ -x /opt/homebrew/bin/jq ]] || die "jq is required"
+jq_bin=$(command -v jq 2>/dev/null || print /opt/homebrew/bin/jq)
+
+json=$(CMUX_QUIET=1 "$cmux_bin" --json list-panes 2>/dev/null) || exit 1
+[[ -n $json ]] || exit 1
+
+target=$(print -r -- "$json" | "$jq_bin" -r --argjson step "$step" '
+  # Only panes that are really on screen and hold tabs; cmux also reports
+  # frameless placeholder panes with no surfaces.
+  [.panes[]
+    | select((.pixel_frame.width // 0) > 0 and (.surface_count // 0) > 0)]
+  | sort_by(.index)
+  | (map(select(.focused)) | first | .selected_surface_ref) as $current
+  | [.[].surface_refs[]] as $all
+  | ($all | index($current)) as $i
+  | if ($all | length) == 0 then empty
+    elif $i == null then $all[0]
+    else $all[($i + $step) % ($all | length)]
+    end
+' 2>/dev/null)
+
+[[ -n $target ]] || exit 1
+CMUX_QUIET=1 "$cmux_bin" focus-panel --panel "$target" >/dev/null 2>&1

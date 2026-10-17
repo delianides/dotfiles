@@ -20,7 +20,7 @@ window-save-state = always
 # multiplexer. cmux owns declarative workspace layouts; only keybindings here.
 #
 # IMPORTANT: ctrl+a and ctrl+hjkl are deliberately left unbound so they reach
-# the multiplexer (herdr's prefix is ctrl+a; ctrl+hjkl is nvim-aware pane
+# the multiplexer (ctrl+a as a prefix; ctrl+hjkl is nvim-aware pane
 # navigation). Ghostty consumes bound keys before the terminal program sees
 # them, and `performable:` does not reliably fall through on macOS
 # (ghostty-org/ghostty#9283, #5552), so unbinding is the only working fix.
