@@ -1,17 +1,6 @@
--- herdr is not one of smart-splits' built-in backends; the local implementation
--- lives in lua/smart-splits/mux/herdr.lua. Only select it when we're actually in
--- a herdr pane, so tmux/wezterm/kitty auto-detection still works elsewhere.
-local function herdr_backend()
-  local pane_id = vim.env.HERDR_PANE_ID
-  if pane_id and #pane_id > 0 then
-    return "herdr"
-  end
-  return nil
-end
-
 return {
   {
-    "mrjones2014/smart-splits.nvim",
+    "smart-splits-nvim/smart-splits.nvim",
     lazy = false,
     keys = {
       {
@@ -44,26 +33,17 @@ return {
       },
     },
     opts = {
-      at_edge = "stop",
-      multiplexer_integration = herdr_backend(),
+      move = { at_edge = "stop" },
+      mux = {
+        -- Our own backend, lua/smart-splits-backend-cmux.lua. It detects cmux
+        -- itself, so outside cmux movement just stops at Neovim's edges.
+        backend = "smart-splits-backend-cmux",
+        warn_if_unusable = false,
+      },
     },
   },
   {
     "max397574/better-escape.nvim",
     config = true,
-  },
-  {
-    "TimUntersberger/neogit",
-    keys = { { "<C-g>", "<cmd>Neogit kind=split<cr>", desc = "NeoGit" } },
-    opts = {
-      disable_signs = true,
-      kind = "split",
-      commit_popup = { kind = "split" },
-      integrations = {
-        diffview = true,
-      },
-      disable_builtin_notifications = true,
-    },
-    dependencies = { "sindrets/diffview.nvim" },
   },
 }
