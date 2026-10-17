@@ -134,6 +134,38 @@ if [[ -z "$TERM_PROGRAM" || "$TERM_PROGRAM" =~ ^(ghostty|WezTerm|alacritty|kitty
   bindkey -M viins '^O' sesh-sessions
 fi
 
+# cmux pane navigation (Ctrl-hjkl), the shell half of the vim-tmux-navigator
+# equivalent. cmux leaves these keys to the terminal (its own focus actions sit
+# on cmd+ctrl+hjkl in cmux.json) so Neovim can own them via smart-splits; at a
+# shell prompt there is no Neovim to own them, so bind them here. If no cmux pane lies that way the key falls back to its usual widget,
+# which is why ^L still clears the screen in a single-pane workspace.
+if [[ -n "$CMUX_WORKSPACE_ID" ]] && (( $+commands[cmux-nav] )); then
+  _cmux_nav() {
+    cmux-nav focus "$1" 2>/dev/null && return
+    zle "$2"
+  }
+  cmux-nav-left()  { _cmux_nav left  backward-delete-char }
+  cmux-nav-down()  { _cmux_nav down  accept-line }
+  cmux-nav-up()    { _cmux_nav up    kill-line }
+  cmux-nav-right() { _cmux_nav right clear-screen }
+
+  zle -N cmux-nav-left
+  zle -N cmux-nav-down
+  zle -N cmux-nav-up
+  zle -N cmux-nav-right
+
+  for _keymap in emacs viins vicmd; do
+    bindkey -M $_keymap '^H' cmux-nav-left
+    bindkey -M $_keymap '^J' cmux-nav-down
+    bindkey -M $_keymap '^K' cmux-nav-up
+    bindkey -M $_keymap '^L' cmux-nav-right
+  done
+  unset _keymap
+fi
+
 _cache_eval wt wt config shell init zsh
 
 export PATH="$BREW_PREFIX/opt/macos-trash/bin:$PATH"
+
+# Atuin (must stay last — its Ctrl-R binding intentionally wins over fzf's)
+_cache_eval atuin atuin init zsh

@@ -44,8 +44,8 @@ There is no plugin manager — every plugin is a Homebrew package and is `source
 
 | Alias | Expands to |
 |---|---|
-| `qq` | `cd . && source ~/.zshrc` (fast reload) |
-| `reload!` | `RELOAD=1 source ~/.zshrc` |
+| `qq` | `exec zsh` (full reload — picks up `zshenv` too) |
+| `reload!` | `exec zsh` |
 | `ls` / `ll` / `l` / `tree` | [eza](https://eza.rocks/) variants |
 | `cat` | [bat](https://github.com/sharkdp/bat) |
 | `rm` | `trash` (macos-trash) |

@@ -1,0 +1,11 @@
+# GitHub CLI extensions, installed by ./install via `gh extension install`.
+#
+# One entry per line: OWNER/REPO
+# Append @TAG_OR_COMMIT to pin (passed through as `gh extension install --pin`).
+# Blank lines and #-comments are ignored.
+#
+# Regenerate the current set with: gh extension list | awk '{print $2}'
+# Upgrade everything already installed with: gh extension upgrade --all
+
+dlvhdr/gh-dash
+dlvhdr/gh-enhance

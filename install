@@ -49,6 +49,42 @@ command_does_not_exist() {
   ! command -v "$1" >/dev/null
 }
 
+# Strip #-comments and blank lines from a manifest, yielding one entry per line.
+manifest_entries() {
+  sed -e 's/#.*//' -e 's/[[:space:]]*$//' "$1" | grep -v '^$' || true
+}
+
+# Split an OWNER/REPO[@REF] manifest entry into its repo and ref halves.
+entry_repo() { echo "${1%%@*}"; }
+entry_ref() {
+  if [ "$1" != "${1#*@}" ]; then echo "${1#*@}"; fi
+}
+
+install_gh_extensions() {
+  local manifest=$1
+  if command_does_not_exist gh; then
+    yellow "Warning: gh not installed, skipping extensions"
+    return 0
+  fi
+
+  local installed
+  installed="$(gh extension list 2>/dev/null || true)"
+
+  local entry repo ref
+  while read -r entry; do
+    repo="$(entry_repo "$entry")"
+    ref="$(entry_ref "$entry")"
+    if echo "$installed" | awk -v r="$repo" '{ for (i = 1; i <= NF; i++) if ($i == r) found = 1 } END { exit !found }'; then
+      continue
+    fi
+    if [ -n "$ref" ]; then
+      gh extension install "$repo" --pin "$ref" || yellow "Warning: failed to install gh extension $repo@$ref"
+    else
+      gh extension install "$repo" || yellow "Warning: failed to install gh extension $repo"
+    fi
+  done < <(manifest_entries "$manifest")
+}
+
 info "Checking for command-line tools..."
 if command_does_not_exist xcodebuild; then
   stay_awake_while xcode-select --install
@@ -88,6 +124,9 @@ info "Installing yazi plugins..."
 # Reads the now-linked ~/.config/yazi/package.toml; plugins themselves live in
 # ~/.config/yazi/plugins and are deliberately not tracked in this repo.
 ya pkg install
+
+info "Installing gh extensions..."
+install_gh_extensions "$install_dir/gh-extensions"
 
 info "Applying macOS settings..."
 sh "$install_dir/system/macos"

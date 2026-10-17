@@ -10,3 +10,6 @@ graphify-out
 # Subspace agent artifacts (auto-added by Subspace)
 AGENTS.override.md
 .cmux/
+
+# Claude Code per-machine settings
+**/.claude/settings.local.json

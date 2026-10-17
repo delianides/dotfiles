@@ -1,0 +1,147 @@
+#!/usr/bin/env python3
+"""sf-symbols — search the SF Symbols catalog macOS ships locally.
+
+cmux takes SF Symbol names for status pills (`cmux set-status … --icon`) and dock
+controls, and it does NOT validate them: a misspelled name is accepted with `OK` and
+renders as nothing. This is how you check a name before using one.
+
+Usage:
+  sf-symbols <query>...         match symbol names and Apple's own keywords
+  sf-symbols -n <regex>         match names only, as a regex
+  sf-symbols -c <category>      list a category (bare -c lists the categories)
+  sf-symbols -a <name>          show one name's availability and keywords
+
+Options:
+  -l <n>   max results (default 40)
+  -A       include symbols newer than this machine's macOS (hidden by default)
+
+Output is `<name>  <macOS version>  [keywords]`, with `!` marking a symbol this
+machine's macOS is too old to render.
+"""
+
+import plistlib
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+RES = Path("/System/Library/CoreServices/CoreGlyphs.bundle/Contents/Resources")
+
+
+def load():
+    try:
+        availability = plistlib.loads((RES / "name_availability.plist").read_bytes())
+        search = plistlib.loads((RES / "symbol_search.plist").read_bytes())
+        categories = plistlib.loads((RES / "symbol_categories.plist").read_bytes())
+    except OSError as err:
+        sys.exit(f"cannot read the SF Symbols catalog: {err}")
+    years = availability["year_to_release"]
+    macos = {
+        name: years.get(year, {}).get("macOS", "?")
+        for name, year in availability["symbols"].items()
+    }
+    return macos, search, categories
+
+
+def host_macos():
+    try:
+        out = subprocess.run(["sw_vers", "-productVersion"], capture_output=True,
+                             text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return version_tuple(out)
+
+
+def version_tuple(value):
+    parts = []
+    for chunk in str(value).split("."):
+        parts.append(int(chunk) if chunk.isdigit() else 0)
+    return tuple(parts or [0])
+
+
+def main(argv):
+    args = argv[1:]
+    if not args:
+        sys.exit(__doc__.strip())
+
+    limit, show_all, mode, terms = 40, False, "search", []
+    i = 0
+    while i < len(args):
+        arg = args[i]
+        if arg == "-l" and i + 1 < len(args):
+            limit = int(args[i + 1]); i += 2; continue
+        if arg == "-A":
+            show_all = True; i += 1; continue
+        if arg in ("-n", "-c", "-a"):
+            mode = {"-n": "name", "-c": "category", "-a": "about"}[arg]; i += 1; continue
+        if arg in ("-h", "--help"):
+            sys.exit(__doc__.strip())
+        terms.append(arg); i += 1
+
+    macos, search, categories = load()
+    host = host_macos()
+
+    def usable(name):
+        return show_all or host is None or version_tuple(macos.get(name, "0")) <= host
+
+    def show(names):
+        shown = 0
+        for name in names:
+            if not usable(name):
+                continue
+            version = macos.get(name, "?")
+            mark = " " if host is None or version_tuple(version) <= host else "!"
+            keywords = ", ".join(search.get(name, [])[:6])
+            print(f"{mark}{name:<44} {version:<7} {keywords}")
+            shown += 1
+            if shown >= limit:
+                print(f"  … stopping at {limit}; pass -l for more")
+                break
+        if not shown:
+            print("no matches")
+
+    if mode == "about":
+        for name in terms:
+            if name not in macos:
+                print(f"{name}: NOT a real symbol — cmux would accept it and draw nothing")
+                continue
+            print(f"{name}: macOS {macos[name]}, keywords: {', '.join(search.get(name, [])) or '—'}, "
+                  f"categories: {', '.join(categories.get(name, [])) or '—'}")
+        return 0
+
+    if mode == "category":
+        if not terms:
+            seen = sorted({c for cats in categories.values() for c in cats})
+            print("\n".join(seen))
+            return 0
+        wanted = set(terms)
+        show(sorted(n for n, cats in categories.items() if wanted & set(cats)))
+        return 0
+
+    if mode == "name":
+        pattern = re.compile(terms[0])
+        show(sorted(n for n in macos if pattern.search(n)))
+        return 0
+
+    # Default: substring on the name, plus Apple's keyword index. Name hits first —
+    # they are what you are usually confirming — then keyword-only discoveries.
+    needles = [t.lower() for t in terms]
+    by_name = sorted(n for n in macos if all(t in n.lower() for t in needles))
+    by_keyword = sorted(
+        n for n, words in search.items()
+        if n not in set(by_name)
+        # Match both directions, since Apple's keywords are not consistently stemmed:
+        # "blocked" should find the keyword "block". The length guard on the reverse
+        # direction is load-bearing — one-letter keywords like "a" and "b" exist, and
+        # without it every query matches half the catalog.
+        and all(
+            any(t in w.lower() or (len(w) >= 4 and w.lower() in t) for w in words)
+            for t in needles
+        )
+    )
+    show(by_name + by_keyword)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

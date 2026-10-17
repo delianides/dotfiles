@@ -4,10 +4,26 @@ description = "Search code symbols (functions, classes, types) and jump to defin
 
 [source]
 command = "tv-symbols-source"
+# Entries are `path:line:col:matched source text`. Trim the printed selection to
+# `path:line` (the `..2` range is exclusive) so a piped `tv symbols` stays parseable.
+output = "{split:\\::..2}"
 
 [preview]
-command = "file=$(echo {} | cut -d: -f1); line=$(echo {} | cut -d: -f2); bat --color=always --style=numbers --highlight-line $line --line-range $((line>10 ? line-10 : 1)):$((line+30)) $file 2>/dev/null"
+# Pass only the path and line fields through tv's own template filters, quoted.
+# Interpolating the raw `{}` entry instead lets the matched source text reach the
+# shell, where glob chars (`*`) and definition syntax (`() {`) break the preview.
+command = "bat --color=always --style=numbers --highlight-line '{split:\\::1}' '{split:\\::0}'"
+offset = "{split:\\::1}"
 
 [ui]
 preview_panel = { size = 65, scrollbar = true }
 input_bar.prompt = "sym ❯ "
+
+[keybindings]
+enter = "actions:edit"
+
+[actions.edit]
+description = "Open file in editor at line"
+command = "${EDITOR:-vim} '+{split:\\::1}' '{split:\\::0}'"
+shell = "bash"
+mode = "execute"

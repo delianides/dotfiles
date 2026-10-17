@@ -68,6 +68,9 @@
 [includeIf "gitdir:~/.dotfiles/"]
   path = .gitconfig-personal-github
 
+[includeIf "gitdir:~/Code/"]
+  path = .gitconfig-personal-github
+
 [includeIf "gitdir:~/Github/"]
   path = .gitconfig-personal-github
 

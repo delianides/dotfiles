@@ -1,5 +1,5 @@
-alias qq="cd . && source ~/.zshrc"
-alias reload!='RELOAD=1 source ~/.zshrc'
+alias qq="exec zsh"
+alias reload!="exec zsh"
 alias diff="colordiff -u"
 alias pn="pnpm"
 
@@ -42,6 +42,9 @@ alias wsn='wt switch --no-hooks'
 alias wsc='wt switch --create'
 alias wscn='wt switch --create --no-hooks'
 
+# Symbol search via the `symbols` television cable; Enter opens $EDITOR at the line.
+alias sym="tv symbols"
+
 # Interactive worktree picker via the `worktrees` television cable.
 # Picks a worktree and `wt switch`es to it. Removal moved to plain `wt remove`
 # (or use the `wsi-rm` helper directly) — tv cables select, they don't act.
@@ -70,23 +73,6 @@ pskill() {
   printf '%s\n' "$picked" | awk '{printf "  pid=%s  cwd=%s\n", $1, $2}'
   # shellcheck disable=SC2086
   kill -s "$sig" $pids
-}
-
-# Interactive symbol jump via the `symbols` television cable.
-# rg emits file:line:col:text; open the selection in $VISUAL / $EDITOR at line.
-tvs() {
-  local sel file line editor
-  sel=$(tv symbols) || return
-  [ -z "$sel" ] && return
-  file=${sel%%:*}
-  line=$(printf '%s\n' "$sel" | cut -d: -f2)
-  editor=${VISUAL:-${EDITOR:-nvim}}
-  case "$editor" in
-    *nvim*|*vim*) "$editor" "+$line" "$file" ;;
-    *zed*)        "$editor" "$file:$line" ;;
-    *code*)       "$editor" --goto "$file:$line" ;;
-    *)            "$editor" "+$line" "$file" ;;
-  esac
 }
 
 # Look up a Linear ticket via the Linear MCP server and print its git branch

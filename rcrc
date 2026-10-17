@@ -1,5 +1,6 @@
-EXCLUDES="CLAUDE.md README.md LICENSE Brewfile Brewfile.mas Brewfile.casks install .github lib system setup extensions iterm"
+EXCLUDES="CLAUDE.md README.md LICENSE Brewfile Brewfile.mas Brewfile.casks gh-extensions install .github lib system setup extensions iterm"
 DOTFILES_DIRS="$HOME/.dotfiles"
 TAGS="shell editor terminal"
 UNDOTTED="Library"
 
+SYMLINK_DIRS="claude/skills/agent-to-workspace"

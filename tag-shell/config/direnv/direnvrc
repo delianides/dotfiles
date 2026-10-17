@@ -1,0 +1,5 @@
+# Cache `use flake` environments (nix-direnv): without it direnv re-evaluates
+# the flake on every load, ~0.5s each time you cd into a flake repo.
+if ! has nix_direnv_version || ! nix_direnv_version 3.2.0; then
+  source_url "https://raw.githubusercontent.com/nix-community/nix-direnv/3.2.0/direnvrc" "sha256-hW6NC1JHue3IjZN3uDM6l6I2PMaauqd2D7hXYJ1Zfr4="
+fi

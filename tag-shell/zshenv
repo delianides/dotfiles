@@ -18,4 +18,7 @@ if [[ ! -s ~/.cache/zsh-evals/brew.zsh || /opt/homebrew/bin/brew -nt ~/.cache/zs
 fi
 source ~/.cache/zsh-evals/brew.zsh
 
-export PATH="$HOME/.local/bin:$HOME/.bin:$HOME/.lmstudio/bin:$PATH"
+# keep $path/$PATH deduplicated so `exec zsh` reloads stay idempotent
+typeset -U path PATH
+
+export PATH="$HOME/.local/bin:$HOME/.bin:$HOME/.cargo/bin:$HOME/.lmstudio/bin:$PATH"
