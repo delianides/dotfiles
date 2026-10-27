@@ -169,3 +169,8 @@ export PATH="$BREW_PREFIX/opt/macos-trash/bin:$PATH"
 
 # Atuin (must stay last — its Ctrl-R binding intentionally wins over fzf's)
 _cache_eval atuin atuin init zsh
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:$HOME/.lmstudio/bin"
+# End of LM Studio CLI section
+

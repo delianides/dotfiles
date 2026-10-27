@@ -25,7 +25,11 @@ When editing Neovim Lua files, ensure they pass both luacheck and StyLua formatt
 
 ## Rules
 
-- Never use absolute paths in config files. Use `$HOME` or `~` instead.
+- Never hardcode user-specific absolute paths in config files. Refer to common
+  directories with standard shell variables and shorthand: `$HOME` or `~` instead of
+  `/Users/<name>`, `$XDG_CONFIG_HOME` or `~/.config` for config dirs, and
+  `$BREW_PREFIX` for Homebrew. Installer-appended lines (LM Studio, etc.) often
+  violate this; rewrite them when they appear.
 
 ## Architecture
 
