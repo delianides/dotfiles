@@ -104,7 +104,10 @@
       "focusDown": "cmd+ctrl+j",
       "focusUp": "cmd+ctrl+k",
       "focusRight": "cmd+ctrl+l",
-      "openBrowser": "cmd+shift+o"
+      "toggleFileExplorer": "cmd+shift+b",
+      "jumpToLastPrompt": "cmd+shift+j",
+      "openBrowser": "cmd+shift+o",
+      "reopenPreviousSession": null
     }
   },
   "customSidebars": {
