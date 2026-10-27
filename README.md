@@ -48,7 +48,7 @@ Each `tag-*` directory is an [RCM tag](https://github.com/thoughtbot/rcm). The a
 - **Starship** prompt — config lives under `tag-terminal/config/starship.toml`.
 - **Git** — `gitconfig` with [delta](https://github.com/dandavison/delta) as the pager and 1Password SSH commit signing. Conditional includes pick the right identity based on the working directory (`~/Work/`, `~/Github/`, `~/Gitlab/`).
 - **tmux** — `config/tmux/tmux.conf`, paired with [sesh](https://github.com/joshmedeski/sesh) for session management.
-- **Other tools** — `config/direnv/`, `config/zellij/`, `config/worktrunk/`, plus a `bin/` directory of custom scripts.
+- **Other tools** — `config/direnv/`, `config/worktrunk/`, plus a `bin/` directory of custom scripts.
 - **Claude Code** — `claude/` holds settings and hooks.
 
 ### `tag-editor` — editors

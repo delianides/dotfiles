@@ -134,7 +134,6 @@ brew 'stylua'
 
 # Workflow & dev CLIs
 brew 'lazygit'
-brew 'zellij'
 brew 'teleport'
 brew 'worktrunk'
 brew 'zig'
