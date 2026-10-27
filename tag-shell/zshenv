@@ -3,8 +3,11 @@ export HOMEBREW_AUTO_UPDATE_SECS=604800
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_INSTALL_CLEANUP=1
 export HOMEBREW_NO_ENV_HINTS=1
-export FZF_DEFAULT_COMMAND='rg --hidden --files --ignore-file ~/.ignore'
-export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+# Skip-list for file pickers lives in ~/.config/fzf/ignore (tag-shell/config/fzf/ignore).
+export FZF_DEFAULT_COMMAND='rg --hidden --files --ignore-file ~/.config/fzf/ignore'
+# Ctrl-T searches from the git root; --show-cdup yields e.g. `../../`, so the
+# inserted paths stay valid from the current dir (and it falls back to `.` outside a repo).
+export FZF_CTRL_T_COMMAND='rg --hidden --files --ignore-file ~/.config/fzf/ignore $(git rev-parse --show-cdup 2>/dev/null)'
 export TIMEFMT=$'\nreal\t%*E\nuser\t%*U\nsys\t%*S'
 
 export LANG="en_US.UTF-8"

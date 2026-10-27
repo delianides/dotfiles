@@ -1,0 +1,40 @@
+# Directories fzf's file pickers should skip (gitignore syntax).
+# Passed to rg with --ignore-file by FZF_DEFAULT_COMMAND / FZF_CTRL_T_COMMAND in zshenv.
+# Only list things that never hold code you'd edit: build/dist/target/vendor are
+# left out because some repos track source in them, and .gitignore already hides
+# their untracked output.
+
+# VCS
+.git/
+.hg/
+.svn/
+.jj/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.pyrefly_cache/
+.tox/
+.nox/
+.ipynb_checkpoints/
+
+# JavaScript
+node_modules/
+.next/
+.nuxt/
+.turbo/
+.parcel-cache/
+.svelte-kit/
+
+# Tooling / editors
+.direnv/
+.devbox/
+.terraform/
+.gradle/
+.idea/
+.DS_Store

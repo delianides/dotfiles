@@ -46,11 +46,38 @@ source "$BREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
 # fzf shell integration
 _cache_eval fzf fzf --zsh
 
+# Smart Tab: after an editor command, fuzzy-search files from the git root
+# (the same list as Ctrl-T), seeded with the word under the cursor.
+# Flags, explicit paths (./ ../ ~/ /) and `**` fall through to normal completion,
+# as does every other command.
+_smart_tab_editors=(vim nvim vi bat less code)
+
+_smart-tab() {
+  local -a words=(${(z)LBUFFER})
+  local cur=${LBUFFER##* }
+
+  if (( ${_smart_tab_editors[(Ie)${words[1]}]} )) &&
+     [[ $LBUFFER == *' '* ]] &&
+     [[ $cur != -* && $cur != (.|..|\~|)/* && $cur != *'**' ]]; then
+    local -a picked
+    picked=(${(f)"$(eval "$FZF_CTRL_T_COMMAND" |
+      fzf --multi --height 40% --reverse --scheme=path --select-1 \
+          --query="$cur" --preview 'bat --color=always --style=numbers {}')"})
+    (( ${#picked} )) && LBUFFER="${LBUFFER%$cur}${(j: :)${(q)picked}} "
+    zle reset-prompt
+  else
+    zle fzf-completion
+  fi
+}
+zle -N _smart-tab
+
 # Re-apply fzf keybindings after zsh-vi-mode init (otherwise vi-mode clobbers Ctrl-R in viins).
 # Source the cache directly — `${commands[...]}` lookups inside zvm_after_init come back empty,
 # so going through _cache_eval here silently no-ops.
+# Smart Tab is bound here too, after fzf.zsh rebinds ^I to fzf-completion.
 function zvm_after_init() {
   [[ -s "$HOME/.cache/zsh-evals/fzf.zsh" ]] && source "$HOME/.cache/zsh-evals/fzf.zsh"
+  bindkey -M viins '^I' _smart-tab
 }
 
 # direnv shell integration
@@ -133,6 +160,25 @@ if [[ -z "$TERM_PROGRAM" || "$TERM_PROGRAM" =~ ^(ghostty|WezTerm|alacritty|kitty
   bindkey -M vicmd '^O' sesh-sessions
   bindkey -M viins '^O' sesh-sessions
 fi
+
+# Ctrl-N: pick files with television and open them in vim. The command goes
+# through the buffer and accept-line (rather than running vim from inside the
+# widget) so the `vim` alias applies and it lands in history like a typed one.
+function tv-edit() {
+  local -a picked
+  picked=(${(f)"$(tv files </dev/tty)"})
+  if (( ${#picked} )); then
+    BUFFER="vim ${(j: :)${(q)picked}}"
+    zle accept-line
+  else
+    zle reset-prompt
+  fi
+}
+
+zle     -N            tv-edit
+bindkey -M emacs '^N' tv-edit
+bindkey -M vicmd '^N' tv-edit
+bindkey -M viins '^N' tv-edit
 
 # cmux pane navigation (Ctrl-hjkl), the shell half of the vim-tmux-navigator
 # equivalent. cmux leaves these keys to the terminal (its own focus actions sit
