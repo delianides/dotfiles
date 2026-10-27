@@ -4,13 +4,12 @@
 tap 'teamookla/speedtest'
 tap 'jaxxstorm/tap'
 tap 'hashicorp/tap'
-tap 'cargo-lambda/cargo-lambda'
+tap 'cargo-lambda/tap'
 tap 'neurosnap/tap'
 
 
 
 brew 'mas'
-brew 'mise'
 
 brew 'act'
 brew 'actionlint'
@@ -21,7 +20,7 @@ brew 'automake'
 brew 'jaxxstorm/tap/aws-sso-creds', trusted: true
 brew 'bat'
 brew 'black'
-brew 'cargo-lambda/cargo-lambda/cargo-lambda', trusted: true
+brew 'cargo-lambda/tap/cargo-lambda', trusted: true
 brew 'coreutils'
 brew 'libtool'
 brew 'libyaml'
@@ -139,7 +138,7 @@ brew 'worktrunk'
 brew 'zig'
 
 # Node-based CLIs (formerly asdf default-npm-packages, now Homebrew formulae)
-brew 'vercel-cli'
+brew 'vercel'
 brew 'npm-check-updates'
 brew 'aws-cdk'
 brew 'happy-coder'
