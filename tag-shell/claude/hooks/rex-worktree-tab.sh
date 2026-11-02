@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Claude Code hook (SessionStart, CwdChanged, SessionEnd): name the Rex tab this
-# session runs in after the git worktree it's working in, prefixed with the
-# Nerd Font worktree icon (nf-cod-worktree). Leaving the worktree, or ending the
+# session runs in after the git worktree it's working in, prefixed with a Nerd
+# Font branch icon. Leaving the worktree, or ending the
 # session, restores the tab's previous name.
 #
 # Rex is only called when the tab name needs to change, so ordinary directory
@@ -39,7 +39,9 @@ common_dir="$(git -C "$dir" rev-parse --path-format=absolute --git-common-dir 2>
 [ "$git_dir" != "$common_dir" ] || restore
 
 name="$(basename "$(git -C "$dir" rev-parse --show-toplevel)")"
-icon=$'\xee\xb1\xbe' # U+EC7E nf-cod-worktree
+# U+F418 nf-oct-git_branch. Rex draws title icons from its bundled Symbols Nerd
+# Font (3.4.0), which lacks the newer nf-cod-worktree (U+EC7E).
+icon=$'\xef\x90\x98'
 label="$icon $name"
 
 # Already named for this worktree (e.g. a cd within it).
