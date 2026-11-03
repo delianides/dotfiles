@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# Claude Code hook (SessionStart, CwdChanged, SessionEnd): name the Rex tab this
-# session runs in after the git worktree it's working in, prefixed with a Nerd
-# Font branch icon. Leaving the worktree, or ending the
-# session, restores the tab's previous name.
+# Name the Rex tab this pane is in after the git worktree at DIR, prefixed with
+# a Nerd Font branch icon. For a main checkout or a non-git directory, restore
+# the tab's previous name. Does nothing outside Rex.
+#
+#   rex-worktree-tab DIR    e.g. from a worktrunk post-switch hook
+#   rex-worktree-tab        as a Claude Code hook (SessionStart, CwdChanged,
+#                           SessionEnd); reads the hook's JSON on stdin, and
+#                           SessionEnd always restores
 #
 # Rex is only called when the tab name needs to change, so ordinary directory
 # changes cost a couple of git calls.
@@ -10,9 +14,14 @@
 [ -n "${REX_BLOCK:-}" ] || exit 0
 command -v rex >/dev/null 2>&1 || exit 0
 
-input="$(cat)"
-event="$(jq -r '.hook_event_name // empty' <<<"$input")"
-dir="$(jq -r '.new_cwd // .cwd // empty' <<<"$input")"
+if [ $# -gt 0 ]; then
+  event=""
+  dir="$1"
+else
+  input="$(cat)"
+  event="$(jq -r '.hook_event_name // empty' <<<"$input")"
+  dir="$(jq -r '.new_cwd // .cwd // empty' <<<"$input")"
+fi
 
 # Per Rex pane: the tab's name before we renamed it, and the name we set.
 state_dir="${TMPDIR:-/tmp}/claude-rex-tab"

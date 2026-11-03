@@ -7,3 +7,10 @@ command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence 
 # .envrc in the worktree.
 [[pre-start]]
 direnv = 'test -f "{{ worktree_path }}/.envrc" && direnv allow "{{ worktree_path }}" || true'
+
+# In Rex, name the tab after the worktree switched to; switching back to the
+# main checkout restores the old name. Skipped when Claude Code runs wt (its
+# WorktreeCreate hook): Claude's own hooks name the tab for the worktree the
+# session enters, and a background agent's worktree shouldn't rename the tab.
+[[post-switch]]
+rex-tab = 'test -n "$CLAUDECODE" || "$HOME/.bin/rex-worktree-tab" "{{ worktree_path }}"'
