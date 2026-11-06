@@ -122,6 +122,10 @@ unsetopt AUTO_CD
 
 # Environment
 export VISUAL="nvim"
+# Inside Rex, use neorex (Rex-native Neovim frontend) when it's installed.
+if [[ "$TERM_PROGRAM" == "rex" ]] && (( $+commands[neorex] )); then
+  export VISUAL="neorex"
+fi
 export EDITOR=$VISUAL
 export MANPAGER="bat --plain"
 
