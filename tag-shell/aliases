@@ -9,6 +9,7 @@ alias tmux="tmux -2"
 alias ssh='TERM=xterm-256color ssh'
 alias vi='$VISUAL'
 alias vim='$VISUAL'
+alias nvim='$VISUAL'
 alias rm="trash"
 alias cat="bat"
 alias mkdir="mkdir -p"
