@@ -83,7 +83,14 @@ defaults:
                 width: 20
                 hidden: true
     refetchIntervalMinutes: 30
-keybindings: {}
+keybindings:
+    prs:
+        # gh-dash has no PR title template variable, so look it up with gh.
+        - key: ctrl+r
+          name: review with claude
+          command: >
+            rex do start_pr_review pr={{.PrNumber}}
+            title="$(gh pr view {{.PrNumber}} -R {{.RepoName}} --json title -q .title)"
 repoPaths: {}
 theme:
     ui:
