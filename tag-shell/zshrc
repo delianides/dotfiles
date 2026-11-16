@@ -102,6 +102,15 @@ fi
 export EDITOR=$VISUAL
 export MANPAGER="bat --plain"
 
+# 1Password SSH agent is set via IdentityAgent in ~/.ssh/config.
+# op-ssh-sign always talks to the local 1Password app; in SSH sessions sign commits
+# via the forwarded agent instead
+if [[ -n "$SSH_CONNECTION" ]]; then
+  export GIT_CONFIG_COUNT=1
+  export GIT_CONFIG_KEY_0=gpg.ssh.program
+  export GIT_CONFIG_VALUE_0=ssh-keygen
+fi
+
 # Zoxide
 if [[ "$CLAUDECODE" != "1" ]]; then
   _cache_eval zoxide zoxide init --cmd cd zsh
@@ -190,10 +199,11 @@ _cache_eval wt wt config shell init zsh
 
 export PATH="$BREW_PREFIX/opt/macos-trash/bin:$PATH"
 
+export STM32_PRG_PATH=/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/Resources/bin
+
 # Atuin (must stay last — its Ctrl-R binding intentionally wins over fzf's)
 _cache_eval atuin atuin init zsh
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
-
