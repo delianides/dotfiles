@@ -6,6 +6,7 @@ tap 'jaxxstorm/tap'
 tap 'hashicorp/tap'
 tap 'cargo-lambda/tap'
 tap 'neurosnap/tap'
+tap 'rednafi/rexdiff'
 
 
 

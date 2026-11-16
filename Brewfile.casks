@@ -8,6 +8,7 @@ cask 'cmux'
 cask 'conductor'
 cask 'superset'
 cask 'supacode'
+cask 'rexdiff'
 
 cask 'visual-studio-code'
 cask 'zed'
